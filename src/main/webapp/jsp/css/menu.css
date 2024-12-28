@@ -1,0 +1,346 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../img/menu.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+}
+
+.page {
+  display: none; 
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(51, 51, 51, 0.8);
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.page[data-page="1"],
+.page[data-page="2"],
+.page[data-page="3"] {
+  display: flex; 
+}
+
+
+
+.create-account {
+  padding: 1rem 3rem;
+  font-size: 1.7rem;
+  display: flex;
+  text-align: left;
+
+}
+h2.create-account {
+  width: 100%; 
+  text-align: left; 
+  font-size: 1.7rem; 
+  margin-bottom: 1rem; 
+}
+
+.iconos {
+  width: 200px;
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+}
+
+
+.border-icon {
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border: solid thin white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  transition: all .5s ease-in;
+}
+
+.border-icon:hover {
+  background-color: #4a4aee;
+  cursor: pointer;
+}
+
+.button {
+  display: inline-block;
+  text-decoration: none;
+  width: 60%;
+  margin: auto;
+  border: solid thin white;
+  padding: .7rem;
+  border-radius: 2rem;
+  background-color: white;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  font-size: .8rem;
+  cursor: pointer;
+  color: #222;
+  transition: transform 1s ease;
+}
+
+.button:hover {
+  background-color: #999999;
+  transform: scale(1.15);
+}
+
+.container-form {
+  width: 90%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.tabs {
+  display: flex;
+  justify-content: start;
+}
+
+.tab {
+  display: flex;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: rgb(30, 30, 30);
+  transition: background-color 0.3s ease;
+  justify-content: start;
+
+}
+
+.tab:hover {
+  background-color: #6464f8;
+}
+
+
+
+/* Seccion 1*/
+.perfil {
+  margin: 4rem 0rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.user-info {    
+    font-size: 1.7rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    width: 100%; 
+    margin-right: 1rem;
+}
+
+
+.input-group input {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 40vw; 
+}
+
+.botones-perfil {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap; 
+}
+.button-user {
+  text-decoration: none;
+  border: solid thin rgb(0, 0, 0);
+  padding: 0.7rem 1.2rem;
+  border-radius: 2rem;
+  background-color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #222;
+  transition: transform 1s ease;
+}
+
+.button-user:hover {
+  background-color: #999999;
+  transform: scale(1.15);
+}
+/* Seccion 2*/
+.lista-Metas{
+  
+  width: 90%;
+  height: 400px;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  justify-items: center;
+}
+
+.tabla-metas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  color: rgb(0, 0, 0);
+}
+
+.tabla-metas th,
+.tabla-metas td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.tabla-metas th {
+  background-color: #333;
+  color: #ffffff;
+}
+
+.tabla-metas tr:hover {
+  background-color: #f2f2f2;
+}
+
+.editar-meta , .eliminar-meta{
+  text-decoration: none;
+  border: solid thin rgb(0, 0, 0);
+  padding: 0.4rem 2rem;
+  margin: 0rem 1rem;
+  border-radius: 2rem;
+  background-color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #222;
+  transition: transform 1s ease;
+}
+.editar-meta:hover , .eliminar-meta:hover{
+  background-color: #999999;
+  transform: scale(1.15);
+}
+
+.screenOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 110vh; 
+  width: 100vw;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  z-index: 1000;
+}
+.container-form-2 {
+  background: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  border: 4px solid rgb(0, 0, 0);
+  padding: 20px 30px;
+  border-radius: 8px;
+  width: 79vw;
+  height: 60vh;
+  
+}
+.botones-meta {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+  gap: 7rem;
+  flex-wrap: wrap; 
+}
+
+.tabla-habitos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  color: rgb(0, 0, 0);
+}
+
+.tabla-habitos th,
+.tabla-habitos td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.tabla-habitos th {
+  background-color: #333;
+  color: #ffffff;
+}
+
+.tabla-habitos tr:hover {
+  background-color: #f2f2f2;
+}
+
+.editar-habito , .eliminar-habito{
+  text-decoration: none;
+  border: solid thin rgb(0, 0, 0);
+  padding: 0.4rem 2rem;
+  margin: 0rem 1rem;
+  border-radius: 2rem;
+  background-color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #222;
+  transition: transform 1s ease;
+}
+.editar-habito:hover , .eliminar-habito:hover{
+  background-color: #999999;
+  transform: scale(1.15);
+}
+
+.input-group select {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 20px; 
+  border: 1px solid #ccc; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  width: 40vw; 
+  background-color: #fff;
+  cursor: pointer; 
+}
+
+.input-group select:focus {
+  border-color: #007BFF; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+  outline: none; 
+}
+
+.registrar-ejecucion{
+  text-decoration: none;
+  border: solid thin rgb(0, 0, 0);
+  padding: 0.4rem 2rem;
+  margin: 0rem 1rem;
+  border-radius: 2rem;
+  background-color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #222;
+  transition: transform 1s ease;
+}
+.registrar-ejecucion:hover{
+  background-color: #999999;
+  transform: scale(1.15);
+}

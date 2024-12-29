@@ -35,8 +35,9 @@
                     </div>
                     <div class="user-info">
                         <div class="input-group">
+                        	<input type="hidden" id="nombre" placeholder="${usuario.idUsuario}">
                             <label for="nombre">Nombre</label>
-                            <input type="text" id="nombre" placeholder="Nombre">
+                            <input type="text" id="nombre" placeholder="${usuario.nombre}">
                         </div>
                         <div class="input-group">
                             <label for="email">Correo</label>

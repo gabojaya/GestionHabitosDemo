@@ -32,20 +32,21 @@ pageEncoding="UTF-8"%>
 		</div>
 		<form class="formulario">
 			<h2 class="create-account">Crear una cuenta</h2>
-			<i class="fa-regular fa-user fa-5x"></i> <input type="text"
-				placeholder="Nombre" required> <input type="email"
-				placeholder="Email" required> <input type="password"
-				placeholder="Contraseña" required>
+			<i class="fa-regular fa-user fa-5x"></i> 
+			<input type="text" placeholder="Nombre" required> 
+			<input type="email" placeholder="Email" required> 
+			<input type="password" placeholder="Contraseña" required>
 			<button id="register-btn" class="button">Registrarse</button>
 		</form>
 	</div>
 	<div class="container-form sign-in">
-		<form class="formulario">
+		<form class="formulario" method="POST" action="../LoginController?ruta=iniciarSesion">
 			<h2 class="create-account">Iniciar Sesion</h2>
-			<i class="fa-regular fa-user fa-5x"></i> <input type="email"
-				placeholder="Email" required> <input type="password"
-				placeholder="Contraseña" required> <a
-				href="menuPrincipal.html" class="button">Iniciar Sesión</a>
+			<i class="fa-regular fa-user fa-5x "></i> 
+			<input type="text" name="nombreUsuario" placeholder="Username" required> 
+			<input type="password" name="clave" placeholder="Contraseña" required> 
+			<!-- <input type="submit" class="button" value="Iniciar Sesión"> -->
+			<button class="button">Iniciar Sesión</button>
 		</form>
 		<div class="welcome-back">
 			<div class="message">

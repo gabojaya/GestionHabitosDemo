@@ -12,21 +12,21 @@ public class Usuario implements Serializable {
 	private String apellido;
 	private String nombreUsuario;
 	private String email;
-	private String contraseña;
+	private String clave;
 	private Date fechaInicio;
 	private boolean notificacionesActivas;
 
 	public Usuario() {
 	}
 
-	public Usuario(int idUsuario, String nombre, String apellido, String nombreUsuario, String email, String contraseña,
+	public Usuario(int idUsuario, String nombre, String apellido, String nombreUsuario, String email, String clave,
 			Date fechaInicio, boolean notificacionesActivas) {
 		this.idUsuario = idUsuario;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.nombreUsuario = nombreUsuario;
 		this.email = email;
-		this.contraseña = contraseña;
+		this.clave = clave;
 		this.fechaInicio = fechaInicio;
 		this.notificacionesActivas = notificacionesActivas;
 	}
@@ -71,12 +71,12 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getclave() {
+		return clave;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setclave(String clave) {
+		this.clave = clave;
 	}
 
 	public Date getFechaInicio() {
@@ -94,5 +94,6 @@ public class Usuario implements Serializable {
 	public void setNotificacionesActivas(boolean notificacionesActivas) {
 		this.notificacionesActivas = notificacionesActivas;
 	}
+	
 
 }

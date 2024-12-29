@@ -31,7 +31,15 @@ public class LoginController extends HttpServlet{
 		String ruta = (req.getParameter("ruta") == null) ? "listar" : req.getParameter("ruta");
 
 		switch (ruta) {
+		case "ingresar":
+			this.ingresar(req, resp);
+			break;
 	
 		}
+	}
+	
+	private void ingresar(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		resp.sendRedirect("jsp/login.jsp");
 	}
 }

@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
-<link rel="stylesheet" href="css/login.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/jsp/css/login.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
@@ -22,16 +22,16 @@ pageEncoding="UTF-8"%>
 	rel="stylesheet">
 </head>
 <body>
-	<div class="container-form sign-up">
+	<div class="container-form sign-up ${form == 'registrar' ? 'active' : ''}">
 		<div class="welcome-back">
 			<div class="message">
 				<h2>Bienvenido de nuevo</h2>
 				<p>Si ya tienes una cuenta por favor inicia sesion aqui</p>
-				<button class="sign-up-btn">Iniciar Sesion</button>
+				<button class="sign-up-btn" id="signUpBtn">Iniciar Sesion</button>
 			</div>
 		</div>
 		<!-- Sección 1: Registrar Usuario -->
-		<form class="formulario" method="POST" action="../LoginController?ruta=registrarUsuario">
+		<form class="formulario" method="POST" action="LoginController?ruta=registrarUsuario">
 			<h2 class="create-account">Crear una cuenta</h2>
 			<i class="fa-regular fa-user fa-5x"></i> 
 			<input type="text" name="nombreN" placeholder="Nombre" required> 
@@ -42,9 +42,9 @@ pageEncoding="UTF-8"%>
 			<button class="button">Registrarse</button>
 		</form>
 	</div>
-	<div class="container-form sign-in">
+	<div class="container-form sign-in ${form == 'iniciar' ? 'active' : ''}">
 		<!-- Sección 2: Iniciar Sesion -->
-		<form class="formulario" method="POST" action="../LoginController?ruta=iniciarSesion">
+		<form class="formulario" method="POST" action="LoginController?ruta=iniciarSesion">
 			<h2 class="create-account">Iniciar Sesión</h2>
 			<i class="fa-regular fa-user fa-5x "></i> 
 			<input type="text" name="nombreUsuario" placeholder="Username" required> 
@@ -56,11 +56,11 @@ pageEncoding="UTF-8"%>
 			<div class="message">
 				<h2>Bienvenido de nuevo</h2>
 				<p>Si aun no tienes una cuenta por favor registrese aqui</p>
-				<button class="sign-in-btn">Registrarse</button>
+				<button class="sign-in-btn" id="signInBtn">Registrarse</button>
 			</div>
 		</div>
 	</div>
 
-	<script src="scripts/login.js"></script>
+	<script src="${pageContext.request.contextPath}/jsp/scripts/login.js"></script>
 </body>
 </html>

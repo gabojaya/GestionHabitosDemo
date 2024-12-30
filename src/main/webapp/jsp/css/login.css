@@ -146,23 +146,19 @@ body {
   transition: transform 1s ease;
 }
 
-.sign-in {
-  position: absolute;
-  opacity: 0;
-  visibility: hidden;
+.sign-in, .sign-up {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out;
 }
 
-.sign-in.active {
-  opacity: 1;
-  visibility: visible;
+.sign-in.active, .sign-up.active {
+    opacity: 1;
+    visibility: visible;
 }
 
-.sign-up.active {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.button {
+.button, .a{
   display: inline-block;
   text-decoration: none;
   width: 60%;

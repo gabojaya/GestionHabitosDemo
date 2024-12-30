@@ -38,6 +38,9 @@ public class LoginController extends HttpServlet {
 		case "solicitarIniciar":
 			this.mostrarIniciar(req, resp);
 			break;
+		case "solicitarRegistro":
+			this.mostrarRegistrar(req, resp);
+			break;
 		case "iniciarSesion":
 			this.iniciarSesion(req, resp);
 			break;
@@ -52,7 +55,16 @@ public class LoginController extends HttpServlet {
 	}
 
 	private void mostrarIniciar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendRedirect("jsp/login.jsp");
+		System.out.println("Entro por iniciar");
+		req.setAttribute("form", "iniciar");
+		req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
+	}
+
+	private void mostrarRegistrar(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		System.out.println("Entro por registrar");
+		req.setAttribute("form", "registrar");
+		req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
 	}
 
 	private void iniciarSesion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -87,31 +99,31 @@ public class LoginController extends HttpServlet {
 
 	private void registrarUsuario(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-	    String nombre = req.getParameter("nombreN");
-	    String apellido = req.getParameter("apellidoN");
-	    String nombreUsuario = req.getParameter("nombreUsuarioN");
-	    String email = req.getParameter("email");
-	    String clave = req.getParameter("clave");
 
-	    Usuario usuario = new Usuario(nombre, apellido, nombreUsuario, email, clave);
+		String nombre = req.getParameter("nombreN");
+		String apellido = req.getParameter("apellidoN");
+		String nombreUsuario = req.getParameter("nombreUsuarioN");
+		String email = req.getParameter("email");
+		String clave = req.getParameter("clave");
 
-	    UsuarioDAO usuarioDAO = new UsuarioDAO();
-	    boolean registrado;
+		Usuario usuario = new Usuario(nombre, apellido, nombreUsuario, email, clave);
+
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		boolean registrado;
 		try {
 			registrado = usuarioDAO.crearUsuario(usuario);
-			
-			
-		    if (registrado) {
-	            req.setAttribute("nombreUsuario", nombreUsuario);
-	            req.setAttribute("clave", clave);
-	            req.getRequestDispatcher("LoginController?ruta=iniciarSesion&nombreUsuario=" + nombreUsuario + "&clave=" + clave)
-	            .forward(req, resp);
 
-		    } else {
-		        resp.sendRedirect("error.jsp");
-		    }
-			
+			if (registrado) {
+				req.setAttribute("nombreUsuario", nombreUsuario);
+				req.setAttribute("clave", clave);
+				req.getRequestDispatcher(
+						"LoginController?ruta=iniciarSesion&nombreUsuario=" + nombreUsuario + "&clave=" + clave)
+						.forward(req, resp);
+
+			} else {
+				resp.sendRedirect("error.jsp");
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

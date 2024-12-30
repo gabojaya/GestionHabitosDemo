@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Menu Principal</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -26,7 +26,7 @@
         </div>
 
         <div class="formulario">
-            <!-- Sección 1 -->
+            <!-- Sección 1: Perfil-->
             <div class="page" id="page1">
                 <div class="perfil">
                     <div>
@@ -35,21 +35,25 @@
                     </div>
                     <div class="user-info">
                         <div class="input-group">
-                        	<input type="hidden" id="nombre" placeholder="${usuario.idUsuario}">
+                        	<input type="hidden" id="idUsuario" placeholder="${usuario.idUsuario}">
                             <label for="nombre">Nombre</label>
                             <input type="text" id="nombre" placeholder="${usuario.nombre}">
                         </div>
                         <div class="input-group">
-                            <label for="email">Correo</label>
-                            <input type="email" id="email" placeholder="Email">
+                            <label for="apellido">Apellido</label>
+                            <input type="apellido" id="apellido" placeholder="${usuario.apellido}">
                         </div>
                         <div class="input-group">
-                            <label for="edad">Edad</label>
-                            <input type="text" id="edad" placeholder="Edad">
+                            <label for="nombreUsuario">Nombre Usuario</label>
+                            <input type="nombreUsuario" id="nombreUsuario" placeholder="${usuario.nombreUsuario}">
+                        </div>
+                        <div class="input-group">
+                            <label for="email">Correo</label>
+                            <input type="email" id="email" placeholder="${usuario.email}">
                         </div>
                         <div class="input-group">
                             <label for="fecha">Fecha de inicio</label>
-                            <input type="text" id="fecha" placeholder="Fecha de inicio">
+                            <input type="text" id="fecha" placeholder="${usuario.fechaInicio}">
                         </div>
                     </div>
                 </div>

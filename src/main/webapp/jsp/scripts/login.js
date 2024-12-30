@@ -20,8 +20,5 @@ $registerBtn.addEventListener('click', (e) => {
     $confirmationModal.classList.remove('hidden'); // Mostrar el modal
 });
 
-// Redirigir al menú principal al presionar "Continuar" en el modal
-$confirmBtn.addEventListener('click', () => {
-    $confirmationModal.classList.add('hidden'); // Opcional: Ocultar el modal
-    window.location.href = "menuPrincipal.html"; // Redirigir
-});
+
+

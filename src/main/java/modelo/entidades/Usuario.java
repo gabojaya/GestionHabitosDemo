@@ -19,16 +19,14 @@ public class Usuario implements Serializable {
 	public Usuario() {
 	}
 
-	public Usuario(int idUsuario, String nombre, String apellido, String nombreUsuario, String email, String clave,
-			Date fechaInicio, boolean notificacionesActivas) {
-		this.idUsuario = idUsuario;
+	public Usuario( String nombre, String apellido, String nombreUsuario, String email, String clave) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.nombreUsuario = nombreUsuario;
 		this.email = email;
 		this.clave = clave;
-		this.fechaInicio = fechaInicio;
-		this.notificacionesActivas = notificacionesActivas;
+		this.fechaInicio = new Date(System.currentTimeMillis());
+		this.notificacionesActivas = true;
 	}
 
 	public int getIdUsuario() {
@@ -71,11 +69,11 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public String getclave() {
+	public String getClave() {
 		return clave;
 	}
 
-	public void setclave(String clave) {
+	public void setClave(String clave) {
 		this.clave = clave;
 	}
 

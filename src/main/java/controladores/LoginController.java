@@ -2,6 +2,7 @@ package controladores;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +14,7 @@ import modelo.dao.UsuarioDAO;
 import modelo.entidades.Usuario;
 
 @WebServlet("/LoginController")
-public class LoginController extends HttpServlet{
+public class LoginController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,15 +29,14 @@ public class LoginController extends HttpServlet{
 		// TODO Auto-generated method stub
 		this.ruteador(req, resp);
 	}
-	
-	private void ruteador(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// Logica del control
+
+	private void ruteador(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		String ruta = (req.getParameter("ruta") == null) ? "solicitarIniciar" : req.getParameter("ruta");
 
 		switch (ruta) {
 		case "solicitarIniciar":
-			this.solicitarIniciar(req, resp);
+			this.mostrarIniciar(req, resp);
 			break;
 		case "iniciarSesion":
 			this.iniciarSesion(req, resp);
@@ -44,21 +44,19 @@ public class LoginController extends HttpServlet{
 		case "mostrarPantallaPrincipal":
 			this.mostrarPantallaPrincipal(req, resp);
 			break;
-	
+		case "registrarUsuario":
+			this.registrarUsuario(req, resp);
+			break;
+
 		}
 	}
-	
-	private void solicitarIniciar(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+
+	private void mostrarIniciar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.sendRedirect("jsp/login.jsp");
 	}
-	private void mostrarPantallaPrincipal(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		resp.sendRedirect("jsp/menuPrincipal.jsp");
-		System.out.println("Entro al menu principal");
-	}
-	
+
 	private void iniciarSesion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("Entro a iniciar sesion");
 		String nombreUsuario = req.getParameter("nombreUsuario");
 		String clave = req.getParameter("clave");
 
@@ -69,17 +67,56 @@ public class LoginController extends HttpServlet{
 			u = usuarioDAO.validarCredenciales(nombreUsuario, clave);
 			if (u != null) {
 				session.setAttribute("usuario", u);
-				//resp.sendRedirect("LoginController?ruta=solicitarIniciar");
+				// resp.sendRedirect("LoginController?ruta=solicitarIniciar");
 				req.getRequestDispatcher("LoginController?ruta=mostrarPantallaPrincipal").forward(req, resp);
-				
+
 			} else {
-				resp.sendRedirect("jsp/login.jsp");
+				resp.sendRedirect("LoginController?ruta=solicitarIniciar");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	private void mostrarPantallaPrincipal(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		resp.sendRedirect("jsp/menuPrincipal.jsp");
+		System.out.println("Entro al menu principal");
+	}
+
+	private void registrarUsuario(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
+	    String nombre = req.getParameter("nombreN");
+	    String apellido = req.getParameter("apellidoN");
+	    String nombreUsuario = req.getParameter("nombreUsuarioN");
+	    String email = req.getParameter("email");
+	    String clave = req.getParameter("clave");
+
+	    Usuario usuario = new Usuario(nombre, apellido, nombreUsuario, email, clave);
+
+	    UsuarioDAO usuarioDAO = new UsuarioDAO();
+	    boolean registrado;
+		try {
+			registrado = usuarioDAO.crearUsuario(usuario);
+			
+			
+		    if (registrado) {
+	            req.setAttribute("nombreUsuario", nombreUsuario);
+	            req.setAttribute("clave", clave);
+	            req.getRequestDispatcher("LoginController?ruta=iniciarSesion&nombreUsuario=" + nombreUsuario + "&clave=" + clave)
+	            .forward(req, resp);
+
+		    } else {
+		        resp.sendRedirect("error.jsp");
+		    }
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

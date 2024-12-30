@@ -30,23 +30,27 @@ pageEncoding="UTF-8"%>
 				<button class="sign-up-btn">Iniciar Sesion</button>
 			</div>
 		</div>
-		<form class="formulario">
+		<!-- Sección 1: Registrar Usuario -->
+		<form class="formulario" method="POST" action="../LoginController?ruta=registrarUsuario">
 			<h2 class="create-account">Crear una cuenta</h2>
 			<i class="fa-regular fa-user fa-5x"></i> 
-			<input type="text" placeholder="Nombre" required> 
-			<input type="email" placeholder="Email" required> 
-			<input type="password" placeholder="Contraseña" required>
-			<button id="register-btn" class="button">Registrarse</button>
+			<input type="text" name="nombreN" placeholder="Nombre" required> 
+			<input type="text" name="apellidoN" placeholder="Apellido" required> 
+			<input type="text" name="nombreUsuarioN" placeholder="Nombre Usuario" required> 
+			<input type="email" name="email"placeholder="Email" required> 
+			<input type="text" name="clave" placeholder="Contraseña" required>
+			<button class="button">Registrarse</button>
 		</form>
 	</div>
 	<div class="container-form sign-in">
+		<!-- Sección 2: Iniciar Sesion -->
 		<form class="formulario" method="POST" action="../LoginController?ruta=iniciarSesion">
-			<h2 class="create-account">Iniciar Sesion</h2>
+			<h2 class="create-account">Iniciar Sesión</h2>
 			<i class="fa-regular fa-user fa-5x "></i> 
 			<input type="text" name="nombreUsuario" placeholder="Username" required> 
 			<input type="password" name="clave" placeholder="Contraseña" required> 
 			<!-- <input type="submit" class="button" value="Iniciar Sesión"> -->
-			<button class="button">Iniciar Sesión</button>
+			<button class=" register-btn button">Iniciar Sesión</button>
 		</form>
 		<div class="welcome-back">
 			<div class="message">
@@ -54,12 +58,6 @@ pageEncoding="UTF-8"%>
 				<p>Si aun no tienes una cuenta por favor registrese aqui</p>
 				<button class="sign-in-btn">Registrarse</button>
 			</div>
-		</div>
-	</div>
-	<div id="confirmation-modal" class="modal hidden">
-		<div class="modal-content">
-			<p>¡Cuenta creada exitosamente!</p>
-			<button id="confirm-btn" class="button">Continuar</button>
 		</div>
 	</div>
 

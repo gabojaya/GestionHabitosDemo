@@ -13,7 +13,7 @@ public class BddConnection {
 		String servidor="localhost:3306";
 		String database="gestionhabitos";
 		String usuario="root";
-		String password="admin";
+		String password="";
 		String url = "jdbc:mysql://" + servidor + "/" + database;
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());

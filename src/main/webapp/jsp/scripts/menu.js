@@ -27,6 +27,7 @@ function showPage(pageNumber) {
 }
 
 function setupMetaScreen() {
+	
     const addMetaBtn = document.getElementById('add-meta-btn');
     const editarMetaBtns = document.querySelectorAll('.editar-meta');
     const screenOverlay = document.getElementById('screenOverlay');
@@ -34,9 +35,6 @@ function setupMetaScreen() {
     const continuarBtn = document.getElementById('continuar-btn');
     const screenOverlayHabitos = document.getElementById('screenOverlayHabitos');
 
-    const addHabitoBtn = document.getElementById('agregar-habito-btn');
-    const editarHabitoBtn = document.querySelectorAll('.editar-habito');
-    const screenOverlayRegistroHabitos = document.getElementById('screenOverlayRegistroHabitos');
 
 
     addMetaBtn.addEventListener('click', function () {
@@ -58,6 +56,11 @@ function setupMetaScreen() {
     });
 
 
+	/* Seccion 2: Registrar Habito*/
+	
+    const addHabitoBtn = document.getElementById('agregar-habito-btn');
+    const editarHabitoBtn = document.querySelectorAll('.editar-habito');
+    const screenOverlayRegistroHabitos = document.getElementById('screenOverlayRegistroHabitos');
     const guardarRegistroHabitoBtn = document.getElementById('guardar-habito-btn');
     const cerrarHabitoBtn = document.getElementById('cerrar-habito-btn');
     const volverAMetasBtn = document.getElementById('volver-a-metas-btn');

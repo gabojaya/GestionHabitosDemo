@@ -39,7 +39,7 @@ public class LoginController extends HttpServlet {
 			this.mostrarIniciar(req, resp);
 			break;
 		case "solicitarRegistro":
-			this.mostrarRegistrar(req, resp);
+			this.mostrarRegistro(req, resp);
 			break;
 		case "iniciarSesion":
 			this.iniciarSesion(req, resp);
@@ -60,7 +60,7 @@ public class LoginController extends HttpServlet {
 		req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
 	}
 
-	private void mostrarRegistrar(HttpServletRequest req, HttpServletResponse resp)
+	private void mostrarRegistro(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("Entro por registrar");
 		req.setAttribute("form", "registrar");

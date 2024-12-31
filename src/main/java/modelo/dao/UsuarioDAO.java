@@ -96,10 +96,10 @@ public class UsuarioDAO {
 	    PreparedStatement pstmt = BddConnection.getConexion().prepareStatement(_SQL_INSERT);
 
 	    try {
-	        // Prepara la sentencia SQL
+	        
 	        pstmt = conn.prepareStatement(_SQL_INSERT);
 
-	        // Establece los valores en el PreparedStatement
+	     
 	        pstmt.setString(1, usuario.getNombre());
 	        pstmt.setString(2, usuario.getApellido());
 	        pstmt.setString(3, usuario.getNombreUsuario());
@@ -108,17 +108,17 @@ public class UsuarioDAO {
 	        pstmt.setDate(6, new java.sql.Date(usuario.getFechaInicio().getTime()));
 	        pstmt.setBoolean(7, usuario.isNotificacionesActivas());
 
-	        // Ejecuta la actualización
+	        
 	        int filasAfectadas = pstmt.executeUpdate();
 
-	        // Retorna true si el registro fue exitoso
+	        
 	        return filasAfectadas > 0;
 	        
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;
 	    } finally {
-	        // Cierra los recursos
+	        
 			BddConnection.cerrar(pstmt);
 			BddConnection.cerrar();
 	    }

@@ -10,7 +10,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/jsp/css/menu.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 
@@ -35,7 +35,7 @@
                     </div>
                     <div class="user-info">
                         <div class="input-group">
-                        	<input type="hidden" id="idUsuario" placeholder="${usuario.idUsuario}">
+                        	<input type="hidden" name="idUsuario" id="idUsuario" value="${usuario.idUsuario}" placeholder="${usuario.idUsuario} ">
                             <label for="nombre">Nombre</label>
                             <input type="text" id="nombre" placeholder="${usuario.nombre}">
                         </div>
@@ -71,6 +71,7 @@
                         <thead>
                             <tr>
                                 <th>Número</th>
+                                <th>Nombre</th>
                                 <th>Descripción</th>
                                 <th>Fecha Inicio</th>
                                 <th>Fecha Fin</th>
@@ -79,29 +80,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Ejercicio diario todos los días</td>
-                                <td>09/12/2024</td>
-                                <td>30/12/2024</td>
-                                <td>30%</td>
-                                <td>
-                                    <button class="editar-meta">Editar meta</button>
-                                    <button class="eliminar-meta">Eliminar meta</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Meditar por las mañanas</td>
-                                <td>09/12/2024</td>
-                                <td>30/12/2024</td>
-                                <td>30%</td>
-                                <td>
-                                    <button class="editar-meta">Editar meta</button>
-                                    <button class="eliminar-meta">Eliminar meta</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                <c:forEach var="meta" items="${sessionScope.metas}">
+                    <tr>
+                        <td>${meta.idMeta}</td>
+                        <td>${meta.nombre}</td>
+                        <td>${meta.descripcion}</td>
+                        <td>${meta.fechaInicio}</td>
+                        <td>${meta.fechaFin}</td>
+                        <td>${meta.progreso}%</td>
+                        <td>
+                            <button class="editar-meta">Editar meta</button>
+                            <button class="eliminar-meta">Eliminar meta</button>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
                     </table>
                     <div class="botones-perfil">
                         <button class="button-user" id="add-meta-btn">Agregar Meta</button>
@@ -376,11 +369,11 @@
             </div>
         </div>
     </div>
-    </div>
 
-    <script src="scripts/menu.js"></script>
+
+    <script src="${pageContext.request.contextPath}/jsp/scripts/menu.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-    <script src="scripts/radar.js"></script>
+    <script src="${pageContext.request.contextPath}/jsp/scripts/radar.js"></script>
     <script>
         // Obtener referencias a los elementos del DOM
         const fechaActualTexto = document.getElementById('fechaActualTexto');

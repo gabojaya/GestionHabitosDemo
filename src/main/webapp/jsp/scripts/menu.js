@@ -10,6 +10,11 @@ function setupTabs() {
         tab.addEventListener('click', function () {
             const pageNumber = parseInt(tab.dataset.page);
             showPage(pageNumber);
+
+            // Verifica si la pestaña seleccionada es la de Metas (página 2)
+            if (pageNumber === 2) {
+                fetchMetas();
+            }
         });
     });
 }
@@ -25,6 +30,47 @@ function showPage(pageNumber) {
         pageToShow.style.display = 'flex';
     }
 }
+function fetchMetas() {
+    const idUsuario = document.getElementById('idUsuario').value;
+
+    // Realizar una petición al servidor
+    fetch('MetaController?ruta=solicitarMetas&idUsuario=' + idUsuario)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener las metas');
+            }
+            return response.json(); // Parsear la respuesta como JSON
+        })
+        .then(metas => {
+            // Obtener la referencia a la tabla en el HTML
+            const tbody = document.querySelector('#page2 .tabla-metas tbody');
+            tbody.innerHTML = ''; // Limpiar cualquier contenido previo
+
+            // Recorrer las metas y agregar las filas a la tabla
+            metas.forEach(meta => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${meta.idMeta}</td>
+                    <td>${meta.nombre}</td>
+                    <td>${meta.descripcion}</td>
+                    <td>${meta.fechaInicio}</td>
+                    <td>${meta.fechaFin}</td>
+                    <td>${meta.progreso}%</td>
+                    <td>
+                        <button class="editar-meta">Editar meta</button>
+                        <button class="eliminar-meta">Eliminar meta</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+
+
 
 function setupMetaScreen() {
 	

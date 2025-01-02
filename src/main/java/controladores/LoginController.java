@@ -79,7 +79,6 @@ public class LoginController extends HttpServlet {
 			u = usuarioDAO.validarCredenciales(nombreUsuario, clave);
 			if (u != null) {
 				session.setAttribute("usuario", u);
-				// resp.sendRedirect("LoginController?ruta=solicitarIniciar");
 				req.getRequestDispatcher("LoginController?ruta=mostrarPantallaPrincipal").forward(req, resp);
 
 			} else {
@@ -88,12 +87,13 @@ public class LoginController extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			resp.sendRedirect("LoginController?ruta=solicitarIniciar");
 		}
 	}
 
 	private void mostrarPantallaPrincipal(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		resp.sendRedirect("jsp/menuPrincipal.jsp");
+		req.getRequestDispatcher("jsp/menuPrincipal.jsp").forward(req, resp); 
 		System.out.println("Entro al menu principal");
 	}
 

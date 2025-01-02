@@ -8,6 +8,7 @@ public class Meta implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int idMeta;
+	private int idUsuario;
 	private String descripcion;
 	private Date fechaInicio;
 	private Date fechaFin;
@@ -20,9 +21,10 @@ public class Meta implements Serializable {
 	public Meta() {
 	}
 
-	public Meta(int idMeta, String descripcion, Date fechaInicio, Date fechaFin, Habito[] habitos, double progreso,
+	public Meta(int idMeta, int idUsuario, String descripcion, Date fechaInicio, Date fechaFin, Habito[] habitos, double progreso,
 			boolean estado, int diasObjetivo, String nombre) {
 		this.idMeta = idMeta;
+		this.idUsuario = idUsuario;
 		this.descripcion = descripcion;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
@@ -104,5 +106,14 @@ public class Meta implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+	
 
 }

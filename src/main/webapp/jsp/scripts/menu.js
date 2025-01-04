@@ -153,6 +153,7 @@ function setupMetaScreen() {
 	
     const addHabitoBtn = document.getElementById('agregar-habito-btn');
     const editarHabitoBtn = document.querySelectorAll('.editar-habito');
+	const eliminarHabitoBtn = document.querySelectorAll('.eliminar-habito');
     const screenOverlayRegistroHabitos = document.getElementById('screenOverlayRegistroHabitos');
     const guardarRegistroHabitoBtn = document.getElementById('guardar-habito-btn');
     const cerrarHabitoBtn = document.getElementById('cerrar-habito-btn');
@@ -209,6 +210,13 @@ function setupMetaScreen() {
 
         });
     });
+	eliminarHabitoBtn.forEach(function(btn){
+		btn.addEventListener('click', function (){
+			const hid = btn.getAttribute('hab-id');
+			const mid = btn.getAttribute('meta-id');
+			window.location.href = `HabitoController?ruta=eliminarHabito&idmeta=${mid}&idhab=${hid}`;
+		});
+	});
 
 
 

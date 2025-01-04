@@ -156,7 +156,7 @@
                                     <td>${habitos.estado}</td>
                                     <td>
                                         <button class="editar-habito" hab-id="${habitos.idHabito}" hab-nom="${habitos.nombre}" hab-cat="${habitos.categoria}" hab-f="${habitos.frecuencia}" hab-es="${habitos.estado}" hab-med="${habitos.tipoMedicion}" meta-id="${habitos.metaAsociada}">Editar</button>
-                                        <button class="eliminar-habito">Eliminar</button>
+                                        <button class="eliminar-habito" hab-id="${habitos.idHabito}" meta-id="${habitos.metaAsociada}">Eliminar</button>
                                     </td>
                             	</tr>
                             </c:forEach>

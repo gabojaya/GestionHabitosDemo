@@ -46,6 +46,24 @@ public class HabitoController extends HttpServlet {
 		case "ingresarDatosModificacionHabito":
 			this.modificarHabito(req, resp);
 			break;
+		case "eliminarHabito":
+			this.eliminarHabito(req, resp);
+			break;
+		}
+	}
+	
+	private void eliminarHabito(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		System.out.println("Se entro a eliminar habito");
+		int idm = Integer.parseInt(req.getParameter("idmeta"));
+		int idh = Integer.parseInt(req.getParameter("idhab"));
+		System.out.println(idm);
+		System.out.println(idh);
+		HabitoDAO hdao=new HabitoDAO();
+		try {
+			hdao.eliminarHabito(idh);
+			resp.sendRedirect("HabitoController?ruta=listar&idmeta="+idm);
+		}catch(SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	

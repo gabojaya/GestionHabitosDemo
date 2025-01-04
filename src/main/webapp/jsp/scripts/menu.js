@@ -66,25 +66,44 @@ function fetchMetas() {
                     <td>${meta.fechaFin}</td>
                     <td>${meta.progreso}%</td>
                     <td>
-                        <button onclick="window.location.href='HabitoController?ruta=listar&idmeta=${meta.idMeta}'" class="editar-meta">Editar meta</button>
-                        <button class="eliminar-meta">Eliminar meta</button>
+                        <button class="editar-meta" data-id="${meta.idMeta}" data-nombre="${meta.nombre}" data-descripcion="${meta.descripcion}" data-fecha-inicio="${meta.fechaInicio}" data-fecha-fin="${meta.fechaFin}">Editar meta</button>
+                        <button class="eliminar-meta" data-id="${meta.idMeta}" onclick="eliminarMeta(${meta.idMeta}, ${idUsuario})">Eliminar meta</button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
+			setupMetaScreen();
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
 
+function eliminarMeta(idMeta, idUsuario) {
+    fetch(`MetaController?ruta=eliminarMeta&idMeta=${idMeta}&idUsuario=${idUsuario}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            // Eliminar la fila de la tabla
+            const row = document.querySelector(`button[data-id="${idMeta}"]`).closest('tr');
+            row.remove();
+        } else {
+            console.error('Error al eliminar la meta');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
 
 
 function setupMetaScreen() {
 	
     const addMetaBtn = document.getElementById('add-meta-btn');
-    const editarMetaBtns = document.querySelectorAll('editar-meta');
+    const editarMetaBtns = document.querySelectorAll('.editar-meta');
     const screenOverlay = document.getElementById('screenOverlay');
     const cerrarBtn = document.getElementById('cerrar-btn');
     const continuarBtn = document.getElementById('continuar-btn');
@@ -100,15 +119,34 @@ function setupMetaScreen() {
         screenOverlay.style.display = 'none'; 
     });
 
-    editarMetaBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            screenOverlay.style.display = 'flex';
-        });
-    });
+	editarMetaBtns.forEach(function (btn) {
+	        btn.addEventListener('click', function () {
+	            const metaId = btn.getAttribute('data-id');
+	            const metaNombre = btn.getAttribute('data-nombre');
+	            const metaDescripcion = btn.getAttribute('data-descripcion');
+	            const metaFechaInicio = btn.getAttribute('data-fecha-inicio');
+	            const metaFechaFin = btn.getAttribute('data-fecha-fin');
 
-    continuarBtn.addEventListener('click', function () {
-        screenOverlayHabitos.style.display = 'flex'; 
-    });
+	            // Llenar el formulario con los datos de la meta seleccionada
+				document.getElementById('nombre-meta').value = metaNombre || '';
+	            document.getElementById('descripcion-meta').value = metaDescripcion || '';
+	            document.getElementById('fecha-inicio').value = metaFechaInicio || '';
+	            document.getElementById('fecha-fin').value = metaFechaFin || '';
+
+	            selectedMetaId = metaId; // Guardar el ID de la meta seleccionada
+
+	            screenOverlay.style.display = 'flex';
+	        });
+	    });
+
+		continuarBtn.addEventListener('click', function () {
+		        if (selectedMetaId) {
+		            // Redirige a la URL con el idMeta seleccionado
+		            window.location.href = `HabitoController?ruta=listar&idmeta=${selectedMetaId}`;
+		        } else {
+		            alert('Seleccione una meta antes de continuar.');
+		        }
+		    });
 
 
 	/* Seccion 2: Registrar Habito*/

@@ -52,5 +52,62 @@ public class MetaDAO {
 
         return metas;
     }
+	
+	public void eliminarMeta(int idMeta) throws SQLException {
+        String _SQL_DELETE_EJECUCIONES = "DELETE FROM Ejecucion WHERE idHabito IN (SELECT idHabito FROM Habito WHERE metaAsociada = ?)";
+        String _SQL_DELETE_RECORDATORIOS = "DELETE FROM Recordatorio WHERE idHabito IN (SELECT idHabito FROM Habito WHERE metaAsociada = ?)";
+        String _SQL_DELETE_ESTADISTICAS = "DELETE FROM Estadistica WHERE idHabito IN (SELECT idHabito FROM Habito WHERE metaAsociada = ?)";
+        String _SQL_DELETE_HABITOS = "DELETE FROM Habito WHERE metaAsociada = ?";
+        String _SQL_DELETE_META = "DELETE FROM Meta WHERE idMeta = ?";
+
+        PreparedStatement pstmtDeleteEjecuciones = null;
+        PreparedStatement pstmtDeleteRecordatorios = null;
+        PreparedStatement pstmtDeleteEstadisticas = null;
+        PreparedStatement pstmtDeleteHabitos = null;
+        PreparedStatement pstmtDeleteMeta = null;
+
+        try {
+            // Conexión a la base de datos
+            var conexion = BddConnection.getConexion();
+
+            // Eliminar ejecuciones asociadas
+            pstmtDeleteEjecuciones = conexion.prepareStatement(_SQL_DELETE_EJECUCIONES);
+            pstmtDeleteEjecuciones.setInt(1, idMeta);
+            pstmtDeleteEjecuciones.executeUpdate();
+
+            // Eliminar recordatorios asociados
+            pstmtDeleteRecordatorios = conexion.prepareStatement(_SQL_DELETE_RECORDATORIOS);
+            pstmtDeleteRecordatorios.setInt(1, idMeta);
+            pstmtDeleteRecordatorios.executeUpdate();
+
+            // Eliminar estadísticas asociadas
+            pstmtDeleteEstadisticas = conexion.prepareStatement(_SQL_DELETE_ESTADISTICAS);
+            pstmtDeleteEstadisticas.setInt(1, idMeta);
+            pstmtDeleteEstadisticas.executeUpdate();
+
+            // Eliminar hábitos asociados
+            pstmtDeleteHabitos = conexion.prepareStatement(_SQL_DELETE_HABITOS);
+            pstmtDeleteHabitos.setInt(1, idMeta);
+            pstmtDeleteHabitos.executeUpdate();
+
+            // Eliminar la meta
+            pstmtDeleteMeta = conexion.prepareStatement(_SQL_DELETE_META);
+            pstmtDeleteMeta.setInt(1, idMeta);
+            pstmtDeleteMeta.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            // Cerrar recursos
+            BddConnection.cerrar(pstmtDeleteEjecuciones);
+            BddConnection.cerrar(pstmtDeleteRecordatorios);
+            BddConnection.cerrar(pstmtDeleteEstadisticas);
+            BddConnection.cerrar(pstmtDeleteHabitos);
+            BddConnection.cerrar(pstmtDeleteMeta);
+        }
+    }
+	
+	
 
 }

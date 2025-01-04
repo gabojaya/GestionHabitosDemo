@@ -40,11 +40,45 @@ public class MetaController extends HttpServlet {
 			System.out.println("Llamando a obtenerMetas");
 			this.obtenerMetas(req, resp);
 			break;
+			
+		case "eliminarMeta":
+			System.out.println("Llamando a eliminarMeta");
+			this.eliminarMeta(req, resp);
+			break;
 		
 		}
 	}
 	
 	
+	private void eliminarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("Entro a eliminar meta");
+		int idMeta = Integer.parseInt(req.getParameter("idMeta"));
+		System.out.println("Esta es la id de la Meta"+idMeta);
+		int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
+		System.out.println("Esta es la id del Usuario"+idUsuario);
+		
+		
+		// Instanciar el DAO y ejecutar el método de eliminación
+	    MetaDAO metaDAO = new MetaDAO();
+	    
+	    try {
+	        metaDAO.eliminarMeta(idMeta);
+	        
+	        // Responder con un mensaje de éxito
+	        resp.setContentType("application/json");
+	        resp.setCharacterEncoding("UTF-8");
+	        resp.getWriter().write("{\"status\":\"success\"}");
+	        System.out.println("Se elimino la meta con id "+ idMeta);
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al eliminar la meta");
+	    }
+		
+		
+		
+	}
+
 	private void obtenerMetas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
 	    

@@ -89,8 +89,8 @@
                         <td>${meta.fechaFin}</td>
                         <td>${meta.progreso}%</td>
                         <td>
-                            <button onclick="window.location.href='HabitoController?ruta=listar&idmeta=${meta.idMeta}'" class="editar-meta">Editar meta</button>
-                            <button class="eliminar-meta">Eliminar meta</button>
+                            <button class="editar-meta" data-id="${meta.idMeta}" data-nombre="${meta.nombre}" data-descripcion="${meta.descripcion}" data-fecha-inicio="${meta.fechaInicio}" data-fecha-fin="${meta.fechaFin}">Editar meta</button>
+                            <button class="eliminar-meta" data-id="${meta.idMeta}" onclick="eliminarMeta(${meta.idMeta}, ${usuario.idUsuario})">Eliminar meta</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -107,6 +107,10 @@
             <div class="screenOverlay" id="screenOverlay" style="display:none;">
                 <div class="container-form-2">
                     <h3>Registrar Meta</h3>
+                    <div class="input-group">
+                        <label for="nombre-meta">Nombre:</label>
+                        <input type="text" id="nombre-meta" />
+                    </div>
                     <div class="input-group">
                         <label for="descripcion-meta">Descripción:</label>
                         <input type="text" id="descripcion-meta" />

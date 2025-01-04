@@ -200,11 +200,17 @@ function setupMetaScreen() {
 			const hcat = btn.getAttribute('hab-cat');
 			const hf = btn.getAttribute('hab-f');
 			const hmed = btn.getAttribute('hab-med');
+			const hcan = btn.getAttribute('hab-can');
+			const htime = btn.getAttribute('hab-time');
+			const hho = btn.getAttribute('hab-ho');
 			document.getElementById('idhab').value = hid;
 			document.getElementById('nombre-habito').value = hnom || '';
 			document.getElementById('categoria-habito').value = hcat || '';
 			document.getElementById('tipo-medicion').value = hmed || '';
 			document.getElementById('frecuencia-habito').value = hf || '';
+			document.getElementById('cantidad-habito').value = hcan || '';
+			document.getElementById('tiempo-habito').value = htime || '';
+			document.getElementById('horario-habito').value = hho || '';
 			editar = true;
             screenOverlayRegistroHabitos.style.display = 'flex';
 

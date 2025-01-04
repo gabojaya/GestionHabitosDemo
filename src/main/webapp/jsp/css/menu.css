@@ -269,6 +269,12 @@ h2.create-account {
   gap: 7rem;
   flex-wrap: wrap; 
 }
+.botones-meta2 {
+  display: flex;
+  justify-content: center;
+  gap: 7rem;
+  flex-wrap: wrap; 
+}
 
 .tabla-habitos {
   width: 100%;

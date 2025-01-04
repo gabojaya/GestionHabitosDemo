@@ -155,7 +155,7 @@
                                     <td>${habitos.frecuencia}</td>
                                     <td>${habitos.estado}</td>
                                     <td>
-                                        <button class="editar-habito" hab-id="${habitos.idHabito}" hab-nom="${habitos.nombre}" hab-cat="${habitos.categoria}" hab-f="${habitos.frecuencia}" hab-es="${habitos.estado}" hab-med="${habitos.tipoMedicion}" meta-id="${habitos.metaAsociada}">Editar</button>
+                                        <button class="editar-habito" hab-id="${habitos.idHabito}" hab-nom="${habitos.nombre}" hab-cat="${habitos.categoria}" hab-f="${habitos.frecuencia}" hab-es="${habitos.estado}" hab-med="${habitos.tipoMedicion}" meta-id="${habitos.metaAsociada}" hab-can="${habitos.cantidadTotal}" hab-time="${habitos.tiempoTotal}" hab-ho="${habitos.horario}">Editar</button>
                                         <button class="eliminar-habito" hab-id="${habitos.idHabito}" meta-id="${habitos.metaAsociada}">Eliminar</button>
                                     </td>
                             	</tr>
@@ -204,10 +204,22 @@
                         <label for="frecuencia-habito">Frecuencia:</label>
                         <input type="text" id="frecuencia-habito" name="frecuencia" required>
                     </div>
+                    <div class="input-group">
+                    	<label for="cantidad-habito">Cantidad Total:</label>
+                    	<input type="text" id="cantidad-habito" name="cantidadTotal" required>
+                    </div>
+                    <div class="input-group">
+                    	<label for="tiempo-habito">Tiempo Total:</label>
+                    	<input type="time" id="tiempo-habito" name="tiempoTotal" step="2" required>
+                    </div>
+                    <div class="input-group">
+                    	<label for="horario-habito">Horario:</label>
+                    	<input type="time" id="horario-habito" name="horario" step="2" required>
+                    </div>
 
 
 
-                    <div onmouseover="pruebaf()" class="botones-meta">
+                    <div onmouseover="pruebaf()" class="botones-meta2">
                         <button type="button" class="button-user" id="guardar-habito-btn">Guardar Habito</button>
                         <button type="button" class="button-user" id="cerrar-habito-btn">Cancelar</button>
                     </div>

@@ -3,6 +3,8 @@ package controladores;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -73,6 +75,9 @@ public class HabitoController extends HttpServlet {
 		int idh = Integer.parseInt(req.getParameter("idhab"));
 		System.out.println(idm);
 		System.out.println(idh);
+		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
+		String tiempo = req.getParameter("tiempoTotal");
+		String horario = req.getParameter("horario");
 		Habito h = new Habito();
 		h.setIdHabito(idh);
 		h.setMetaAsociada(idm);
@@ -80,9 +85,17 @@ public class HabitoController extends HttpServlet {
 		h.setCategoria(req.getParameter("categoria"));
 		h.setTipoMedicion(req.getParameter("tipoMedicion"));
 		h.setFrecuencia(Integer.parseInt(req.getParameter("frecuencia")));
-		h.setCantidadTotal(30);
-		h.setTiempoTotal(new java.sql.Time(123456789999l));
-		h.setHorario(new java.sql.Time(123456789999l));
+		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
+		try {
+			Date ti = format.parse(tiempo);
+			Date ho = format.parse(horario);
+		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());
+		    java.sql.Time sqlhorario = new java.sql.Time(ho.getTime());
+		    h.setTiempoTotal(sqlTiempo);
+		    h.setHorario(sqlhorario);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		HabitoDAO hdao=new HabitoDAO();
 		try {
 			hdao.modificarHabito(h);
@@ -96,15 +109,26 @@ public class HabitoController extends HttpServlet {
 		System.out.println("Se entro a crear habito");
 		int id = Integer.parseInt(req.getParameter("idmeta"));
 		System.out.println(req.getParameter("idmeta"));
+		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
+		String tiempo = req.getParameter("tiempoTotal");
+		String horario = req.getParameter("horario");
 		Habito h = new Habito();
 		h.setMetaAsociada(id);
 		h.setNombre(req.getParameter("nombre"));
 		h.setCategoria(req.getParameter("categoria"));
 		h.setTipoMedicion(req.getParameter("tipoMedicion"));
 		h.setFrecuencia(Integer.parseInt(req.getParameter("frecuencia")));
-		h.setCantidadTotal(30);
-		h.setTiempoTotal(new java.sql.Time(123456789999l));
-		h.setHorario(new java.sql.Time(123456789999l));
+		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
+		try {
+			Date ti = format.parse(tiempo);
+			Date ho = format.parse(horario);
+		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());
+		    java.sql.Time sqlhorario = new java.sql.Time(ho.getTime());
+		    h.setTiempoTotal(sqlTiempo);
+		    h.setHorario(sqlhorario);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		HabitoDAO hdao=new HabitoDAO();
 		try {
 			hdao.crearHabito(h);

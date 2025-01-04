@@ -72,5 +72,29 @@ public class HabitoDAO {
 		}
 		
 	}
+	
+	public void modificarHabito(Habito h) throws SQLException{
+		String _SQL_UPDATE = "UPDATE habito SET nombre=?, categoria=?, tipoMedicion=?, frecuencia=?, cantidadTotal=?, tiempoTotal=?, horario=? "
+				+ "WHERE idHabito = ?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = BddConnection.getConexion().prepareStatement(_SQL_UPDATE);
+			pstmt.setString(1,h.getNombre());
+			pstmt.setString(2,h.getCategoria());
+			pstmt.setString(3,h.getTipoMedicion());
+			pstmt.setInt(4,h.getFrecuencia());
+			pstmt.setInt(5,h.getCantidadTotal());
+			pstmt.setTime(6,h.getTiempoTotal());
+			pstmt.setTime(7,h.getHorario());
+			pstmt.setInt(8,h.getIdHabito());
+			int filas = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			throw e;
+		}finally {
+			BddConnection.cerrar(pstmt);
+			BddConnection.cerrar();
+		}
+		
+	}
 
 }

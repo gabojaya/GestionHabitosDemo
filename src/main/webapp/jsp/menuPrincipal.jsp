@@ -155,7 +155,7 @@
                                     <td>${habitos.frecuencia}</td>
                                     <td>${habitos.estado}</td>
                                     <td>
-                                        <button class="editar-habito">Editar</button>
+                                        <button class="editar-habito" hab-id="${habitos.idHabito}" hab-nom="${habitos.nombre}" hab-cat="${habitos.categoria}" hab-f="${habitos.frecuencia}" hab-es="${habitos.estado}" hab-med="${habitos.tipoMedicion}" meta-id="${habitos.metaAsociada}">Editar</button>
                                         <button class="eliminar-habito">Eliminar</button>
                                     </td>
                             	</tr>
@@ -173,9 +173,10 @@
             <!-- Pantalla Oculta para el Formulario de Habitos -->
             <div class="screenOverlay" id="screenOverlayRegistroHabitos" style="display:none;">
                 <div class="container-form-2">
-                <form method="POST" action="HabitoController?ruta=ingresarDatosHabito">
+                <form id="habito-form" method="POST" action="HabitoController?ruta=ingresarDatosHabito">
                 	<h3>Registrar Habito</h3>
 					<input type="hidden" name="idmeta" id="idmeta">
+					<input type="hidden" name="idhab" id="idhab">
                     <div class="input-group">
                         <label for="nombre-habito">Nombre:</label>
                         <input onclick="pruebaf()" type="text" id="nombre-habito" name="nombre" placeholder="Nombre del hábito" required />
@@ -206,8 +207,8 @@
 
 
 
-                    <div class="botones-meta">
-                        <button type="submit" class="button-user" id="guardar-habito-btn">Guardar Habito</button>
+                    <div onmouseover="pruebaf()" class="botones-meta">
+                        <button type="button" class="button-user" id="guardar-habito-btn">Guardar Habito</button>
                         <button type="button" class="button-user" id="cerrar-habito-btn">Cancelar</button>
                     </div>
                 </form>

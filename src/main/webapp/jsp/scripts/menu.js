@@ -157,13 +157,29 @@ function setupMetaScreen() {
     const guardarRegistroHabitoBtn = document.getElementById('guardar-habito-btn');
     const cerrarHabitoBtn = document.getElementById('cerrar-habito-btn');
     const volverAMetasBtn = document.getElementById('volver-a-metas-btn');
+	let editar = false;
 
     addHabitoBtn.addEventListener('click', function () {
+		document.getElementById('nombre-habito').value = '';
+		document.getElementById('categoria-habito').value = '';
+		document.getElementById('tipo-medicion').value = '';
+		document.getElementById('frecuencia-habito').value = '';
+		editar=false;
         screenOverlayRegistroHabitos.style.display = 'flex';
     });
 
     guardarRegistroHabitoBtn.addEventListener('click', function () {
-        screenOverlayRegistroHabitos.style.display = 'none';
+		var id = new URLSearchParams(window.location.search);
+		let metaid = id.get("idmeta");
+		if(editar){
+			document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
+			document.getElementById('habito-form').submit();
+		}else{
+			document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosHabito&idmeta=${metaid}`
+			document.getElementById('habito-form').submit();
+		}
+		screenOverlayRegistroHabitos.style.display = 'none';
+		
     });
 
     cerrarHabitoBtn.addEventListener('click', function () {
@@ -178,6 +194,17 @@ function setupMetaScreen() {
 
     editarHabitoBtn.forEach(function (btn) {
         btn.addEventListener('click', function () {
+			const hid = btn.getAttribute('hab-id');
+			const hnom = btn.getAttribute('hab-nom');
+			const hcat = btn.getAttribute('hab-cat');
+			const hf = btn.getAttribute('hab-f');
+			const hmed = btn.getAttribute('hab-med');
+			document.getElementById('idhab').value = hid;
+			document.getElementById('nombre-habito').value = hnom || '';
+			document.getElementById('categoria-habito').value = hcat || '';
+			document.getElementById('tipo-medicion').value = hmed || '';
+			document.getElementById('frecuencia-habito').value = hf || '';
+			editar = true;
             screenOverlayRegistroHabitos.style.display = 'flex';
 
         });

@@ -43,9 +43,36 @@ public class HabitoController extends HttpServlet {
 		case "ingresarDatosHabito":
 			this.crearHabito(req,resp);
 			break;
+		case "ingresarDatosModificacionHabito":
+			this.modificarHabito(req, resp);
+			break;
 		}
 	}
 	
+	private void modificarHabito(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+		System.out.println("Se entro a modificar habito");
+		int idm = Integer.parseInt(req.getParameter("idmeta"));
+		int idh = Integer.parseInt(req.getParameter("idhab"));
+		System.out.println(idm);
+		System.out.println(idh);
+		Habito h = new Habito();
+		h.setIdHabito(idh);
+		h.setMetaAsociada(idm);
+		h.setNombre(req.getParameter("nombre"));
+		h.setCategoria(req.getParameter("categoria"));
+		h.setTipoMedicion(req.getParameter("tipoMedicion"));
+		h.setFrecuencia(Integer.parseInt(req.getParameter("frecuencia")));
+		h.setCantidadTotal(30);
+		h.setTiempoTotal(new java.sql.Time(123456789999l));
+		h.setHorario(new java.sql.Time(123456789999l));
+		HabitoDAO hdao=new HabitoDAO();
+		try {
+			hdao.modificarHabito(h);
+			resp.sendRedirect("HabitoController?ruta=listar&idmeta="+idm);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private void crearHabito(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Se entro a crear habito");
@@ -63,7 +90,7 @@ public class HabitoController extends HttpServlet {
 		HabitoDAO hdao=new HabitoDAO();
 		try {
 			hdao.crearHabito(h);
-			this.listarHabitos(req, resp);
+			resp.sendRedirect("HabitoController?ruta=listar&idmeta="+id);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

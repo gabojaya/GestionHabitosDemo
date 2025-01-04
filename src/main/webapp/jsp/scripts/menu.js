@@ -1,7 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
-    showPage(1); // Mostrar la primera página al cargar la página
-    setupTabs(); 
-    setupMetaScreen();
+	const par = new URLSearchParams(window.location.search);
+	if(par.get('ruta')=='iniciarSesion'){
+		showPage(1); // Mostrar la primera página al cargar la página
+		setupTabs(); 
+		setupMetaScreen();
+		
+	}else{
+		showPage(2);
+		setupTabs(); 
+		setupMetaScreen();
+		screenOverlayHabitos.style.display = 'flex';	
+	}
 });
 
 function setupTabs() {
@@ -57,7 +66,7 @@ function fetchMetas() {
                     <td>${meta.fechaFin}</td>
                     <td>${meta.progreso}%</td>
                     <td>
-                        <button class="editar-meta">Editar meta</button>
+                        <button onclick="window.location.href='HabitoController?ruta=listar&idmeta=${meta.idMeta}'" class="editar-meta">Editar meta</button>
                         <button class="eliminar-meta">Eliminar meta</button>
                     </td>
                 `;
@@ -75,7 +84,7 @@ function fetchMetas() {
 function setupMetaScreen() {
 	
     const addMetaBtn = document.getElementById('add-meta-btn');
-    const editarMetaBtns = document.querySelectorAll('.editar-meta');
+    const editarMetaBtns = document.querySelectorAll('editar-meta');
     const screenOverlay = document.getElementById('screenOverlay');
     const cerrarBtn = document.getElementById('cerrar-btn');
     const continuarBtn = document.getElementById('continuar-btn');
@@ -93,7 +102,7 @@ function setupMetaScreen() {
 
     editarMetaBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
-            screenOverlay.style.display = 'flex'; 
+            screenOverlay.style.display = 'flex';
         });
     });
 

@@ -89,7 +89,7 @@
                         <td>${meta.fechaFin}</td>
                         <td>${meta.progreso}%</td>
                         <td>
-                            <button class="editar-meta">Editar meta</button>
+                            <button onclick="window.location.href='HabitoController?ruta=listar&idmeta=${meta.idMeta}'" class="editar-meta">Editar meta</button>
                             <button class="eliminar-meta">Eliminar meta</button>
                         </td>
                     </tr>
@@ -143,28 +143,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Beber agua</td>
-                                    <td>Salud</td>
-                                    <td>Diario</td>
-                                    <td>En progreso</td>
+                            <c:forEach items="${habito}" var="habitos">
+                            	<tr>
+                            		<td>${habitos.idHabito}</td>
+                                    <td>${habitos.nombre}</td>
+                                    <td>${habitos.categoria}</td>
+                                    <td>${habitos.frecuencia}</td>
+                                    <td>${habitos.estado}</td>
                                     <td>
                                         <button class="editar-habito">Editar</button>
                                         <button class="eliminar-habito">Eliminar</button>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Ejercicio</td>
-                                    <td>Bienestar</td>
-                                    <td>Semanal</td>
-                                    <td>En progreso</td>
-                                    <td>
-                                        <button class="editar-habito">Editar</button>
-                                        <button class="eliminar-habito">Eliminar</button>
-                                    </td>
-                                </tr>
+                            	</tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
@@ -178,16 +169,17 @@
             <!-- Pantalla Oculta para el Formulario de Habitos -->
             <div class="screenOverlay" id="screenOverlayRegistroHabitos" style="display:none;">
                 <div class="container-form-2">
-                    <h3>Registrar Habito</h3>
-
+                <form method="POST" action="HabitoController?ruta=ingresarDatosHabito">
+                	<h3>Registrar Habito</h3>
+					<input type="hidden" name="idmeta" id="idmeta">
                     <div class="input-group">
                         <label for="nombre-habito">Nombre:</label>
-                        <input type="text" id="nombre-habito" placeholder="Nombre del hábito" />
+                        <input onclick="pruebaf()" type="text" id="nombre-habito" name="nombre" placeholder="Nombre del hábito" required />
                     </div>
 
                     <div class="input-group">
                         <label for="categoria-habito">Categoría:</label>
-                        <select id="categoria-habito">
+                        <select id="categoria-habito" name="categoria" required>
                             <option value="salud">Salud</option>
                             <option value="bienestar">Bienestar</option>
                             <option value="productividad">Productividad</option>
@@ -197,7 +189,7 @@
 
                     <div class="input-group">
                         <label for="tipo-medicion">Tipo de Medición:</label>
-                        <select id="tipo-medicion">
+                        <select id="tipo-medicion" name="tipoMedicion" required>
                             <option value="cantidad">Cantidad</option>
                             <option value="tiempo">Tiempo</option>
                         </select>
@@ -205,19 +197,18 @@
 
                     <div class="input-group">
                         <label for="frecuencia-habito">Frecuencia:</label>
-                        <select id="frecuencia-habito">
-                            <option value="diario">Diario</option>
-                            <option value="semanal">Semanal</option>
-                            <option value="mensual">Mensual</option>
-                        </select>
+                        <input type="text" id="frecuencia-habito" name="frecuencia" required>
                     </div>
 
 
 
                     <div class="botones-meta">
-                        <button class="button-user" id="guardar-habito-btn">Guardar Habito</button>
-                        <button class="button-user" id="cerrar-habito-btn">Cancelar</button>
+                        <button type="submit" class="button-user" id="guardar-habito-btn">Guardar Habito</button>
+                        <button type="button" class="button-user" id="cerrar-habito-btn">Cancelar</button>
                     </div>
+                </form>
+                	
+                    
                 </div>
             </div>
 
@@ -422,6 +413,12 @@
             pausarBtn.disabled = true;
             document.getElementById('screenOverlayEjecucion').style.display = 'none';
         });
+        function pruebaf(){
+        	//document.getElementById("idmeta").value= window.location.search.get(idmeta);
+        	 var id = new URLSearchParams(window.location.search);
+        	 console.log(id.get("idmeta"));
+        	 document.getElementById("idmeta").value=id.get("idmeta");
+        }
     </script>
 </body>
 

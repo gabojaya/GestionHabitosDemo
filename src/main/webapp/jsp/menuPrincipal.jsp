@@ -129,12 +129,42 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Pantalla Oculta para el Formulario de Agregar Meta -->
+            <div class="screenOverlay" id="screenOverlayAgregarMeta" style="display:none;">
+            	<form method="POST" action="MetaController?ruta=agregarMeta&idUsuario=${usuario.idUsuario}">
+                <div class="container-form-2">
+                    <h3>Registrar Meta</h3>
+                    <div class="input-group">
+                        <label for="nombre-meta">Nombre:</label>
+                        <input type="text" name="nombre-meta" id="nombre-meta" required />
+                    </div>
+                    <div class="input-group">
+                        <label for="descripcion-meta">Descripción:</label>
+                        <input type="text" name="descripcion-meta" id="descripcion-meta" required />
+                    </div>
+                    <div class="input-group">
+                        <label for="fecha-inicio">Fecha de Inicio:</label>
+                        <input type="date" name="fecha-inicio" id="fecha-inicio" required />
+                    </div>
+                    <div class="input-group">
+                        <label for="fecha-fin">Fecha de Fin:</label>
+                        <input type="date" name="fecha-fin"id="fecha-fin" required />
+                    </div>
+                    <div class="botones-meta">
+                        <button class="button-user" id="continuar-btn-agregar" type="submit">Continuar</button>
+                        <button class="button-user" id="cerrar-btn-agregar" type="button">Cancelar</button>
+                    </div>
+                </div>
+            	</form>
+            </div>
 
             <!-- Pantalla para Hábitos -->
             <div class="screenOverlay" id="screenOverlayHabitos" style="display:none;">
                 <div class="container-form-2">
                     <h3>Registrar Hábitos</h3>
                     <div class="lista-habitos">
+                    <!--<input type="hidden" name="idmeta" id="idmeta" value="${idMeta}"> -->
                         <table class="tabla-habitos">
                             <thead>
                                 <tr>
@@ -173,9 +203,10 @@
             <!-- Pantalla Oculta para el Formulario de Habitos -->
             <div class="screenOverlay" id="screenOverlayRegistroHabitos" style="display:none;">
                 <div class="container-form-2">
+                
                 <form id="habito-form" method="POST" action="HabitoController?ruta=ingresarDatosHabito">
                 	<h3>Registrar Habito</h3>
-					<input type="hidden" name="idmeta" id="idmeta">
+					<input type="hidden" name="idmeta" id="idmeta" value="${idMeta}">
 					<input type="hidden" name="idhab" id="idhab">
                     <div class="input-group">
                         <label for="nombre-habito">Nombre:</label>

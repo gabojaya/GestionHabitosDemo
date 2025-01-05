@@ -107,8 +107,11 @@ public class HabitoController extends HttpServlet {
 	
 	private void crearHabito(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Se entro a crear habito");
-		int id = Integer.parseInt(req.getParameter("idmeta"));
-		System.out.println(req.getParameter("idmeta"));
+		//int id = Integer.parseInt(req.getParameter("idmeta"));
+		HttpSession session = req.getSession();
+		int id = (int) session.getAttribute("idmeta"); 
+		System.out.println("Esta es la idMeta por session: "+session.getAttribute("idmeta"));
+		
 		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
 		String tiempo = req.getParameter("tiempoTotal");
 		String horario = req.getParameter("horario");
@@ -140,14 +143,23 @@ public class HabitoController extends HttpServlet {
 	private void listarHabitos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Se entro a listar habito");
 		int id = Integer.parseInt(req.getParameter("idmeta"));
+		System.out.println("Con id de meta: "+id);
 		System.out.println(req.getParameter("idmeta"));
+		
 		req.setAttribute("idmeta", id);
+		System.out.println(req.getParameter("idmeta")+"Hola");
 		List<Habito> habs;
 		HabitoDAO hdao=new HabitoDAO();
+		HttpSession session = req.getSession();
+		session.getAttribute("idmeta"); 
+		System.out.println("Esta es la idMeta por session; "+session.getAttribute("idmeta"));
 		
 		try {
 			habs = hdao.obtenerHabitos(id);
 			req.setAttribute("habito", habs);
+			session.setAttribute("idmeta", id);
+			System.out.println("idMeta configurada en sesión: " + session.getAttribute("idmeta"));
+			
 			getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req,resp);
 		}catch(SQLException e) {
 			e.printStackTrace();

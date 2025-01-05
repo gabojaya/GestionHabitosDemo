@@ -1,5 +1,6 @@
 package modelo.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -67,7 +68,6 @@ public class MetaDAO {
         PreparedStatement pstmtDeleteMeta = null;
 
         try {
-            // Conexión a la base de datos
             var conexion = BddConnection.getConexion();
 
             // Eliminar ejecuciones asociadas
@@ -108,6 +108,49 @@ public class MetaDAO {
         }
     }
 	
-	
+	public boolean insertarMeta(Meta meta) throws SQLException {
+	    System.out.println("Entro al metodo de insertarMeta en la base de datos");
+	    String _SQL_INSERT = "INSERT INTO Meta (idUsuario, nombre, descripcion, fechaInicio, fechaFin, progreso, estado, diasObjetivo) "
+	                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+	    PreparedStatement pstmt = null;
+
+	    try {
+	        Connection conn = BddConnection.getConexion();
+	        pstmt = conn.prepareStatement(_SQL_INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
+
+	        // Configurar los parámetros
+	        pstmt.setInt(1, meta.getIdUsuario());
+	        pstmt.setString(2, meta.getNombre());
+	        pstmt.setString(3, meta.getDescripcion());
+	        pstmt.setDate(4, new java.sql.Date(meta.getFechaInicio().getTime()));
+	        pstmt.setDate(5, new java.sql.Date(meta.getFechaFin().getTime()));
+	        pstmt.setDouble(6, meta.getProgreso());
+	        pstmt.setBoolean(7, meta.isEstado());
+	        pstmt.setInt(8, meta.getDiasObjetivo());
+
+	        // Ejecutar la inserción
+	        int filasAfectadas = pstmt.executeUpdate();
+
+	        if (filasAfectadas > 0) {
+	            // Obtener el id generado
+	            ResultSet rs = pstmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                meta.setIdMeta(rs.getInt(1)); // Asigna el id generado
+	            }
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        // Cerrar recursos
+	        BddConnection.cerrar(pstmt);
+	        BddConnection.cerrar();
+	    }
+	}
+
 
 }

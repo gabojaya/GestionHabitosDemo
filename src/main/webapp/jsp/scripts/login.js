@@ -11,24 +11,24 @@ const $btnSignIn = document.querySelector('.sign-in-btn'),
 // Maneja el cambio de formularios entre "Iniciar sesión" y "Registrarse"
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('sign-in-btn')) {
-        // Realiza la llamada al controlador para mostrar el formulario de registro
+        
         cambiarFormulario('solicitarRegistro');
     } else if (e.target.classList.contains('sign-up-btn')) {
-        // Realiza la llamada al controlador para mostrar el formulario de inicio de sesión
+        
         cambiarFormulario('solicitarIniciar');  
     }
 });
 
 function cambiarFormulario(ruta) {
     fetch(`LoginController?ruta=${ruta}`, {
-        method: 'GET', // Usamos GET porque solo vamos a cambiar el contenido de la página
+        method: 'GET', 
         headers: {
-            'Accept': 'text/html' // Aceptamos una respuesta HTML (el mismo login.jsp con contenido actualizado)
+            'Accept': 'text/html'
         }
     })
-    .then(response => response.text()) // Obtenemos el HTML actualizado
+    .then(response => response.text()) 
     .then(html => {
-        // Actualizamos el contenido del body con el nuevo HTML
+        
         document.body.innerHTML = html;
     })
     .catch(error => console.error('Error al cambiar de formulario:', error));

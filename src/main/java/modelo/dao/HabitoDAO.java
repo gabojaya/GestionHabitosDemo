@@ -97,12 +97,12 @@ public class HabitoDAO {
 		
 	}
 	
-	public void eliminarHabito(int id) throws SQLException{
+	public void eliminarHabito(int idHabito) throws SQLException{
 		String _SQL_DELETE = "DELETE FROM habito WHERE idHabito = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = BddConnection.getConexion().prepareStatement(_SQL_DELETE);
-			pstmt.setInt(1, id);
+			pstmt.setInt(1, idHabito);
 			int filas = pstmt.executeUpdate();
 		}catch(SQLException e) {
 			throw e;

@@ -251,7 +251,7 @@
 
 
                     <div onmouseover="pruebaf()" class="botones-meta2">
-                        <button type="button" class="button-user" id="guardar-habito-btn">Guardar Habito</button>
+                        <button type="submit" class="button-user" id="guardar-habito-btn">Guardar Habito</button>
                         <button type="button" class="button-user" id="cerrar-habito-btn">Cancelar</button>
                     </div>
                 </form>

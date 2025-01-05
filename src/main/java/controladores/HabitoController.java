@@ -43,10 +43,10 @@ public class HabitoController extends HttpServlet {
 			this.listarHabitos(req, resp);
 			break;
 		case "ingresarDatosHabito":
-			this.crearHabito(req,resp);
+			this.ingresarDatosHabito(req,resp);
 			break;
 		case "ingresarDatosModificacionHabito":
-			this.modificarHabito(req, resp);
+			this.ingresarDatosModificacionHabito(req, resp);
 			break;
 		case "eliminarHabito":
 			this.eliminarHabito(req, resp);
@@ -69,7 +69,7 @@ public class HabitoController extends HttpServlet {
 		}
 	}
 	
-	private void modificarHabito(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+	private void ingresarDatosModificacionHabito(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
 		System.out.println("Se entro a modificar habito");
 		int idm = Integer.parseInt(req.getParameter("idmeta"));
 		int idh = Integer.parseInt(req.getParameter("idhab"));
@@ -105,7 +105,7 @@ public class HabitoController extends HttpServlet {
 		}
 	}
 	
-	private void crearHabito(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void ingresarDatosHabito(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Se entro a crear habito");
 		//int id = Integer.parseInt(req.getParameter("idmeta"));
 		HttpSession session = req.getSession();

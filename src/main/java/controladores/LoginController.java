@@ -36,10 +36,10 @@ public class LoginController extends HttpServlet {
 
 		switch (ruta) {
 		case "solicitarIniciar":
-			this.mostrarIniciar(req, resp);
+			this.solicitarIniciar(req, resp);
 			break;
 		case "solicitarRegistro":
-			this.mostrarRegistro(req, resp);
+			this.solicitarRegistro(req, resp);
 			break;
 		case "iniciarSesion":
 			this.iniciarSesion(req, resp);
@@ -54,13 +54,13 @@ public class LoginController extends HttpServlet {
 		}
 	}
 
-	private void mostrarIniciar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void solicitarIniciar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Entro por iniciar");
 		req.setAttribute("form", "iniciar");
 		req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
 	}
 
-	private void mostrarRegistro(HttpServletRequest req, HttpServletResponse resp)
+	private void solicitarRegistro(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("Entro por registrar");
 		req.setAttribute("form", "registrar");

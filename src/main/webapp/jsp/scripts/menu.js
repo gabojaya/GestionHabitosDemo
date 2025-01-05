@@ -193,18 +193,30 @@ function setupMetaScreen() {
 	});
 
 	guardarRegistroHabitoBtn.addEventListener('click', function() {
-		var id = new URLSearchParams(window.location.search);
-		let metaid = id.get("idmeta");
-		if (editar) {
-			document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
-			document.getElementById('habito-form').submit();
-		} else {
-			document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosHabito&idmeta=${metaid}`
-			document.getElementById('habito-form').submit();
-		}
-		screenOverlayRegistroHabitos.style.display = 'none';
+	    var id = new URLSearchParams(window.location.search);
+	    let metaid = id.get("idmeta");
 
+	    // Obtiene el formulario
+	    const form = document.getElementById('habito-form');
+	    
+	    // Verifica si el formulario es válido
+	    if (form.checkValidity()) {
+	        // Si es válido, se asigna la acción del formulario y se envía
+	        if (editar) {
+	            document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
+	            document.getElementById('habito-form').submit();
+	        } else {
+	            document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosHabito&idmeta=${metaid}`;
+	            document.getElementById('habito-form').submit();
+	        }
+	        // Oculta la pantalla de overlay después de enviar el formulario
+	        screenOverlayRegistroHabitos.style.display = 'none';
+	    } else {
+	        // Si el formulario no es válido, muestra un mensaje de alerta
+	        alert("Por favor, completa todos los campos requeridos.");
+	    }
 	});
+
 
 	cerrarHabitoBtn.addEventListener('click', function() {
 		screenOverlayRegistroHabitos.style.display = 'none';

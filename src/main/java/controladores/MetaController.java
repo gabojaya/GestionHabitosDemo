@@ -40,7 +40,7 @@ public class MetaController extends HttpServlet {
 		switch (ruta) {
 		case "solicitarMetas":
 			System.out.println("Llamando a obtenerMetas");
-			this.obtenerMetas(req, resp);
+			this.solicitarMetas(req, resp);
 			break;
 			
 		case "eliminarMeta":
@@ -153,7 +153,7 @@ public class MetaController extends HttpServlet {
 		
 	}
 
-	private void obtenerMetas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void solicitarMetas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Entro a obtener metas");
 	    int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
 	    

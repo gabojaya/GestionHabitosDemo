@@ -105,29 +105,32 @@
 
             <!-- Pantalla Oculta para el Formulario de Meta -->
             <div class="screenOverlay" id="screenOverlay" style="display:none;">
+            <form method="POST" action="MetaController?ruta=modificarMeta">
                 <div class="container-form-2">
                     <h3>Registrar Meta</h3>
+                    <input type="hidden" name="idMeta" id="idMeta"">
                     <div class="input-group">
                         <label for="nombre-meta">Nombre:</label>
-                        <input type="text" id="nombre-meta" />
+                        <input type="text" id="nombre-meta" name="nombre-meta"required/>
                     </div>
                     <div class="input-group">
                         <label for="descripcion-meta">Descripción:</label>
-                        <input type="text" id="descripcion-meta" />
+                        <input type="text" id="descripcion-meta" name="descripcion-meta" required/>
                     </div>
                     <div class="input-group">
                         <label for="fecha-inicio">Fecha de Inicio:</label>
-                        <input type="date" id="fecha-inicio" />
+                        <input type="date" id="fecha-inicio" name="fecha-inicio" required/>
                     </div>
                     <div class="input-group">
                         <label for="fecha-fin">Fecha de Fin:</label>
-                        <input type="date" id="fecha-fin" />
+                        <input type="date" id="fecha-fin" name="fecha-fin" required />
                     </div>
                     <div class="botones-meta">
-                        <button class="button-user" id="continuar-btn">Continuar</button>
-                        <button class="button-user" id="cerrar-btn">Cancelar</button>
+                        <button class="button-user" id="continuar-btn" type="submit" >Continuar</button>
+                        <button class="button-user" id="cerrar-btn" type="button">Cancelar</button>
                     </div>
                 </div>
+            </form>
             </div>
             
             <!-- Pantalla Oculta para el Formulario de Agregar Meta -->

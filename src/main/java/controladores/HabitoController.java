@@ -151,7 +151,7 @@ public class HabitoController extends HttpServlet {
 		List<Habito> habs;
 		HabitoDAO hdao=new HabitoDAO();
 		HttpSession session = req.getSession();
-		session.getAttribute("idmeta"); 
+		session.setAttribute("idmeta", id); 
 		System.out.println("Esta es la idMeta por session; "+session.getAttribute("idmeta"));
 		
 		try {

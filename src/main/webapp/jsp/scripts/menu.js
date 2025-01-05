@@ -134,6 +134,7 @@ function setupMetaScreen() {
 			const metaFechaFin = btn.getAttribute('data-fecha-fin');
 
 			// Llenar el formulario con los datos de la meta seleccionada
+			document.getElementById('idMeta').value = metaId || '';
 			document.getElementById('nombre-meta').value = metaNombre || '';
 			document.getElementById('descripcion-meta').value = metaDescripcion || '';
 			document.getElementById('fecha-inicio').value = metaFechaInicio || '';
@@ -145,14 +146,7 @@ function setupMetaScreen() {
 		});
 	});
 
-	continuarBtn.addEventListener('click', function() {
-		if (selectedMetaId) {
-			// Redirige a la URL con el idMeta seleccionado
-			window.location.href = `HabitoController?ruta=listar&idmeta=${selectedMetaId}`;
-		} else {
-			alert('Seleccione una meta antes de continuar.');
-		}
-	});
+	
 
 
 	//	continuarBtnAgregar.addEventListener('click', function() {

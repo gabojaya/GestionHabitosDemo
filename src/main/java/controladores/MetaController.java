@@ -51,10 +51,83 @@ public class MetaController extends HttpServlet {
 			System.out.println("Llamando a agregarMeta");
 			this.agregarMeta(req, resp);
 			break;
+		case "modificarMeta":
+			System.out.println("Llamando a modificarMeta");
+			this.modificarMeta(req, resp);
+			break;
 		
 		}
 	}
 	
+
+	private void modificarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    System.out.println("Entro a editar meta");
+	    int idMeta = Integer.parseInt(req.getParameter("idMeta"));
+	    System.out.println("La id de la meta que se edita es: "+idMeta);
+	    String nombre = req.getParameter("nombre-meta");
+	    System.out.println("El nombre de la meta a editar es : "+nombre);
+	    String descripcion = req.getParameter("descripcion-meta");
+	    System.out.println("La descripcion de la meta que se edita es: "+descripcion);
+	    String fechaInicioStr = req.getParameter("fecha-inicio");
+	    System.out.println("La fechaInicio de la meta que se edita es: "+fechaInicioStr);
+	    String fechaFinStr = req.getParameter("fecha-fin");
+	    System.out.println("La fechaFin de la meta que se edita es: "+fechaFinStr);
+
+	    try {
+
+	        // Definir un SimpleDateFormat para el formato yyyy-MM-dd
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	        // Convertir las fechas a formato java.util.Date
+	        Date fechaInicioUtil = dateFormat.parse(fechaInicioStr);
+	        Date fechaFinUtil = dateFormat.parse(fechaFinStr);
+
+	        // Convertir java.util.Date a java.sql.Date
+	        java.sql.Date fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
+	        java.sql.Date fechaFin = new java.sql.Date(fechaFinUtil.getTime());
+
+	        // Calcular días objetivo
+	        long diasObjetivo = java.time.temporal.ChronoUnit.DAYS.between(
+	            fechaInicio.toLocalDate(),
+	            fechaFin.toLocalDate()
+	        );
+
+	        if (diasObjetivo < 0) {
+	            req.setAttribute("error", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+	            req.getRequestDispatcher("error.jsp").forward(req, resp);
+	            return;
+	        }
+
+	        // Crear objeto Meta
+	        Meta meta = new Meta();
+	        meta.setIdMeta(idMeta);
+	        meta.setNombre(nombre);
+	        meta.setDescripcion(descripcion);
+	        meta.setFechaInicio(fechaInicio);
+	        meta.setFechaFin(fechaFin);
+	        meta.setProgreso(0.0); // Progreso inicial
+	        meta.setEstado(true); // Activa por defecto
+	        meta.setDiasObjetivo((int) diasObjetivo); // Convertimos a int
+
+	        // Llamar al DAO para modificar la meta
+	        MetaDAO metaDAO = new MetaDAO();
+	        boolean isUpdated = metaDAO.modificarMeta(meta);
+
+	        if (isUpdated) {
+	            System.out.println("Meta modificada correctamente con id: " + idMeta);
+	            req.getRequestDispatcher("HabitoController?ruta=listar&idmeta="+ idMeta).forward(req, resp);
+	        } else {
+	            req.setAttribute("error", "Error al modificar la meta");
+	            req.getRequestDispatcher("error.jsp").forward(req, resp); // Redirige a una página de error
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        req.setAttribute("error", "Error en el procesamiento de la solicitud");
+	        req.getRequestDispatcher("error.jsp").forward(req, resp); // Redirige a una página de error
+	    }
+	}
+
 
 	private void agregarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    System.out.println("Entrando a agregarMeta");

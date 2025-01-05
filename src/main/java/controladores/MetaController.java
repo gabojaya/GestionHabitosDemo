@@ -105,7 +105,7 @@ public class MetaController extends HttpServlet {
 	        meta.setDescripcion(descripcion);
 	        meta.setFechaInicio(fechaInicio);
 	        meta.setFechaFin(fechaFin);
-	        meta.setProgreso(0.0); // Progreso inicial
+	        //meta.setProgreso(0.0); // Progreso inicial
 	        meta.setEstado(true); // Activa por defecto
 	        meta.setDiasObjetivo((int) diasObjetivo); // Convertimos a int
 

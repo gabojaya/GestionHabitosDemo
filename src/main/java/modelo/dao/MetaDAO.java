@@ -156,7 +156,7 @@ public class MetaDAO {
 	public boolean modificarMeta(Meta meta) throws SQLException {
 	    System.out.println("Entro al metodo de modificarMeta en la base de datos");
 
-	    String _SQL_UPDATE = "UPDATE Meta SET nombre = ?, descripcion = ?, fechaInicio = ?, fechaFin = ?, progreso = ?, estado = ?, diasObjetivo = ? "
+	    String _SQL_UPDATE = "UPDATE Meta SET nombre = ?, descripcion = ?, fechaInicio = ?, fechaFin = ?, estado = ?, diasObjetivo = ? "
 	                       + "WHERE idMeta = ?";
 
 	    PreparedStatement pstmt = null;
@@ -170,15 +170,14 @@ public class MetaDAO {
 	        pstmt.setString(2, meta.getDescripcion());
 	        pstmt.setDate(3, new java.sql.Date(meta.getFechaInicio().getTime()));
 	        pstmt.setDate(4, new java.sql.Date(meta.getFechaFin().getTime()));
-	        pstmt.setDouble(5, meta.getProgreso());
-	        pstmt.setBoolean(6, meta.isEstado());
-	        pstmt.setInt(7, meta.getDiasObjetivo());
-	        pstmt.setInt(8, meta.getIdMeta());
+	        pstmt.setBoolean(5, meta.isEstado());
+	        pstmt.setInt(6, meta.getDiasObjetivo());
+	        pstmt.setInt(7, meta.getIdMeta());
 
 	        // Ejecutar la actualización
 	        int filasAfectadas = pstmt.executeUpdate();
 
-	        return filasAfectadas > 0; // Si se actualizó al menos una fila, se devuelve true
+	        return filasAfectadas > 0;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false;

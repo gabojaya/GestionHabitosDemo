@@ -212,7 +212,10 @@ function setupMetaScreen() {
 
 	volverAMetasBtn.addEventListener('click', function() {
 		screenOverlayHabitos.style.display = 'none';
-		screenOverlay.style.display = 'none';
+		// Obtén el idUsuario del campo oculto
+		const idUsuario = document.getElementById('idUsuario').value;
+
+		fetchMetas(idUsuario);
 	});
 
 

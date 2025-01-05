@@ -154,6 +154,7 @@ public class MetaController extends HttpServlet {
 	}
 
 	private void obtenerMetas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("Entro a obtener metas");
 	    int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
 	    
 	    List<Meta> metas; 

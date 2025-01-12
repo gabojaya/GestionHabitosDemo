@@ -122,6 +122,7 @@ public class HabitoController extends HttpServlet {
 		h.setTipoMedicion(req.getParameter("tipoMedicion"));
 		h.setFrecuencia(Integer.parseInt(req.getParameter("frecuencia")));
 		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
+		h.setEstado(true);
 		try {
 			Date ti = format.parse(tiempo);
 			Date ho = format.parse(horario);

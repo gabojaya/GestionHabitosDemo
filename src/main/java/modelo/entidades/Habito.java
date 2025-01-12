@@ -2,21 +2,43 @@ package modelo.entidades;
 
 import java.io.Serializable;
 import java.sql.Time;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+
+@Entity
+@Table(name="habito")
 public class Habito implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="idHabito")
 	private int idHabito;
+	@Column(name="nombre")
 	private String nombre;
+	@Column(name="categoria")
 	private String categoria;
+	@Column(name="metaAsociada")
 	private int metaAsociada;
+	@Column(name="estado")
 	private boolean estado;
+	@Column(name="tipoMedicion")
 	private String tipoMedicion;
+	@Column(name="frecuencia")
 	private int frecuencia;
+	@Column(name="cantidadTotal")
 	private int cantidadTotal;
+	@Column(name="tiempoTotal")
 	private Time tiempoTotal;
+	@Column(name="horario")
 	private Time horario;
+	//Lista de recordatorios
 
 	public Habito() {
 	}

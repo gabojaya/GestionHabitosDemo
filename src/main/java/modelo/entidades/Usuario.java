@@ -3,17 +3,43 @@ package modelo.entidades;
 import java.io.Serializable;
 import java.sql.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="usuario")
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name="idUsuario")
 	private int idUsuario;
+	
+	@Column(name="nombre")
 	private String nombre;
+	
+	@Column(name="apellido")
 	private String apellido;
+	
+	@Column(name="nombreUsuario")
 	private String nombreUsuario;
+	
+	@Column(name="email")
 	private String email;
+	
+	@Column(name="clave")
 	private String clave;
+	
+	@Column(name="fechaInicio")
 	private Date fechaInicio;
+	
+	@Column(name="notificacionesActivas")
 	private boolean notificacionesActivas;
 
 	public Usuario() {

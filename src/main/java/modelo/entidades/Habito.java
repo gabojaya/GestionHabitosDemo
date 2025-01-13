@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 
@@ -24,8 +26,10 @@ public class Habito implements Serializable {
 	private String nombre;
 	@Column(name="categoria")
 	private String categoria;
-	@Column(name="metaAsociada")
-	private int metaAsociada;
+	@ManyToOne
+    @JoinColumn(name = "metaAsociada", nullable = false)
+	private Meta metaAsociada;
+	
 	@Column(name="estado")
 	private boolean estado;
 	@Column(name="tipoMedicion")
@@ -43,12 +47,12 @@ public class Habito implements Serializable {
 	public Habito() {
 	}
 
-	public Habito(int idHabito, String nombre, String categoria, int metaAsociada, boolean estado, String tipoMedicion,
+	public Habito(int idHabito, String nombre, String categoria, Meta meta, boolean estado, String tipoMedicion,
 			int frecuencia, int cantidadTotal, Time tiempoTotal, Time horario) {
 		this.idHabito = idHabito;
 		this.nombre = nombre;
 		this.categoria = categoria;
-		this.metaAsociada = metaAsociada;
+		this.metaAsociada = meta;
 		this.estado = estado;
 		this.tipoMedicion = tipoMedicion;
 		this.frecuencia = frecuencia;
@@ -81,11 +85,13 @@ public class Habito implements Serializable {
 		this.categoria = categoria;
 	}
 
-	public int getMetaAsociada() {
+	
+
+	public Meta getMetaAsociada() {
 		return metaAsociada;
 	}
 
-	public void setMetaAsociada(int metaAsociada) {
+	public void setMetaAsociada(Meta metaAsociada) {
 		this.metaAsociada = metaAsociada;
 	}
 

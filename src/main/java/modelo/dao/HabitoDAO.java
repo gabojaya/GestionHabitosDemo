@@ -12,6 +12,7 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import modelo.bdd.BddConnection;
 import modelo.entidades.Habito;
+import modelo.entidades.Meta;
 
 public class HabitoDAO {
 	
@@ -20,15 +21,25 @@ public class HabitoDAO {
 	}
 	
 	public List<Habito> obtenerHabitos(int idMeta) throws SQLException{
-		
+		System.out.println("Entro a obtener habitos");
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionHabitosWeb");
 		EntityManager em = emf.createEntityManager();
 		
-		String JPQL_list = "SELECT h FROM habito h WHERE h.metaAsociada= :idMeta";
+		String JPQL_list = "SELECT h FROM Habito h WHERE h.metaAsociada= :idMeta";
 		Query query= em.createQuery(JPQL_list);
-		query.setParameter("idMeta", idMeta);
+		MetaDAO metaDAO = new MetaDAO();
+		Meta meta = metaDAO.obtenerMetaPorId(idMeta); 
+		System.out.println("Esta es la meta obtenida: " +meta);
+		query.setParameter("idMeta", meta);
+
 		
-		List<Habito> habitos = (List<Habito>)query.getResultList();
+	    List<Habito> habitos = query.getResultList();
+	    
+	    
+	    if (habitos == null) {
+	        habitos = new ArrayList<>();
+	    }
+	    
         return habitos;
 	}
 	

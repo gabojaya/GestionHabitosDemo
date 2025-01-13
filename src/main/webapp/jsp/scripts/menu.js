@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 	const par = new URLSearchParams(window.location.search);
-	if (par.get('ruta') == 'iniciarSesion') {
+	const ruta = par.get('ruta');
+	if (ruta === 'iniciarSesion' || ruta === 'registrarUsuario') {
 		showPage(1); // Mostrar la primera página al cargar la página
 		setupTabs();
 		setupMetaScreen();
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		setupTabs();
 		setupMetaScreen();
 		screenOverlayHabitos.style.display = 'flex';
+	
 	}
 });
 

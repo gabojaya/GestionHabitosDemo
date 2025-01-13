@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import modelo.dao.MetaDAO;
 import modelo.entidades.Meta;
+import modelo.entidades.Usuario;
 
 @WebServlet("/MetaController")
 public class MetaController extends HttpServlet {
@@ -63,6 +64,8 @@ public class MetaController extends HttpServlet {
 	private void modificarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    System.out.println("Entro a editar meta");
 	    int idMeta = Integer.parseInt(req.getParameter("idMeta"));
+	    HttpSession session = req.getSession();
+	    Usuario usuario = (Usuario) session.getAttribute("usuario");
 	    System.out.println("La id de la meta que se edita es: "+idMeta);
 	    String nombre = req.getParameter("nombre-meta");
 	    System.out.println("El nombre de la meta a editar es : "+nombre);
@@ -97,7 +100,8 @@ public class MetaController extends HttpServlet {
 	            req.getRequestDispatcher("error.jsp").forward(req, resp);
 	            return;
 	        }
-
+	        
+	        
 	        // Crear objeto Meta
 	        Meta meta = new Meta();
 	        meta.setIdMeta(idMeta);
@@ -108,6 +112,7 @@ public class MetaController extends HttpServlet {
 	        //meta.setProgreso(0.0); // Progreso inicial
 	        meta.setEstado(true); // Activa por defecto
 	        meta.setDiasObjetivo((int) diasObjetivo); // Convertimos a int
+	        meta.setUsuario(usuario);
 
 	        // Llamar al DAO para modificar la meta
 	        MetaDAO metaDAO = new MetaDAO();
@@ -131,9 +136,11 @@ public class MetaController extends HttpServlet {
 
 	private void agregarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    System.out.println("Entrando a agregarMeta");
-
+	    HttpSession session = req.getSession();
 	    try {
+	    	
 	        int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
+	        Usuario usuario = (Usuario) session.getAttribute("usuario");
 	        System.out.println("La id del usuario es: "+ idUsuario);
 	        String nombre = req.getParameter("nombre-meta");
 	        String descripcion = req.getParameter("descripcion-meta");
@@ -167,7 +174,7 @@ public class MetaController extends HttpServlet {
 
 	        // Crear objeto Meta
 	        Meta meta = new Meta();
-	        meta.setIdUsuario(idUsuario);
+	        meta.setUsuario(usuario);
 	        meta.setNombre(nombre);
 	        meta.setDescripcion(descripcion);
 	        meta.setFechaInicio(fechaInicio);

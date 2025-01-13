@@ -3,28 +3,65 @@ package modelo.entidades;
 import java.io.Serializable;
 import java.sql.Date;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="meta")
 public class Meta implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="idHabito")
 	private int idMeta;
-	private int idUsuario;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "idUsuario", nullable = false)
+	//@Column(name="idUsuario")
+	private Usuario usuario;
+	
+	@Column(name="descripcion")
 	private String descripcion;
+	
+	@Column(name="fechaInicio")
 	private Date fechaInicio;
+	
+	@Column(name="fechaFin")
 	private Date fechaFin;
+	
+	@Column(name="habitos")
 	private Habito[] habitos;
+	
+	@Column(name="progreso")
 	private double progreso;
+	
+	@Column(name="estado")
 	private boolean estado;
+	
+	@Column(name="diasObjetivo")
 	private int diasObjetivo;
+	
+	@Column(name="nombre")
 	private String nombre;
+	
 
 	public Meta() {
 	}
+	
 
-	public Meta(int idMeta, int idUsuario, String descripcion, Date fechaInicio, Date fechaFin, Habito[] habitos, double progreso,
+	public Meta(int idMeta, Usuario Usuario, String descripcion, Date fechaInicio, Date fechaFin, Habito[] habitos, double progreso,
 			boolean estado, int diasObjetivo, String nombre) {
 		this.idMeta = idMeta;
-		this.idUsuario = idUsuario;
+		this.usuario = Usuario;
 		this.descripcion = descripcion;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
@@ -107,13 +144,17 @@ public class Meta implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public int getIdUsuario() {
-		return idUsuario;
+
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
+
+	
 	
 
 }

@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import modelo.dao.HabitoDAO;
+import modelo.dao.MetaDAO;
 import modelo.entidades.Habito;
+import modelo.entidades.Meta;
 
 @WebServlet("/HabitoController")
 public class HabitoController extends HttpServlet {
@@ -56,7 +58,10 @@ public class HabitoController extends HttpServlet {
 	
 	private void eliminarHabito(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		System.out.println("Se entro a eliminar habito");
-		int idm = Integer.parseInt(req.getParameter("idmeta"));
+		HttpSession session = req.getSession();
+		Meta meta = (Meta) session.getAttribute("meta");
+		int idm = meta.getIdMeta();
+		
 		int idh = Integer.parseInt(req.getParameter("idhab"));
 		System.out.println(idm);
 		System.out.println(idh);
@@ -71,7 +76,9 @@ public class HabitoController extends HttpServlet {
 	
 	private void ingresarDatosModificacionHabito(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
 		System.out.println("Se entro a modificar habito");
-		int idm = Integer.parseInt(req.getParameter("idmeta"));
+		HttpSession session = req.getSession();
+		Meta meta = (Meta) session.getAttribute("meta");
+		int idm = meta.getIdMeta();
 		int idh = Integer.parseInt(req.getParameter("idhab"));
 		System.out.println(idm);
 		System.out.println(idh);
@@ -80,7 +87,7 @@ public class HabitoController extends HttpServlet {
 		String horario = req.getParameter("horario");
 		Habito h = new Habito();
 		h.setIdHabito(idh);
-		h.setMetaAsociada(idm);
+		h.setMetaAsociada(meta);
 		h.setNombre(req.getParameter("nombre"));
 		h.setCategoria(req.getParameter("categoria"));
 		h.setTipoMedicion(req.getParameter("tipoMedicion"));
@@ -110,13 +117,14 @@ public class HabitoController extends HttpServlet {
 		//int id = Integer.parseInt(req.getParameter("idmeta"));
 		HttpSession session = req.getSession();
 		int id = (int) session.getAttribute("idmeta"); 
+		Meta meta = (Meta) session.getAttribute("meta");
 		System.out.println("Esta es la idMeta por session: "+session.getAttribute("idmeta"));
 		
 		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
 		String tiempo = req.getParameter("tiempoTotal");
 		String horario = req.getParameter("horario");
 		Habito h = new Habito();
-		h.setMetaAsociada(id);
+		h.setMetaAsociada(meta);
 		h.setNombre(req.getParameter("nombre"));
 		h.setCategoria(req.getParameter("categoria"));
 		h.setTipoMedicion(req.getParameter("tipoMedicion"));
@@ -144,6 +152,8 @@ public class HabitoController extends HttpServlet {
 	private void listarHabitos(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Se entro a listar habito");
 		int id = Integer.parseInt(req.getParameter("idmeta"));
+		MetaDAO metaDAO = new MetaDAO();
+		Meta meta = metaDAO.obtenerMetaPorId(id);
 		System.out.println("Con id de meta: "+id);
 		System.out.println(req.getParameter("idmeta"));
 		
@@ -153,10 +163,16 @@ public class HabitoController extends HttpServlet {
 		HabitoDAO hdao=new HabitoDAO();
 		HttpSession session = req.getSession();
 		session.setAttribute("idmeta", id); 
+		session.setAttribute("meta", meta); 
+		
 		System.out.println("Esta es la idMeta por session; "+session.getAttribute("idmeta"));
 		
 		try {
 			habs = hdao.obtenerHabitos(id);
+			System.out.println("Esta es la lista de habitos" + habs);
+			 for (Habito habito : habs) {
+			        System.out.println("ID: " + habito.getIdHabito() + ", Nombre: " + habito.getNombre());
+			    }
 			req.setAttribute("habito", habs);
 			session.setAttribute("idmeta", id);
 			System.out.println("idMeta configurada en sesión: " + session.getAttribute("idmeta"));
@@ -165,5 +181,10 @@ public class HabitoController extends HttpServlet {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void obtenerMetaPorId(int id) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -299,7 +299,7 @@ h2.create-account {
   background-color: #f2f2f2;
 }
 
-.editar-habito , .eliminar-habito{
+.editar-habito , .eliminar-habito, .agregar-horarios-habito{
   text-decoration: none;
   border: solid thin rgb(0, 0, 0);
   padding: 0.4rem 2rem;
@@ -312,7 +312,7 @@ h2.create-account {
   color: #222;
   transition: transform 1s ease;
 }
-.editar-habito:hover , .eliminar-habito:hover{
+.editar-habito:hover , .eliminar-habito:hover, .agregar-horarios-habito:hover{
   background-color: #999999;
   transform: scale(1.15);
 }

@@ -2,6 +2,8 @@ package modelo.entidades;
 
 import java.io.Serializable;
 import java.sql.Time;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +29,7 @@ public class Habito implements Serializable {
 	@Column(name="categoria")
 	private String categoria;
 	@ManyToOne
-    @JoinColumn(name = "metaAsociada", nullable = false)
+    @JoinColumn(name = "idMeta", nullable = false)
 	private Meta metaAsociada;
 	
 	@Column(name="estado")
@@ -142,5 +144,6 @@ public class Habito implements Serializable {
 	public void setHorario(Time horario) {
 		this.horario = horario;
 	}
+	
 
 }

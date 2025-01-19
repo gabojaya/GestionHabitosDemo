@@ -175,21 +175,23 @@
                                     <th>Nombre del Hábito</th>
                                     <th>Categoría</th>
                                     <th>Frecuencia</th>
-                                    <th>Estado</th>
+                                    <!-- <th>Estado</th> -->
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${habito}" var="habitos">
+                            <c:forEach items="${habito}" var="habitos" varStatus="status">
                             	<tr>
-                            		<td>${habitos.idHabito}</td>
+                            		<!-- <td>${habitos.idHabito}</td> -->
+                            		<td>${status.index + 1}</td>
                                     <td>${habitos.nombre}</td>
                                     <td>${habitos.categoria}</td>
                                     <td>${habitos.frecuencia}</td>
-                                    <td>${habitos.estado}</td>
+                                   <!-- <td>${habitos.estado}</td> -->
                                     <td>
                                         <button class="editar-habito" hab-id="${habitos.idHabito}" hab-nom="${habitos.nombre}" hab-cat="${habitos.categoria}" hab-f="${habitos.frecuencia}" hab-es="${habitos.estado}" hab-med="${habitos.tipoMedicion}" meta-id="${habitos.metaAsociada}" hab-can="${habitos.cantidadTotal}" hab-time="${habitos.tiempoTotal}" hab-ho="${habitos.horario}">Editar</button>
                                         <button class="eliminar-habito" hab-id="${habitos.idHabito}" meta-id="${habitos.metaAsociada}">Eliminar</button>
+                                        <button class="agregar-horarios-habito" hab-id="${habitos.idHabito}" meta-id="${habitos.metaAsociada}" hab-frec="${habitos.frecuencia}">Asginar horarios</button>
                                     </td>
                             	</tr>
                             </c:forEach>
@@ -202,6 +204,22 @@
                     </div>
                 </div>
             </div>
+            
+			            	<!-- Pantalla para Asignar Horarios -->
+			<div class="screenOverlay" id="screenOverlayAsignarHorarios" style="display:none;">
+			    <div class="container-form-2">
+			        <h3>Asignar Horarios</h3>
+			        <form id="formAsignarHorarios" method="POST" action="NotificacionController?ruta=asignarRecordatorio">
+			            <input type="hidden" name="idHabito" id="idHabito">
+			            <div id="horariosContainer">
+			                <!-- Los campos de fecha y hora serán generados dinámicamente aquí -->
+			            </div>
+			            <button type="submit" id="btnAsignarHorarios">Asignar</button>
+			            <button type="button" id="volver-a-habitos-btn">Volver a la lista de habitos</button>
+			        </form>
+			    </div>
+			</div>
+            	
 
             <!-- Pantalla Oculta para el Formulario de Habitos -->
             <div class="screenOverlay" id="screenOverlayRegistroHabitos" style="display:none;">
@@ -274,39 +292,32 @@
                                 <th>Número</th>
                                 <th>Nombre del Hábito</th>
                                 <th>Categoría</th>
-                                <th>Frecuencia</th>
+                                <th>Fecha</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
+                        <c:forEach items="${ejecuciones}" var="ejecuciones">
                             <tr>
-                                <td>1</td>
-                                <td>Beber agua</td>
-                                <td>Salud</td>
-                                <td>Diario</td>
-                                <td>En progreso</td>
+                                <td>${ejecuciones.idEjecucion}</td>
+                                <td>${ejecuciones.habito.nombre}</td>
+                                <td>${ejecuciones.habito.categoria}</td>
+                                <td>${ejecuciones.fecha}</td>
+                                <td>${ejecuciones.estado}</td>
                                 <td>
                                     <button class="registrar-ejecucion" id="registrar-ejecucion">Registrar
                                         Ejecucion</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Ejercicio</td>
-                                <td>Bienestar</td>
-                                <td>Semanal</td>
-                                <td>En progreso</td>
-                                <td>
-                                    <button class="registrar-ejecucion" id="registrar-ejecucion">Registrar
-                                        Ejecucion</button>
-                                </td>
-                            </tr>
+                        </c:forEach>
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        
         <!-- Pantalla Oculta Registrar Ejecución -->
         <div class="screenOverlay" id="screenOverlayEjecucion" style="display:none;">
             <div class="container-form-2">

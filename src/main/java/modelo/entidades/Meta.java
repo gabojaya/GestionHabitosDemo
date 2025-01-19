@@ -2,6 +2,7 @@ package modelo.entidades;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,7 +23,7 @@ public class Meta implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="idHabito")
+	@Column(name="idMeta")
 	private int idMeta;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH)
@@ -38,9 +40,9 @@ public class Meta implements Serializable {
 	@Column(name="fechaFin")
 	private Date fechaFin;
 	
-	@Column(name="habitos")
-	private Habito[] habitos;
-	
+	@OneToMany(mappedBy = "metaAsociada", cascade = CascadeType.ALL)
+	private List<Habito> habitos;
+
 	@Column(name="progreso")
 	private double progreso;
 	
@@ -57,11 +59,13 @@ public class Meta implements Serializable {
 	public Meta() {
 	}
 	
+	
 
-	public Meta(int idMeta, Usuario Usuario, String descripcion, Date fechaInicio, Date fechaFin, Habito[] habitos, double progreso,
-			boolean estado, int diasObjetivo, String nombre) {
+	public Meta(int idMeta, Usuario usuario, String descripcion, Date fechaInicio, Date fechaFin, List<Habito> habitos,
+			double progreso, boolean estado, int diasObjetivo, String nombre) {
+		super();
 		this.idMeta = idMeta;
-		this.usuario = Usuario;
+		this.usuario = usuario;
 		this.descripcion = descripcion;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
@@ -71,6 +75,7 @@ public class Meta implements Serializable {
 		this.diasObjetivo = diasObjetivo;
 		this.nombre = nombre;
 	}
+
 
 	public int getIdMeta() {
 		return idMeta;
@@ -102,14 +107,6 @@ public class Meta implements Serializable {
 
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
-	}
-
-	public Habito[] getHabitos() {
-		return habitos;
-	}
-
-	public void setHabitos(Habito[] habitos) {
-		this.habitos = habitos;
 	}
 
 	public double getProgreso() {
@@ -153,6 +150,20 @@ public class Meta implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+
+
+	public List<Habito> getHabitos() {
+		return habitos;
+	}
+
+
+
+	public void setHabitos(List<Habito> habitos) {
+		this.habitos = habitos;
+	}
+	
+	
 
 	
 	

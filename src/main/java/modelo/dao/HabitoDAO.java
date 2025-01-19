@@ -87,5 +87,24 @@ public class HabitoDAO {
 		em.getTransaction().commit();
 		
 	}
+	
+	public Habito obtenerHabitoPorId(int idHabito) throws SQLException {
+	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionHabitosWeb");
+	    EntityManager em = emf.createEntityManager();
+	    
+	    try {
+	        // Busca el hábito por su ID
+	        Habito habito = em.find(Habito.class, idHabito);
+	        return habito;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new SQLException("Error al obtener el hábito con ID: " + idHabito, e);
+	    } finally {
+	        em.close();
+	        emf.close();
+	    }
+	}
+
+	
 
 }

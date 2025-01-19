@@ -2,30 +2,58 @@ package modelo.entidades;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="recordatorio")
 public class Recordatorio implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="idRecordatorio")
 	private int idRecordatorio;
+	
+	@Column(name="mensaje")
 	private String mensaje;
-	private Date fechaHora;
-	private int frecuencia;
+	
+	@Column(name="hora")
+	private Time hora;
+	
+	@Column(name="estado")
 	private boolean estado;
+	
+	@ManyToOne
+    @JoinColumn(name = "idHabito", nullable = false)
 	private Habito habitoAsociado;
+	
+	@Column(name="repetir")
 	private boolean repetir;
+	
+	@Column(name="fechaInicio")
 	private Date fechaInicio;
+	
+	@Column(name="fechaFin")
 	private Date fechaFin;
 
 	public Recordatorio() {
 	}
 
-	public Recordatorio(int idRecordatorio, String mensaje, Date fechaHora, int frecuencia, boolean estado,
-			Habito habitoAsociado, boolean repetir, Date fechaInicio, Date fechaFin) {
+	public Recordatorio(int idRecordatorio, String mensaje, Time Hora, boolean estado, Habito habitoAsociado,
+			boolean repetir, Date fechaInicio, Date fechaFin) {
 		this.idRecordatorio = idRecordatorio;
 		this.mensaje = mensaje;
-		this.fechaHora = fechaHora;
-		this.frecuencia = frecuencia;
+		this.hora = Hora;
 		this.estado = estado;
 		this.habitoAsociado = habitoAsociado;
 		this.repetir = repetir;
@@ -49,20 +77,12 @@ public class Recordatorio implements Serializable {
 		this.mensaje = mensaje;
 	}
 
-	public Date getFechaHora() {
-		return fechaHora;
+	public Time getHora() {
+		return hora;
 	}
 
-	public void setFechaHora(Date fechaHora) {
-		this.fechaHora = fechaHora;
-	}
-
-	public int getFrecuencia() {
-		return frecuencia;
-	}
-
-	public void setFrecuencia(int frecuencia) {
-		this.frecuencia = frecuencia;
+	public void setHora(Time hora) {
+		this.hora = hora;
 	}
 
 	public boolean isEstado() {

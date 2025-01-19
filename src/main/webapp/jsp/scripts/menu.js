@@ -6,12 +6,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		setupTabs();
 		setupMetaScreen();
 
+	} else if (ruta === 'listarEjecuciones') {
+		showPage(3); // Mostrar la primera página al cargar la página
+		setupTabs();
+		setupMetaScreen();
+
 	} else {
 		showPage(2);
 		setupTabs();
 		setupMetaScreen();
 		screenOverlayHabitos.style.display = 'flex';
-	
+
 	}
 });
 
@@ -25,6 +30,9 @@ function setupTabs() {
 			// Verifica si la pestaña seleccionada es la de Metas (página 2)
 			if (pageNumber === 2) {
 				fetchMetas();
+			}
+			if (pageNumber === 3) {
+				fetchEjecuciones();
 			}
 		});
 	});
@@ -40,6 +48,10 @@ function showPage(pageNumber) {
 	if (pageToShow) {
 		pageToShow.style.display = 'flex';
 	}
+}
+
+function fetchEjecuciones() {
+	window.location.href = `EjecucionController?ruta=listarEjecuciones`;
 }
 function fetchMetas() {
 	const idUsuario = document.getElementById('idUsuario').value;
@@ -148,7 +160,7 @@ function setupMetaScreen() {
 		});
 	});
 
-	
+
 
 
 	//	continuarBtnAgregar.addEventListener('click', function() {
@@ -173,6 +185,11 @@ function setupMetaScreen() {
 	const volverAMetasBtn = document.getElementById('volver-a-metas-btn');
 	let editar = false;
 
+	const asginarHorariosBtn = document.querySelectorAll('.agregar-horarios-habito');
+	const screenOverlayAsignarHorarios = document.getElementById('screenOverlayAsignarHorarios');
+	const volverAHabitosBtn = document.getElementById('volver-a-habitos-btn');
+
+
 	addHabitoBtn.addEventListener('click', function() {
 
 		const urlParams = new URLSearchParams(window.location.search);
@@ -189,28 +206,28 @@ function setupMetaScreen() {
 	});
 
 	guardarRegistroHabitoBtn.addEventListener('click', function() {
-	    var id = new URLSearchParams(window.location.search);
-	    let metaid = id.get("idmeta");
+		var id = new URLSearchParams(window.location.search);
+		let metaid = id.get("idmeta");
 
-	    // Obtiene el formulario
-	    const form = document.getElementById('habito-form');
-	    
-	    // Verifica si el formulario es válido
-	    if (form.checkValidity()) {
-	        // Si es válido, se asigna la acción del formulario y se envía
-	        if (editar) {
-	            document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
-	            document.getElementById('habito-form').submit();
-	        } else {
-	            document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosHabito&idmeta=${metaid}`;
-	            document.getElementById('habito-form').submit();
-	        }
-	        // Oculta la pantalla de overlay después de enviar el formulario
-	        screenOverlayRegistroHabitos.style.display = 'none';
-	    } else {
-	        // Si el formulario no es válido, muestra un mensaje de alerta
-	        alert("Por favor, completa todos los campos requeridos.");
-	    }
+		// Obtiene el formulario
+		const form = document.getElementById('habito-form');
+
+		// Verifica si el formulario es válido
+		if (form.checkValidity()) {
+			// Si es válido, se asigna la acción del formulario y se envía
+			if (editar) {
+				document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
+				document.getElementById('habito-form').submit();
+			} else {
+				document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosHabito&idmeta=${metaid}`;
+				document.getElementById('habito-form').submit();
+			}
+			// Oculta la pantalla de overlay después de enviar el formulario
+			screenOverlayRegistroHabitos.style.display = 'none';
+		} else {
+			// Si el formulario no es válido, muestra un mensaje de alerta
+			alert("Por favor, completa todos los campos requeridos.");
+		}
 	});
 
 
@@ -259,6 +276,36 @@ function setupMetaScreen() {
 	});
 
 
+	asginarHorariosBtn.forEach(function(btn) {
+		btn.addEventListener('click', function() {
+			// Mostrar el div al hacer clic en el botón
+			screenOverlayAsignarHorarios.style.display = 'flex';
+
+			const idHabito = this.getAttribute("hab-id");
+			const frecuencia = parseInt(this.getAttribute("hab-frec"));
+
+			document.getElementById("idHabito").value = idHabito;
+
+			// Generar campos dinámicos
+			const horariosContainer = document.getElementById("horariosContainer");
+			horariosContainer.innerHTML = ""; // Limpiar campos previos
+			for (let i = 1; i <= frecuencia; i++) {
+				const horarioDiv = document.createElement("div");
+				horarioDiv.className = "horario-item";
+				horarioDiv.innerHTML = `
+			                    <label for="horaHorario${i}">Hora ${i}:</label>
+			                    <input type="time" name="horaHorario${i}" id="horaHorario${i}" required>
+			                `;
+				horariosContainer.appendChild(horarioDiv);
+			}
+
+
+		});
+	});
+
+	volverAHabitosBtn.addEventListener('click', function() {
+		screenOverlayAsignarHorarios.style.display = 'none';
+	});
 
 	/* Seccion 3: Registrar Ejecucion*/
 	const registrarEjecucionBtn = document.querySelectorAll('.registrar-ejecucion');

@@ -141,6 +141,7 @@ public class HabitoController extends HttpServlet {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		meta.getHabitos().add(h); 
 		HabitoDAO hdao=new HabitoDAO();
 		try {
 			hdao.crearHabito(h);
@@ -173,6 +174,7 @@ public class HabitoController extends HttpServlet {
 			 for (Habito habito : habs) {
 			        System.out.println("ID: " + habito.getIdHabito() + ", Nombre: " + habito.getNombre());
 			    }
+			 
 			req.setAttribute("habito", habs);
 			session.setAttribute("idmeta", id);
 			System.out.println("idMeta configurada en sesión: " + session.getAttribute("idmeta"));
@@ -181,10 +183,5 @@ public class HabitoController extends HttpServlet {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void obtenerMetaPorId(int id) {
-		// TODO Auto-generated method stub
-		
 	}
 }

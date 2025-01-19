@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
+import modelo.entidades.Habito;
 import modelo.entidades.Meta;
 
 public class MetaDAO {
@@ -27,17 +28,36 @@ public class MetaDAO {
     }
 	
 	public void eliminarMeta(int idMeta) throws SQLException {
-		try {
+		// Obtener la meta por su ID
+		System.out.println("ESTAS EN META DAO");
+        Meta meta = em.find(Meta.class, idMeta);
+       
+        List<Habito> habs;
+        HabitoDAO hdao=new HabitoDAO();
+        habs = hdao.obtenerHabitos(idMeta);
+		System.out.println("Esta es la lista de habitos en METADAO" + habs);
+		 for (Habito habito : habs) {
+		        System.out.println("ID: " + habito.getIdHabito() + ", Nombre: " + habito.getNombre());
+		    }
+		 System.out.println("Esta es la lista de habitos en METADAO" + habs);
+        try {
             em.getTransaction().begin();
 
-            Meta meta = em.find(Meta.class, idMeta);
             if (meta != null) {
+                // Eliminar los hábitos asociados antes de eliminar la meta
+                for (Habito habito : habs) {
+                	habito = em.merge(habito);
+                    em.remove(habito);
+                }
+                // Eliminar la meta
                 em.remove(meta);
             }
 
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             e.printStackTrace();
         }
     }
@@ -72,6 +92,7 @@ public class MetaDAO {
             return false;
         }
 	}
+	
 	public Meta obtenerMetaPorId(int idMeta) {
 		return em.find(Meta.class, idMeta);
 	}

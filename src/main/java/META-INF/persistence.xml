@@ -8,6 +8,7 @@
 		<class>modelo.entidades.Usuario</class>
 		<class>modelo.entidades.Ejecucion</class>		
 		<class>modelo.entidades.Recordatorio</class>
+		<class>modelo.entidades.Notificacion</class>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/gestionhabitos"/>
 			<property name="jakarta.persistence.jdbc.user" value="root"/>

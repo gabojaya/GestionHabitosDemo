@@ -2,6 +2,7 @@ package controladores;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -50,8 +51,28 @@ public class LoginController extends HttpServlet {
 		case "registrarUsuario":
 			this.registrarUsuario(req, resp);
 			break;
+		case "cerrarSesion":
+			this.cerrarSesion(req, resp);
+			break;
 
 		}
+	}
+
+	private void cerrarSesion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		System.out.println("Entro a CERRAR SESION");
+	    HttpSession session = req.getSession(false);
+	    if (session != null) {
+	        session.invalidate();
+	    }
+
+	    Enumeration<String> attributeNames = req.getAttributeNames();
+	    while (attributeNames.hasMoreElements()) {
+	        String attributeName = attributeNames.nextElement();
+	        req.removeAttribute(attributeName);  
+	    }
+
+	    resp.sendRedirect("LoginController?ruta=solicitarIniciar");
+		
 	}
 
 	private void solicitarIniciar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

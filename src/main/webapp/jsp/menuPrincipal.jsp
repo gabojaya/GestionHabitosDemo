@@ -23,6 +23,7 @@
             <span class="tab" data-page="3">Ejecución</span>
             <span class="tab" data-page="4">Estadísticas</span>
             <span class="tab" data-page="5">Notificaciones</span>
+            <a href="LoginController?ruta=cerrarSesion" class="tab cerrar-sesion">Cerrar Sesión</a>
         </div>
 
         <div class="formulario">
@@ -262,11 +263,11 @@
                     </div>
                     <div class="input-group">
                     	<label for="tiempo-habito">Tiempo Total:</label>
-                    	<input type="time" id="tiempo-habito" name="tiempoTotal" step="2" required>
+                    	<input type="time" id="tiempo-habito" name="tiempoTotal" required>
                     </div>
                     <div class="input-group">
                     	<label for="horario-habito">Horario:</label>
-                    	<input type="time" id="horario-habito" name="horario" step="2" required>
+                    	<input type="time" id="horario-habito" name="horario" required>
                     </div>
 
 

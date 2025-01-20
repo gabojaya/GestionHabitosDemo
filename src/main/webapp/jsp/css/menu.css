@@ -351,3 +351,7 @@ h2.create-account {
   background-color: #999999;
   transform: scale(1.15);
 }
+
+.tabs .cerrar-sesion {
+  margin-left: auto; /* Esto mueve el botón de cerrar sesión al final */
+}

@@ -69,7 +69,7 @@ public class NotificacionController extends HttpServlet {
 			System.out.println("Este es el id del habito del que se esta creando recordatorio " + idHabito);
 			System.out.println("Nombre del habito: " + habito.getNombre());
         	
-            // Obtener horarios dinámicos
+            
             List<Time> horarios = new ArrayList<>();
             for (int i = 1; ; i++) {
                 String horaParam = req.getParameter("horaHorario" + i);
@@ -77,23 +77,23 @@ public class NotificacionController extends HttpServlet {
                 horarios.add(Time.valueOf(horaParam + ":00"));
             }
 
-            // Crear los recordatorios
+            
             NotificacionDAO notificacionDAO = new NotificacionDAO();
             for (Time hora : horarios) {
                 Recordatorio recordatorio = new Recordatorio();
                 recordatorio.setMensaje("Recordatorio para hábito " + idHabito);
                 recordatorio.setHora(hora);
-                recordatorio.setEstado(true); // Activo por defecto
+                recordatorio.setEstado(true); 
                 recordatorio.setFechaInicio(fechaInicioStr);
                 recordatorio.setFechaFin(fechaFinStr);
-                recordatorio.setRepetir(true); // Configuración de repetición
-                recordatorio.setHabitoAsociado(habito); // Solo asignamos el ID
+                recordatorio.setRepetir(true); 
+                recordatorio.setHabitoAsociado(habito);
 
-                // Guardar en la base de datos
+                
                 notificacionDAO.crearRecordatorio(recordatorio);
             }
 
-            // Redirigir o devolver una respuesta
+            
             req.getRequestDispatcher("EjecucionController?ruta=crearEjecuciones&idHabito=" + idHabito).forward(req, resp);
             //req.getRequestDispatcher("HabitoController?ruta=listar&idmeta="+ meta.getIdMeta()).forward(req, resp);
         } catch (Exception e) {

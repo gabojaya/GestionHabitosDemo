@@ -52,7 +52,7 @@ public class EjecucionController extends HttpServlet {
 	}
 
 	private void crearEjecuciones(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// Obtener el idHabito de la URL
+		
 		System.out.println("Entro a CREAR EJECUCIONES ---------------");
 	    int idHabito = Integer.parseInt(req.getParameter("idHabito"));
 	    
@@ -62,8 +62,6 @@ public class EjecucionController extends HttpServlet {
 		int idUsuario = usuario.getIdUsuario();
 		System.out.println("Se creo ejecuciones para el usuario: "+ idUsuario);
 		
-	    
-	    // Crear el DAO para obtener los recordatorios
 	    NotificacionDAO notificacionDAO = new NotificacionDAO();
 	    List<Recordatorio> recordatorios = notificacionDAO.obtenerRecordatoriosPorHabito(idHabito);
 	    

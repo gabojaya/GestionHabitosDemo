@@ -201,6 +201,9 @@ function setupMetaScreen() {
 		document.getElementById('categoria-habito').value = '';
 		document.getElementById('tipo-medicion').value = '';
 		document.getElementById('frecuencia-habito').value = '';
+		document.getElementById('cantidad-habito').value = '';
+		document.getElementById('tiempo-habito').value = '';
+		document.getElementById('horario-habito').value = '';
 		editar = false;
 		screenOverlayRegistroHabitos.style.display = 'flex';
 	});

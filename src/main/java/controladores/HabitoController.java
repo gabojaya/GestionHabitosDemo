@@ -94,6 +94,8 @@ public class HabitoController extends HttpServlet {
 		h.setFrecuencia(Integer.parseInt(req.getParameter("frecuencia")));
 		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
 		try {
+			tiempo = tiempo + ":00";
+		    horario = horario + ":00";
 			Date ti = format.parse(tiempo);
 			Date ho = format.parse(horario);
 		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());

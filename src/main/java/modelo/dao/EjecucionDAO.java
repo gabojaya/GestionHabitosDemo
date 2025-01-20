@@ -18,7 +18,7 @@ public class EjecucionDAO {
     EntityManager em = emf.createEntityManager();
 	
     public List<Ejecucion> listarEjecucionesPorUsuario(int idUsuario) {
-        String jpql = "SELECT e FROM Ejecucion e WHERE e.usuario.idUsuario = :idUsuario";
+    	String jpql = "SELECT e FROM Ejecucion e WHERE e.usuario.idUsuario = :idUsuario AND e.estado = true";
         TypedQuery<Ejecucion> query = em.createQuery(jpql, Ejecucion.class);
         query.setParameter("idUsuario", idUsuario);
         return query.getResultList();

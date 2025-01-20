@@ -28,6 +28,7 @@ public class Habito implements Serializable {
 	private String nombre;
 	@Column(name="categoria")
 	private String categoria;
+	
 	@ManyToOne
     @JoinColumn(name = "idMeta", nullable = false)
 	private Meta metaAsociada;

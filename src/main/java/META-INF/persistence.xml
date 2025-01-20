@@ -8,14 +8,14 @@
 		<class>modelo.entidades.Usuario</class>
 		<class>modelo.entidades.Ejecucion</class>		
 		<class>modelo.entidades.Recordatorio</class>
-		<class>modelo.entidades.Notificacion</class>
+		<class>modelo.entidades.Estadistica</class>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/gestionhabitos"/>
 			<property name="jakarta.persistence.jdbc.user" value="root"/>
 			<property name="jakarta.persistence.jdbc.password" value=""/>
 			<property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 			<property name="eclipselink.logging.level" value="FINE" />
-			<property name="eclipselink.ddl-generation" value="create-tables" />
+			<property name="eclipselink.ddl-generation" value="none" />
 			
 			
 			<!--<property name="eclipselink.ddl-generation" value="none" />-->

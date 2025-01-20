@@ -13,8 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import modelo.dao.EstadisticaDAO;
 import modelo.dao.HabitoDAO;
 import modelo.dao.MetaDAO;
+import modelo.entidades.Estadistica;
 import modelo.entidades.Habito;
 import modelo.entidades.Meta;
 
@@ -109,6 +111,7 @@ public class HabitoController extends HttpServlet {
 		try {
 			hdao.modificarHabito(h);
 			resp.sendRedirect("HabitoController?ruta=listar&idmeta="+idm);
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -134,6 +137,8 @@ public class HabitoController extends HttpServlet {
 		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
 		h.setEstado(true);
 		try {
+			tiempo = tiempo + ":00";
+		    horario = horario + ":00";
 			Date ti = format.parse(tiempo);
 			Date ho = format.parse(horario);
 		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());
@@ -145,9 +150,17 @@ public class HabitoController extends HttpServlet {
 		}
 		meta.getHabitos().add(h); 
 		HabitoDAO hdao=new HabitoDAO();
+		
 		try {
 			hdao.crearHabito(h);
-			resp.sendRedirect("HabitoController?ruta=listar&idmeta="+id);
+			System.out.println("La id del habito creado es "+h.getIdHabito());
+
+			
+			req.setAttribute("idHabito", h.getIdHabito());
+			//resp.sendRedirect("HabitoController?ruta=listar&idmeta="+id);
+
+			req.getRequestDispatcher("EstadisticaController?ruta=crearEstadistica").forward(req, resp);
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

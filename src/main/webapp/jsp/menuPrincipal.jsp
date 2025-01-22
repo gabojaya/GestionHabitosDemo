@@ -247,7 +247,7 @@
 
                     <div class="input-group">
                         <label for="tipo-medicion">Tipo de Medición:</label>
-                        <select id="tipo-medicion" name="tipoMedicion" required>
+                        <select id="tipo-medicion" name="tipoMedicion" onchange="showMed()" required>
                             <option value="cantidad">Cantidad</option>
                             <option value="tiempo">Tiempo</option>
                         </select>
@@ -257,13 +257,13 @@
                         <label for="frecuencia-habito">Frecuencia:</label>
                         <input type="text" id="frecuencia-habito" name="frecuencia" required>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" id="divcan" style="display:none;">
                     	<label for="cantidad-habito">Cantidad Total:</label>
-                    	<input type="text" id="cantidad-habito" name="cantidadTotal" required>
+                    	<input type="text" id="cantidad-habito" name="cantidadTotal">
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" id="divtime" style="display:none;">
                     	<label for="tiempo-habito">Tiempo Total:</label>
-                    	<input type="time" id="tiempo-habito" name="tiempoTotal" required>
+                    	<input type="time" id="tiempo-habito" name="tiempoTotal">
                     </div>
                     <div class="input-group">
                     	<label for="horario-habito">Horario:</label>
@@ -481,6 +481,17 @@
         	 var id = new URLSearchParams(window.location.search);
         	 console.log(id.get("idmeta"));
         	 document.getElementById("idmeta").value=id.get("idmeta");
+        }
+        function showMed(){
+        	if(document.getElementById("tipo-medicion").value=="cantidad"){
+        		document.getElementById("divcan").style.display = 'flex';
+        		document.getElementById("divtime").style.display = 'none';
+        	}
+        	if(document.getElementById("tipo-medicion").value=="tiempo"){
+        		document.getElementById("divtime").style.display = 'flex';
+        		document.getElementById("divcan").style.display = 'none';
+        	}
+        	
         }
     </script>
 </body>

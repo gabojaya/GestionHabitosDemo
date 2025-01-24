@@ -402,7 +402,8 @@
 			<div class="container-form-2">
 				<h3>Registrar Ejecución del Hábito</h3>
 
-				<form id="formRegistrarEjecucion" method="post"action="EjecucionController?ruta=registrarEjecucion">
+				<form id="formRegistrarEjecucion" method="post"
+					action="EjecucionController?ruta=registrarEjecucion">
 					<input type="hidden" name="idEjecucion" id="idEjecucion"> <input
 						type="hidden" name="idEjecHabito" id="idEjecHabito"> <input
 						type="hidden" name="nameEjecHabito" id="nameEjecHabito"> <input
@@ -421,7 +422,7 @@
 					<div id="cantidadSection" style="display: none;">
 						<p>
 							<strong>Cantidad Realizada:</strong> <input type="number"
-								id="cantidadActual" name="cantidadActual" min="0" 
+								id="cantidadActual" name="cantidadActual" min="0"
 								placeholder="Cantidad Realizada" />
 						</p>
 						<p>
@@ -433,8 +434,8 @@
 					<div id="tiempoSection" style="display: none;">
 						<p>
 							<strong>Tiempo Realizado:</strong> <input type="time"
-								id="tiempoActual" name="tiempoActual" /> 
-							<span id="tiempoTranscurrido">00:00</span>
+								id="tiempoActual" name="tiempoActual" /> <span
+								id="tiempoTranscurrido">00:00</span>
 						</p>
 						<p>
 							<strong>Tiempo Total:</strong> <span id="tiempoTotal"></span>
@@ -493,7 +494,9 @@
 			</div>
 		</div>
 
+
 		<!-- Sección 5: Notificaciones-->
+		<!--
 		<div class="page" id="page5" style="display: none;">
 			<h2 class="create-account">Notificaciones</h2>
 			<div class="lista-Metas">
@@ -549,14 +552,43 @@
 				</table>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 
-	<script src="${pageContext.request.contextPath}/jsp/scripts/menu.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-	<script src="${pageContext.request.contextPath}/jsp/scripts/radar.js"></script>
-	<script>
+		<!-- Sección 5: Notificaciones-->
+		<div class="page" id="page5" style="display: none;">
+			<h2 class="create-account">Notificaciones</h2>
+			<div class="lista-Metas">
+				<table class="tabla-metas">
+					<thead>
+						<tr>
+							<th>Notificación</th>
+							<th>Marcar como leído</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Iterar sobre los recordatorios -->
+						<c:forEach var="recordatorio" items="${recordatorios}">
+							<tr>
+								<td style="color: black;">${recordatorio.mensaje}</td>
+								<td>
+									<button style="font-size: 24px">
+										Check<i class="fa fa-calendar-check-o"></i>
+									</button>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+		<script src="${pageContext.request.contextPath}/jsp/scripts/menu.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+		<script src="${pageContext.request.contextPath}/jsp/scripts/radar.js"></script>
+		<script>
         // Obtener referencias a los elementos del DOM
         const fechaActualTexto = document.getElementById('fechaActualTexto');
         const tiempoTranscurrido = document.getElementById('tiempoTranscurrido');

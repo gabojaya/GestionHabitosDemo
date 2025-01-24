@@ -48,6 +48,14 @@ public class NotificacionDAO {
 	    return query.getResultList();
 	}
     
+	public List<Recordatorio> obtenerRecordatoriosActivosPorUsuario(int idUsuario) {
+	    String jpql = "SELECT r FROM Recordatorio r JOIN r.habitoAsociado h JOIN h.metaAsociada m WHERE m.usuario.idUsuario = :idUsuario AND r.estado = true";
+	    TypedQuery<Recordatorio> query = em.createQuery(jpql, Recordatorio.class);
+	    query.setParameter("idUsuario", idUsuario);
+	    
+	    return query.getResultList();
+	}
+
 
 
 }

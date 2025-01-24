@@ -4,12 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (ruta === 'iniciarSesion' || ruta === 'registrarUsuario') {
 		showPage(1); // Mostrar la primera página al cargar la página
 		setupTabs();
-	
+
 
 	} else if (ruta === 'listarEjecuciones') {
 		showPage(3);
 		setupTabs();
 		setUpEjecuciones();
+	} else if (ruta === 'listarRecordatorios') {
+		showPage(5);
+		setupTabs();
 
 	} else {
 		showPage(2);
@@ -34,6 +37,9 @@ function setupTabs() {
 			if (pageNumber === 3) {
 				fetchEjecuciones();
 			}
+			if (pageNumber === 5) {
+				fetchNotificaciones();
+			}
 		});
 	});
 }
@@ -50,6 +56,9 @@ function showPage(pageNumber) {
 	}
 }
 
+function fetchNotificaciones() {
+	window.location.href = `NotificacionController?ruta=listarRecordatorios`;
+}
 function fetchEjecuciones() {
 	window.location.href = `EjecucionController?ruta=listarEjecuciones`;
 }
@@ -313,7 +322,7 @@ function setupMetaScreen() {
 
 }
 
-function setUpEjecuciones(){
+function setUpEjecuciones() {
 
 	/* Seccion 3: Registrar Ejecucion*/
 	const registrarEjecucionBtn = document.querySelectorAll('.registrar-ejecucion');

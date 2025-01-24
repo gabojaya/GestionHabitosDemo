@@ -18,6 +18,7 @@ import modelo.dao.NotificacionDAO;
 import modelo.entidades.Habito;
 import modelo.entidades.Meta;
 import modelo.entidades.Recordatorio;
+import modelo.entidades.Usuario;
 
 @WebServlet("/NotificacionController")
 public class NotificacionController extends HttpServlet {
@@ -35,77 +36,95 @@ public class NotificacionController extends HttpServlet {
 		// TODO Auto-generated method stub
 		this.ruteador(req, resp);
 	}
-	
-	private void ruteador(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+
+	private void ruteador(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// Logica del control
 		String ruta = (req.getParameter("ruta") == null) ? "asignarRecordatorio" : req.getParameter("ruta");
 
 		switch (ruta) {
 		case "asignarRecordatorio":
-			System.out.println("Llamando a obtenerMetas");
+			System.out.println("Llamando a asignarRecordatorio");
 			this.asignarRecordatorio(req, resp);
 			break;
-	
+		case "listarRecordatorios":
+			System.out.println("Llamando a listarRecordatorios");
+			this.listarRecordatorios(req, resp);
+			break;
+
 		}
 	}
 
-	private void asignarRecordatorio(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+	private void listarRecordatorios(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		System.out.println("Entro a asginar Recordatorio");
+		HttpSession session = req.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		System.out.println("Este es el usuario: " + usuario);
+		System.out.println("Este es el ID usuario: " + usuario.getIdUsuario());
+
+		// Obtener recordatorios activos del usuario desde el DAO
+		NotificacionDAO notificacionDAO = new NotificacionDAO();
+		List<Recordatorio> recordatoriosActivos = notificacionDAO
+				.obtenerRecordatoriosActivosPorUsuario(usuario.getIdUsuario());
+
+		// Añadir los recordatorios a la solicitud
+		req.setAttribute("recordatorios", recordatoriosActivos);
+
+		getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
+
+	}
+
+	private void asignarRecordatorio(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		System.out.println("Entro a asginar Recordatorio");
 		int idHabito = Integer.parseInt(req.getParameter("idHabito"));
-		
+
 		HabitoDAO habitoDAO = new HabitoDAO();
 		Habito habito;
 		HttpSession session = req.getSession();
 		Meta meta = (Meta) session.getAttribute("meta");
 		Date fechaInicioStr = meta.getFechaInicio();
 		Date fechaFinStr = meta.getFechaFin();
-		
-        System.out.println(fechaInicioStr);
-        System.out.println(fechaFinStr);
 
-        try {
-        	habito = habitoDAO.obtenerHabitoPorId(idHabito);
+		System.out.println(fechaInicioStr);
+		System.out.println(fechaFinStr);
+
+		try {
+			habito = habitoDAO.obtenerHabitoPorId(idHabito);
 			System.out.println("Este es el id del habito del que se esta creando recordatorio " + idHabito);
 			System.out.println("Nombre del habito: " + habito.getNombre());
-        	
-            
-            List<Time> horarios = new ArrayList<>();
-            for (int i = 1; ; i++) {
-                String horaParam = req.getParameter("horaHorario" + i);
-                if (horaParam == null) break; // Salir del bucle si no hay más horarios
-                horarios.add(Time.valueOf(horaParam + ":00"));
-            }
 
-            
-            NotificacionDAO notificacionDAO = new NotificacionDAO();
-            for (Time hora : horarios) {
-                Recordatorio recordatorio = new Recordatorio();
-                recordatorio.setMensaje("Recordatorio para hábito " + idHabito);
-                recordatorio.setHora(hora);
-                recordatorio.setEstado(true); 
-                recordatorio.setFechaInicio(fechaInicioStr);
-                recordatorio.setFechaFin(fechaFinStr);
-                recordatorio.setRepetir(true); 
-                recordatorio.setHabitoAsociado(habito);
+			List<Time> horarios = new ArrayList<>();
+			for (int i = 1;; i++) {
+				String horaParam = req.getParameter("horaHorario" + i);
+				if (horaParam == null)
+					break; // Salir del bucle si no hay más horarios
+				horarios.add(Time.valueOf(horaParam + ":00"));
+			}
 
-                
-                notificacionDAO.crearRecordatorio(recordatorio);
-            }
+			NotificacionDAO notificacionDAO = new NotificacionDAO();
+			for (Time hora : horarios) {
+				Recordatorio recordatorio = new Recordatorio();
+				recordatorio.setMensaje("Recordatorio para hábito " + idHabito);
+				recordatorio.setHora(hora);
+				recordatorio.setEstado(true);
+				recordatorio.setFechaInicio(fechaInicioStr);
+				recordatorio.setFechaFin(fechaFinStr);
+				recordatorio.setRepetir(true);
+				recordatorio.setHabitoAsociado(habito);
 
-            
-            req.getRequestDispatcher("EjecucionController?ruta=crearEjecuciones&idHabito=" + idHabito).forward(req, resp);
-            //req.getRequestDispatcher("HabitoController?ruta=listar&idmeta="+ meta.getIdMeta()).forward(req, resp);
-        } catch (Exception e) {
-            e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al asignar recordatorios");
-        }
-  	
+				notificacionDAO.crearRecordatorio(recordatorio);
+			}
+
+			req.getRequestDispatcher("EjecucionController?ruta=crearEjecuciones&idHabito=" + idHabito).forward(req,
+					resp);
+			// req.getRequestDispatcher("HabitoController?ruta=listar&idmeta="+
+			// meta.getIdMeta()).forward(req, resp);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al asignar recordatorios");
+		}
+
 	}
-	
-	
-	
+
 }
-
-
-

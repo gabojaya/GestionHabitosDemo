@@ -41,14 +41,23 @@ public class EjecucionController extends HttpServlet {
 
 		switch (ruta) {
 		case "listarEjecuciones":
-			System.out.println("Llamando a obtenerMetas");
+			System.out.println("Llamando a listarEjecuciones");
 			this.listarEjecuciones(req, resp);
 			break;
 		case "crearEjecuciones":
-			System.out.println("Llamando a obtenerMetas");
+			System.out.println("Llamando a crearEjecuciones");
 			this.crearEjecuciones(req, resp);
 			break;
+		case "registrarEjecucion":
+			System.out.println("Llamando a registrarEjecucion");
+			this.registrarEjecucion(req, resp);
+			break;
 		}
+	}
+
+	private void registrarEjecucion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		System.out.println("Entro a REGISTRAR LA EJECUCION---------------");
+		
 	}
 
 	private void crearEjecuciones(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

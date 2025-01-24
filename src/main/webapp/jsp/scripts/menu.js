@@ -4,12 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (ruta === 'iniciarSesion' || ruta === 'registrarUsuario') {
 		showPage(1); // Mostrar la primera página al cargar la página
 		setupTabs();
-		setupMetaScreen();
+	
 
 	} else if (ruta === 'listarEjecuciones') {
-		showPage(3); // Mostrar la primera página al cargar la página
+		showPage(3);
 		setupTabs();
-		setupMetaScreen();
+		setUpEjecuciones();
 
 	} else {
 		showPage(2);
@@ -310,6 +310,11 @@ function setupMetaScreen() {
 		screenOverlayAsignarHorarios.style.display = 'none';
 	});
 
+
+}
+
+function setUpEjecuciones(){
+
 	/* Seccion 3: Registrar Ejecucion*/
 	const registrarEjecucionBtn = document.querySelectorAll('.registrar-ejecucion');
 	const guardarEjecucionBtn = document.getElementById('guardar-ejecucion-btn');
@@ -320,11 +325,74 @@ function setupMetaScreen() {
 
 	registrarEjecucionBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
+			const dataEjecId = btn.getAttribute('data-ejec-id');
+			const dataEjecHabitoId = btn.getAttribute('data-ejec-habitoID');
+			const dataEjecHabtioName = btn.getAttribute('data-ejec-habitoName');
+			const dataEjecHabtioTipo = btn.getAttribute('data-ejec-habitoTipo');
+			const dataEjecHabtioCantidad = btn.getAttribute('data-ejec-habitoCantidad');
+			const dataEjecHabtioTiempo = btn.getAttribute('data-ejec-habitoTiempo');
+
+			// Llenar el formulario con los datos de la meta seleccionada
+			document.getElementById('idEjecucion').value = dataEjecId;
+			document.getElementById('idEjecHabito').value = dataEjecHabitoId;
+			document.getElementById('nameEjecHabito').value = dataEjecHabtioName;
+			document.getElementById('tipoEjecHabito').value = dataEjecHabtioTipo;
+			document.getElementById('cantidadEjecHabito').value = dataEjecHabtioCantidad;
+			document.getElementById('tiempoEjecHabito').value = dataEjecHabtioTiempo;
+
+			// Mostrar los datos en pantalla
+			document.getElementById('nombreHabitoTexto').textContent = dataEjecHabtioName;
+			document.getElementById('fechaActualTexto').textContent = new Date().toLocaleDateString(); // Fecha actual
+
+			// Dependiendo del tipo, mostrar la sección correcta
+			if (dataEjecHabtioTipo === "cantidad") {
+				document.getElementById('cantidadSection').style.display = 'block';
+				document.getElementById('tiempoSection').style.display = 'none';
+				document.getElementById('cantidadTotal').textContent = dataEjecHabtioCantidad;
+
+				// Establecer el máximo de cantidad
+				// Establecer el máximo de cantidad
+				const cantidadTotal = parseInt(dataEjecHabtioCantidad);
+				const cantidadInput = document.getElementById('cantidadActual');
+				cantidadInput.max = cantidadTotal;
+
+				// Validar si el valor ingresado es mayor al máximo
+				// Bloquear la entrada de números mayores que el máximo
+				cantidadInput.addEventListener('input', function() {
+					const cantidadIngresada = parseInt(cantidadInput.value);
+					if (cantidadIngresada > cantidadTotal) {
+						cantidadInput.value = cantidadTotal; // Si se excede, ajustamos al máximo
+					}
+				});
+
+				// Ocultar botones de tiempo
+				document.getElementById('iniciar-temporizador').style.display = 'none';
+				document.getElementById('pausar-temporizador').style.display = 'none';
+
+			} else if (dataEjecHabtioTipo === "tiempo") {
+				document.getElementById('tiempoSection').style.display = 'block';
+				document.getElementById('cantidadSection').style.display = 'none';
+				document.getElementById('tiempoTotal').textContent = dataEjecHabtioTiempo;
+
+				document.getElementById('iniciar-temporizador').style.display = 'inline-block';
+				document.getElementById('pausar-temporizador').style.display = 'inline-block';
+			}
+
 			screenOverlayEjecucion.style.display = 'flex';
 
 		});
 	});
 
+	//	document.getElementById('formRegistrarEjecucion').addEventListener('submit', function(e) {
+	//		const cantidadInput = document.getElementById('cantidadActual');
+	//		const cantidadTotal = parseInt(document.getElementById('cantidadEjecHabito').value);
+	//
+	//		// Verificamos antes de enviar el formulario si el valor excede el máximo
+	//		if (parseInt(cantidadInput.value) > cantidadTotal) {
+	//			e.preventDefault(); // Evitar que el formulario se envíe si el valor es mayor
+	//			alert(`El valor de la cantidad no puede ser mayor a ${cantidadTotal}.`);
+	//		}
+	//	});
 
 	cerrarEjecucionBtn.addEventListener('click', function() {
 		screenOverlayEjecucion.style.display = 'none';
@@ -332,9 +400,4 @@ function setupMetaScreen() {
 	guardarEjecucionBtn.addEventListener('click', function() {
 		screenOverlayEjecucion.style.display = 'none';
 	});
-
-
-
-
-
 }

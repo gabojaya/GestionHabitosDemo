@@ -134,7 +134,13 @@ public class HabitoController extends HttpServlet {
 		h.setCategoria(req.getParameter("categoria"));
 		h.setTipoMedicion(req.getParameter("tipoMedicion"));
 		h.setFrecuencia(Integer.parseInt(req.getParameter("frecuencia")));
-		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
+		// Validación para cantidadTotal
+		String cantidadTotalParam = req.getParameter("cantidadTotal");
+		if (cantidadTotalParam == null || cantidadTotalParam.trim().isEmpty()) {
+		    h.setCantidadTotal(0);
+		} else {
+		    h.setCantidadTotal(Integer.parseInt(cantidadTotalParam));
+		}
 		h.setEstado(true);
 		try {
 			tiempo = tiempo + ":00";

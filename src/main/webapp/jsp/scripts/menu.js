@@ -524,7 +524,7 @@ function setUpEjecuciones() {
 }
 function notifi(){
 	var records = document.querySelectorAll('.noti');
-	var time = new Date();
+	var time = new Date().toLocaleTimeString('es-ES');
 	console.log("Se entro en la funcionnde notificaciones");
 	// Verificar que el navegador soporta notificaciones
 	if (!("Notification" in window)) {
@@ -534,13 +534,13 @@ function notifi(){
 	}else if(Notification.permission === "granted"){
 	  // Lanzar notificacion si ya esta autorizado el servicio
 	  records.forEach((item)=>{
-		console.log(time.toLocaleTimeString());
+		console.log(time);
 		console.log(item.dataset.idre);
 		console.log(item.dataset.mes);
 		console.log(item.dataset.hor);
-		console.log(time.toLocaleTimeString().substring(0,5));
+		console.log(time.substring(0,5));
 		console.log(item.dataset.hor.substring(0,5));
-		if(time.toLocaleTimeString().substring(0,5)==item.dataset.hor.substring(0,5)){
+		if(time.substring(0,5)==item.dataset.hor.substring(0,5)){
 			var notification = new Notification(item.dataset.mes);
 		}
 	  });
@@ -555,9 +555,9 @@ function notifi(){
 			console.log(item.dataset.idre);
 			console.log(item.dataset.mes);
 			console.log(item.dataset.hor);
-			console.log(time.toLocaleTimeString().substring(0,5));
+			console.log(time.substring(0,5));
 			console.log(item.dataset.hor.substring(0,5));
-			if(time.toLocaleTimeString().substring(0,5)==item.dataset.hor.substring(0,5)){
+			if(time.substring(0,5)==item.dataset.hor.substring(0,5)){
 				var notification = new Notification(item.dataset.mes);
 			}
 			});

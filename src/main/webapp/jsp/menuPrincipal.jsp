@@ -75,7 +75,7 @@
 			<!-- Sección 2: Metas -->
 			<div class="page" id="page2" style="display: none;">
 				<h2 class="create-account">Metas Registradas</h2>
-				<div class="lista-Metas">
+				<div class="lista-Metas" style="overflow:auto;">
 					<table class="tabla-metas">
 						<thead>
 							<tr>
@@ -188,7 +188,7 @@
 				style="display: none;">
 				<div class="container-form-2">
 					<h3>Registrar Hábitos</h3>
-					<div class="lista-habitos">
+					<div class="lista-habitos" style="overflow:auto;">
 						<!--<input type="hidden" name="idmeta" id="idmeta" value="${idMeta}"> -->
 						<table class="tabla-habitos">
 							<thead>
@@ -218,7 +218,7 @@
 												meta-id="${habitos.metaAsociada}"
 												hab-can="${habitos.cantidadTotal}"
 												hab-time="${habitos.tiempoTotal}"
-												hab-ho="${habitos.horario}">Editar</button>
+												>Editar</button>
 											<button class="eliminar-habito" hab-id="${habitos.idHabito}"
 												meta-id="${habitos.metaAsociada}">Eliminar</button>
 											<button class="agregar-horarios-habito"
@@ -306,10 +306,12 @@
 							<label for="tiempo-habito">Tiempo Total:</label> <input
 								type="time" id="tiempo-habito" name="tiempoTotal">
 						</div>
+						<!--  
 						<div class="input-group">
 							<label for="horario-habito">Horario:</label> <input type="time"
 								id="horario-habito" name="horario" required>
 						</div>
+						-->
 
 
 
@@ -328,7 +330,7 @@
 			<div class="page" id="page3" style="display: none;">
 
 				<h2 class="create-account">Registrar Ejecución</h2>
-				<div class="lista-Metas">
+				<div class="lista-Metas" style="overflow:auto;">
 					<table class="tabla-habitos">
 						<thead>
 							<tr>
@@ -558,7 +560,7 @@
 		<!-- Sección 5: Notificaciones-->
 		<div class="page" id="page5" style="display: none;">
 			<h2 class="create-account">Notificaciones</h2>
-			<div class="lista-Metas">
+			<div class="lista-Metas" style="overflow:auto;">
 				<table class="tabla-metas">
 					<thead>
 						<tr>
@@ -570,7 +572,7 @@
 						<!-- Iterar sobre los recordatorios -->
 						<c:forEach var="recordatorio" items="${recordatorios}">
 							<tr>
-								<td style="color: black;">${recordatorio.mensaje}</td>
+								<td data-idre="${recordatorio.idRecordatorio}" data-mes="${recordatorio.mensaje}" data-hor="${recordatorio.hora}" class="noti" style="color: black;">${recordatorio.mensaje}</td>
 								<td>
 									<button style="font-size: 24px">
 										Check<i class="fa fa-calendar-check-o"></i>

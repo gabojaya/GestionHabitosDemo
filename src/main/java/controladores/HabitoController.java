@@ -86,7 +86,6 @@ public class HabitoController extends HttpServlet {
 		System.out.println(idh);
 		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
 		String tiempo = req.getParameter("tiempoTotal");
-		String horario = req.getParameter("horario");
 		Habito h = new Habito();
 		h.setIdHabito(idh);
 		h.setMetaAsociada(meta);
@@ -97,13 +96,9 @@ public class HabitoController extends HttpServlet {
 		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
 		try {
 			tiempo = tiempo + ":00";
-		    horario = horario + ":00";
 			Date ti = format.parse(tiempo);
-			Date ho = format.parse(horario);
 		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());
-		    java.sql.Time sqlhorario = new java.sql.Time(ho.getTime());
 		    h.setTiempoTotal(sqlTiempo);
-		    h.setHorario(sqlhorario);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -144,13 +139,9 @@ public class HabitoController extends HttpServlet {
 		h.setEstado(true);
 		try {
 			tiempo = tiempo + ":00";
-		    horario = horario + ":00";
 			Date ti = format.parse(tiempo);
-			Date ho = format.parse(horario);
 		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());
-		    java.sql.Time sqlhorario = new java.sql.Time(ho.getTime());
 		    h.setTiempoTotal(sqlTiempo);
-		    h.setHorario(sqlhorario);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

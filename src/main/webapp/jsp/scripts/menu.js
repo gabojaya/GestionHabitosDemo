@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	} else if (ruta === 'listarRecordatorios') {
 		showPage(5);
 		setupTabs();
+		notifi();
 
 	} else {
 		showPage(2);
@@ -212,7 +213,6 @@ function setupMetaScreen() {
 		document.getElementById('frecuencia-habito').value = '';
 		document.getElementById('cantidad-habito').value = '';
 		document.getElementById('tiempo-habito').value = '';
-		document.getElementById('horario-habito').value = '';
 		editar = false;
 		screenOverlayRegistroHabitos.style.display = 'flex';
 	});
@@ -265,7 +265,7 @@ function setupMetaScreen() {
 			const hmed = btn.getAttribute('hab-med');
 			const hcan = btn.getAttribute('hab-can');
 			const htime = btn.getAttribute('hab-time');
-			const hho = btn.getAttribute('hab-ho');
+			//const hho = btn.getAttribute('hab-ho');
 			document.getElementById('idhab').value = hid;
 			document.getElementById('nombre-habito').value = hnom || '';
 			document.getElementById('categoria-habito').value = hcat || '';
@@ -273,9 +273,17 @@ function setupMetaScreen() {
 			document.getElementById('frecuencia-habito').value = hf || '';
 			document.getElementById('cantidad-habito').value = hcan || '';
 			document.getElementById('tiempo-habito').value = htime || '';
-			document.getElementById('horario-habito').value = hho || '';
+			//document.getElementById('horario-habito').value = hho || '';
 			editar = true;
 			screenOverlayRegistroHabitos.style.display = 'flex';
+			if(document.getElementById("tipo-medicion").value=="cantidad"){
+			    document.getElementById("divcan").style.display = 'flex';
+			    document.getElementById("divtime").style.display = 'none';
+			}
+			if(document.getElementById("tipo-medicion").value=="tiempo"){
+				document.getElementById("divtime").style.display = 'flex';
+				document.getElementById("divcan").style.display = 'none';
+			}
 
 		});
 	});
@@ -409,4 +417,50 @@ function setUpEjecuciones() {
 	guardarEjecucionBtn.addEventListener('click', function() {
 		screenOverlayEjecucion.style.display = 'none';
 	});
+}
+function notifi(){
+	var records = document.querySelectorAll('.noti');
+	var time = new Date();
+	console.log("Se entro en la funcionnde notificaciones");
+	// Verificar que el navegador soporta notificaciones
+	if (!("Notification" in window)) {
+	  
+	  alert("Tu navegador no soporta notificaciones");
+
+	}else if(Notification.permission === "granted"){
+	  // Lanzar notificacion si ya esta autorizado el servicio
+	  records.forEach((item)=>{
+		console.log(time.toLocaleTimeString());
+		console.log(item.dataset.idre);
+		console.log(item.dataset.mes);
+		console.log(item.dataset.hor);
+		console.log(time.toLocaleTimeString().substring(0,5));
+		console.log(item.dataset.hor.substring(0,5));
+		if(time.toLocaleTimeString().substring(0,5)==item.dataset.hor.substring(0,5)){
+			var notification = new Notification(item.dataset.mes);
+		}
+	  });
+
+	}else if(Notification.permission !== "denied"){
+	  Notification.requestPermission(function(permission){
+
+	    if(Notification.permission === "granted"){
+			// Lanzar notificacion si ya esta autorizado el servicio
+			records.forEach((item)=>{
+			console.log(time.toLocaleTimeString());
+			console.log(item.dataset.idre);
+			console.log(item.dataset.mes);
+			console.log(item.dataset.hor);
+			console.log(time.toLocaleTimeString().substring(0,5));
+			console.log(item.dataset.hor.substring(0,5));
+			if(time.toLocaleTimeString().substring(0,5)==item.dataset.hor.substring(0,5)){
+				var notification = new Notification(item.dataset.mes);
+			}
+			});
+
+	    }
+
+	  });
+
+	}
 }

@@ -192,10 +192,10 @@ h2.create-account {
 
 /* Seccion 2*/
 .lista-Metas{
-  
   width: 90%;
   height: 400px;
   background-color: #fff;
+  overflow:auto;
   margin-bottom: 1rem;
   justify-items: center;
 }

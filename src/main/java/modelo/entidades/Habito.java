@@ -43,15 +43,12 @@ public class Habito implements Serializable {
 	private int cantidadTotal;
 	@Column(name="tiempoTotal")
 	private Time tiempoTotal;
-	@Column(name="horario")
-	private Time horario;
-	//Lista de recordatorios
 
 	public Habito() {
 	}
 
 	public Habito(int idHabito, String nombre, String categoria, Meta meta, boolean estado, String tipoMedicion,
-			int frecuencia, int cantidadTotal, Time tiempoTotal, Time horario) {
+			int frecuencia, int cantidadTotal, Time tiempoTotal) {
 		this.idHabito = idHabito;
 		this.nombre = nombre;
 		this.categoria = categoria;
@@ -61,7 +58,6 @@ public class Habito implements Serializable {
 		this.frecuencia = frecuencia;
 		this.cantidadTotal = cantidadTotal;
 		this.tiempoTotal = tiempoTotal;
-		this.horario = horario;
 	}
 
 	public int getIdHabito() {
@@ -137,14 +133,5 @@ public class Habito implements Serializable {
 	public void setTiempoTotal(Time tiempoTotal) {
 		this.tiempoTotal = tiempoTotal;
 	}
-
-	public Time getHorario() {
-		return horario;
-	}
-
-	public void setHorario(Time horario) {
-		this.horario = horario;
-	}
-	
 
 }

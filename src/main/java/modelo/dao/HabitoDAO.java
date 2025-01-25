@@ -66,7 +66,6 @@ public class HabitoDAO {
 		hactual.setFrecuencia(h.getFrecuencia());
 		hactual.setCantidadTotal(h.getCantidadTotal());
 		hactual.setTiempoTotal(h.getTiempoTotal());
-		hactual.setHorario(h.getHorario());
 		
 		em.getTransaction().begin();
 		em.merge(hactual);

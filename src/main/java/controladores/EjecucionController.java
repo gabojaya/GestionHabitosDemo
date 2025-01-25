@@ -1,6 +1,7 @@
 package controladores;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -57,6 +58,27 @@ public class EjecucionController extends HttpServlet {
 
 	private void registrarEjecucion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		System.out.println("Entro a REGISTRAR LA EJECUCION---------------");
+		
+		// Obtener datos del formulario
+	    int idEjecucion = Integer.parseInt(req.getParameter("idEjecucion"));
+	    int cantidadRealizada = 0;
+	    Time tiempoCompletado = null;
+	   
+	    
+	    // Verificar si se llenó la cantidad o el tiempo
+	    if (req.getParameter("cantidadActual") != null && !req.getParameter("cantidadActual").isEmpty()) {
+	        cantidadRealizada = Integer.parseInt(req.getParameter("cantidadActual"));
+	    }
+	    if (req.getParameter("tiempoTranscurrido") != null && !req.getParameter("tiempoTranscurrido").isEmpty()) {
+	        String tiempoRealizado = req.getParameter("tiempoTranscurrido"); // Ej: "01:30:00"
+	        tiempoCompletado = Time.valueOf(tiempoRealizado);
+	        cantidadRealizada = 0;  // Si se llenó el tiempo, se pone cantidad en 0
+	    }
+	    
+	    
+	    System.out.println("ESTA ES LA CANTIDAD REALIZADA: " + cantidadRealizada);
+	    System.out.println("ESTA ES LA TIEMPO REALIZADO: " + tiempoCompletado);
+	    
 		
 	}
 

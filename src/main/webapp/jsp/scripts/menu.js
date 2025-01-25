@@ -357,6 +357,11 @@ function setUpEjecuciones() {
 			document.getElementById('cantidadEjecHabito').value = dataEjecHabtioCantidad;
 			document.getElementById('tiempoEjecHabito').value = dataEjecHabtioTiempo;
 
+			// Limpiar los campos de cantidad y tiempo antes de llenar con nuevos valores
+			document.getElementById('cantidadActual').value = '';
+			document.getElementById('tiempoTranscurrido').value = '';
+			document.getElementById('tiempoTranscurridoInput').value = '';
+
 			// Mostrar los datos en pantalla
 			document.getElementById('nombreHabitoTexto').textContent = dataEjecHabtioName;
 			document.getElementById('fechaActualTexto').textContent = new Date().toLocaleDateString(); // Fecha actual
@@ -385,6 +390,7 @@ function setUpEjecuciones() {
 				// Ocultar botones de tiempo
 				document.getElementById('iniciar-temporizador').style.display = 'none';
 				document.getElementById('pausar-temporizador').style.display = 'none';
+				document.getElementById('reiniciar-temporizador').style.display = 'none';
 
 			} else if (dataEjecHabtioTipo === "tiempo") {
 				document.getElementById('tiempoSection').style.display = 'block';
@@ -393,6 +399,7 @@ function setUpEjecuciones() {
 
 				document.getElementById('iniciar-temporizador').style.display = 'inline-block';
 				document.getElementById('pausar-temporizador').style.display = 'inline-block';
+				document.getElementById('reiniciar-temporizador').style.display = 'inline-block';
 			}
 
 			screenOverlayEjecucion.style.display = 'flex';
@@ -414,9 +421,106 @@ function setUpEjecuciones() {
 	cerrarEjecucionBtn.addEventListener('click', function() {
 		screenOverlayEjecucion.style.display = 'none';
 	});
-	guardarEjecucionBtn.addEventListener('click', function() {
+	
+
+	// Obtener referencias a los elementos del DOM
+	const tiempoSection = document.getElementById('tiempoSection');
+	const tiempoTranscurrido = document.getElementById('tiempoTranscurrido');
+	const tiempoTotal = document.getElementById('tiempoTotal');
+	const iniciarBtn = document.getElementById('iniciar-temporizador');
+	const pausarBtn = document.getElementById('pausar-temporizador');
+	const reiniciarBtn = document.getElementById('reiniciar-temporizador');
+
+
+	let intervalo = null;
+
+	let tiempoEnSegundos = 0;
+	let tiempoTotalEnSegundos = 0;
+
+	
+	// Función para iniciar el temporizador
+	iniciarBtn.addEventListener('click', () => {
+	    if (!intervalo) {
+	        // Obtener el tiempo total desde el input oculto
+	        const tiempoTotalTexto = document.getElementById('tiempoEjecHabito').value;
+
+	        // Soporte para formato hh:mm:ss
+	        const [horasTotales, minutosTotales, segundosTotales] = tiempoTotalTexto.split(':').map(Number);
+	        tiempoTotalEnSegundos = (horasTotales * 3600) + (minutosTotales * 60) + segundosTotales;
+
+	        intervalo = setInterval(() => {
+	            if (tiempoEnSegundos < tiempoTotalEnSegundos) {
+	                tiempoEnSegundos++;
+	                const horas = String(Math.floor(tiempoEnSegundos / 3600)).padStart(2, '0');
+	                const minutos = String(Math.floor((tiempoEnSegundos % 3600) / 60)).padStart(2, '0');
+	                const segundos = String(tiempoEnSegundos % 60).padStart(2, '0');
+	                tiempoTranscurrido.textContent = `${horas}:${minutos}:${segundos}`;
+
+	                // Actualizar el campo oculto con el tiempo transcurrido
+	                document.getElementById('tiempoTranscurridoInput').value = `${horas}:${minutos}:${segundos}`;
+	            } else {
+	                // Detener el temporizador automáticamente al alcanzar el límite
+	                clearInterval(intervalo);
+	                intervalo = null;
+	                iniciarBtn.disabled = true;
+	                pausarBtn.disabled = true;
+	                alert("Has alcanzado el tiempo total asignado.");
+	            }
+	        }, 1000);
+
+	        iniciarBtn.disabled = true;
+	        pausarBtn.disabled = false;
+	    }
+	});
+
+
+	// Función para pausar el temporizador
+	pausarBtn.addEventListener('click', () => {
+		clearInterval(intervalo);
+		intervalo = null;
+		iniciarBtn.disabled = false;
+		pausarBtn.disabled = true;
+	});
+
+	// Función para reiniciar el temporizador
+	reiniciarBtn.addEventListener('click', () => {
+		clearInterval(intervalo);
+		intervalo = null;
+		tiempoEnSegundos = 0;
+		tiempoTranscurrido.textContent = '00:00:00';
+		iniciarBtn.disabled = false;
+		pausarBtn.disabled = true;
+	});
+
+	// Función para reiniciar el temporizador al cerrar
+	cerrarEjecucionBtn.addEventListener('click', () => {
+		clearInterval(intervalo);
+		intervalo = null;
+		tiempoEnSegundos = 0;
+		tiempoTranscurrido.textContent = '00:00:00';
+		iniciarBtn.disabled = false;
+		pausarBtn.disabled = true;
+		tiempoSection.style.display = 'none';
 		screenOverlayEjecucion.style.display = 'none';
 	});
+
+	guardarEjecucionBtn.addEventListener('click', function() {
+		// Detener el temporizador si está corriendo
+		    if (intervalo) {
+		        clearInterval(intervalo);
+		        intervalo = null;
+		    }
+		// Asignar el valor del cronómetro al campo de formulario
+		document.getElementById('tiempoTranscurrido').value = tiempoTranscurrido.textContent;
+
+		// Proceder con el resto del código para guardar la ejecución
+		screenOverlayEjecucion.style.display = 'none';
+	});
+
+
+
+
+
 }
 function notifi(){
 	var records = document.querySelectorAll('.noti');

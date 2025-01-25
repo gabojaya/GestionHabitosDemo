@@ -435,9 +435,10 @@
 					<!-- Sección para tiempo -->
 					<div id="tiempoSection" style="display: none;">
 						<p>
-							<strong>Tiempo Realizado:</strong> <input type="time"
-								id="tiempoActual" name="tiempoActual" /> <span
-								id="tiempoTranscurrido">00:00</span>
+							<strong>Tiempo Realizado:</strong> <span
+								id="tiempoTranscurrido">00:00:00</span>
+								<input type="hidden" id="tiempoTranscurridoInput" name="tiempoTranscurrido" value="00:00:00">
+								
 						</p>
 						<p>
 							<strong>Tiempo Total:</strong> <span id="tiempoTotal"></span>
@@ -449,11 +450,13 @@
 							id="iniciar-temporizador">Iniciar</button>
 						<button type="button" class="button-user" id="pausar-temporizador"
 							disabled>Pausar</button>
+						<button type="button" class="button-user"
+							id="reiniciar-temporizador">Reiniciar</button>
 					</div>
 
 					<div class="botones-meta">
 						<button type="submit" class="button-user"
-							id="guardar-ejecucion-btn">Guardar Hábito</button>
+							id="guardar-ejecucion-btn">Guardar Ejecución</button>
 						<button type="button" class="button-user"
 							id="cerrar-ejecucion-btn">Cancelar</button>
 					</div>
@@ -591,60 +594,13 @@
 			src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 		<script src="${pageContext.request.contextPath}/jsp/scripts/radar.js"></script>
 		<script>
-        // Obtener referencias a los elementos del DOM
-        const fechaActualTexto = document.getElementById('fechaActualTexto');
-        const tiempoTranscurrido = document.getElementById('tiempoTranscurrido');
-        const iniciarBtn = document.getElementById('iniciar-temporizador');
-        const pausarBtn = document.getElementById('pausar-temporizador');
-
-        // Configurar la fecha actual
-        const fechaActual = new Date();
-        fechaActualTexto.textContent = fechaActual.toLocaleDateString();
-
-        // Variables para el temporizador
-        let intervalo;
-        let tiempoEnSegundos = 0;
-
-        // Función para iniciar el temporizador
-        iniciarBtn.addEventListener('click', () => {
-            if (!intervalo) {
-                intervalo = setInterval(() => {
-                    tiempoEnSegundos++;
-                    const minutos = String(Math.floor(tiempoEnSegundos / 60)).padStart(2, '0');
-                    const segundos = String(tiempoEnSegundos % 60).padStart(2, '0');
-                    tiempoTranscurrido.textContent = `${minutos}:${segundos}`;
-                }, 1000);
-                iniciarBtn.disabled = true;
-                pausarBtn.disabled = false;
-            }
-        });
-
-        // Función para pausar el temporizador
-        pausarBtn.addEventListener('click', () => {
-            clearInterval(intervalo);
-            intervalo = null;
-            iniciarBtn.disabled = false;
-            pausarBtn.disabled = true;
-        });
-
-        // Función para cerrar el modal (opcional, puedes adaptarla según tu lógica)
-        const cerrarBtn = document.getElementById('cerrar-ejecucion-btn');
-        cerrarBtn.addEventListener('click', () => {
-            clearInterval(intervalo);
-            intervalo = null;
-            tiempoEnSegundos = 0;
-            tiempoTranscurrido.textContent = '00:00';
-            iniciarBtn.disabled = false;
-            pausarBtn.disabled = true;
-            document.getElementById('screenOverlayEjecucion').style.display = 'none';
-        });
-        function pruebaf(){
+		function pruebaf(){
         	//document.getElementById("idmeta").value= window.location.search.get(idmeta);
         	 var id = new URLSearchParams(window.location.search);
         	 console.log(id.get("idmeta"));
         	 document.getElementById("idmeta").value=id.get("idmeta");
         }
-        function showMed(){
+		function showMed(){
         	if(document.getElementById("tipo-medicion").value=="cantidad"){
         		document.getElementById("divcan").style.display = 'flex';
         		document.getElementById("divtime").style.display = 'none';
@@ -655,7 +611,8 @@
         	}
         	
         }
-    </script>
+		
+		</script>
 </body>
 
 </html>

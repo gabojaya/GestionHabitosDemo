@@ -36,6 +36,12 @@ public class Estadistica implements Serializable {
 	@Column(name="totalEjecuciones")
 	private int totalEjecuciones;
 	
+	@Column(name="cantidadFinalEsperada")
+	private int cantidadFinalEsperada;
+	
+	@Column(name="tiempoFinalEsperado")
+	private Time tiempoFinalEsperado;
+	
 	@Column(name="progresoAcumulado")
 	private double progresoAcumulado;
 	
@@ -46,12 +52,16 @@ public class Estadistica implements Serializable {
 	}
 
 	public Estadistica(int idEstadistica, Habito habito, int cantidadAcumulada, Time tiempoAcumulado,
-			int totalEjecuciones, double progresoAcumulado, boolean estado) {
+			int totalEjecuciones, int cantidadFinalEsperada, Time tiempoFinalEsperado, double progresoAcumulado,
+			boolean estado) {
+		super();
 		this.idEstadistica = idEstadistica;
 		this.habito = habito;
 		this.cantidadAcumulada = cantidadAcumulada;
 		this.tiempoAcumulado = tiempoAcumulado;
 		this.totalEjecuciones = totalEjecuciones;
+		this.cantidadFinalEsperada = cantidadFinalEsperada;
+		this.tiempoFinalEsperado = tiempoFinalEsperado;
 		this.progresoAcumulado = progresoAcumulado;
 		this.estado = estado;
 	}
@@ -64,11 +74,11 @@ public class Estadistica implements Serializable {
 		this.idEstadistica = idEstadistica;
 	}
 
-	public Habito getHabitos() {
+	public Habito getHabito() {
 		return habito;
 	}
 
-	public void setHabitos(Habito habito) {
+	public void setHabito(Habito habito) {
 		this.habito = habito;
 	}
 
@@ -111,5 +121,23 @@ public class Estadistica implements Serializable {
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
+
+	public int getCantidadFinalEsperada() {
+		return cantidadFinalEsperada;
+	}
+
+	public void setCantidadFinalEsperada(int cantidadFinalEsperada) {
+		this.cantidadFinalEsperada = cantidadFinalEsperada;
+	}
+
+	public Time getTiempoFinalEsperado() {
+		return tiempoFinalEsperado;
+	}
+
+	public void setTiempoFinalEsperado(Time tiempoFinalEsperado) {
+		this.tiempoFinalEsperado = tiempoFinalEsperado;
+	}
+	
+	
 
 }

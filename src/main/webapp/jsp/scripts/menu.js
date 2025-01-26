@@ -556,7 +556,8 @@ function mostrarEstadisticas(){
 	console.log(ta);
 	const tf= urlParams.get('data-tf');
 	console.log(tf);
-	var tan = (parseFloat(ta.substring(0,2)))+((parseFloat(ta.substring(3,5)))/60);
+	console.log(ta.substring(3,5));
+	var tan = (parseFloat(ta.substring(0,2)))+((parseFloat(ta.substring(3,5)))/60)+((parseFloat(ta.substring(6,8)))/3600);
 	var tfn = (parseFloat(tf.substring(0,2)))+((parseFloat(tf.substring(3,5)))/60);
 	console.log(tan);
 	console.log(tfn);

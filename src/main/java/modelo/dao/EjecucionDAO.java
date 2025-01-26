@@ -39,5 +39,26 @@ public class EjecucionDAO {
 	    }
 		
 	}
+	
+	public Ejecucion buscarEjecucionPorId(int idEjecucion) {
+	    return em.find(Ejecucion.class, idEjecucion);
+	}
+
+	public void actualizarEjecucion(Ejecucion ejecucion) {
+	    try {
+	        em.getTransaction().begin();
+	        em.merge(ejecucion);  // Utilizar merge para actualizar la ejecución
+	        em.getTransaction().commit();
+	    } catch (Exception e) {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        e.printStackTrace();
+	    } finally {
+	        em.close();
+	    }
+	}
+
+	
 
 }

@@ -101,6 +101,11 @@ public class NotificacionController extends HttpServlet {
 					break; // Salir del bucle si no hay más horarios
 				horarios.add(Time.valueOf(horaParam + ":00"));
 			}
+			// Imprimir los elementos de la lista
+			System.out.println("Horarios registrados:");
+			for (Time horario : horarios) {
+			    System.out.println(horario);
+			}
 
 			NotificacionDAO notificacionDAO = new NotificacionDAO();
 			for (Time hora : horarios) {

@@ -29,7 +29,7 @@ public class Habito implements Serializable {
 	@Column(name="categoria")
 	private String categoria;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "idMeta", nullable = false)
 	private Meta metaAsociada;
 	

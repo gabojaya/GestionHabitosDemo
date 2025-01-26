@@ -56,6 +56,31 @@ public class NotificacionDAO {
 	    return query.getResultList();
 	}
 
+	public Recordatorio obtenerRecordatorioPorId(int idRecordatorio) {
+	    String jpql = "SELECT r FROM Recordatorio r WHERE r.idRecordatorio = :idRecordatorio";
+	    TypedQuery<Recordatorio> query = em.createQuery(jpql, Recordatorio.class);
+	    query.setParameter("idRecordatorio", idRecordatorio);
+	    
+	    // Se asume que el id es único, por lo que se espera un único resultado.
+	    return query.getResultList().stream().findFirst().orElse(null);
+	}
+	
+	public boolean actualizarRecordatorio(Recordatorio recordatorio) {
+	    try {
+	        em.getTransaction().begin();
+	        em.merge(recordatorio);  // merge se usa para actualizar el registro existente
+	        em.getTransaction().commit();
+	        System.out.println("Recordatorio actualizado con éxito.");
+	        return true;
+	    } catch (Exception e) {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 
 
 }

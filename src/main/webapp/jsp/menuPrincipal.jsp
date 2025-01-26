@@ -338,6 +338,7 @@
 								<th>Nombre del Hábito</th>
 								<th>Categoría</th>
 								<th>Fecha</th>
+								<th>Hora</th>
 								<th>Estado</th>
 								<th>Acciones</th>
 							</tr>
@@ -349,6 +350,7 @@
 									<td>${ejecucion.habito.nombre}</td>
 									<td>${ejecucion.habito.categoria}</td>
 									<td>${ejecucion.fecha}</td>
+									<td>${ejecucion.hora}</td>
 									<td>${ejecucion.estado}</td>
 									<td>
 										<button class="registrar-ejecucion" id="registrar-ejecucion"

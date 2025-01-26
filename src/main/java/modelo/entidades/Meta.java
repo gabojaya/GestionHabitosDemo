@@ -40,7 +40,7 @@ public class Meta implements Serializable {
 	@Column(name="fechaFin")
 	private Date fechaFin;
 	
-	@OneToMany(mappedBy = "metaAsociada", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "metaAsociada", cascade = CascadeType.REFRESH)
 	private List<Habito> habitos;
 
 	@Column(name="progreso")

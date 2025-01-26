@@ -3,6 +3,7 @@ package modelo.entidades;
 import java.io.Serializable;
 import java.sql.Time;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class Estadistica implements Serializable {
 	@Column(name="idEstadistica")
 	private int idEstadistica;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "idHabito", nullable = false)
 	private Habito habito;
 	

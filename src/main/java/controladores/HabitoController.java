@@ -95,7 +95,13 @@ public class HabitoController extends HttpServlet {
 		h.setFrecuencia(Integer.parseInt(req.getParameter("frecuencia")));
 		h.setCantidadTotal(Integer.parseInt(req.getParameter("cantidadTotal")));
 		try {
-			tiempo = tiempo + ":00";
+			// Validar si el valor de tiempo es nulo o vacío antes de procesarlo
+		    if (tiempo == null || tiempo.trim().isEmpty()) {
+		        tiempo = null;
+		    } else {
+		        // Si el formato es "mm:ss", agregar ":00" para convertirlo a "hh:mm:ss"
+		    	tiempo = tiempo + ":00";
+		    }
 			Date ti = format.parse(tiempo);
 		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());
 		    h.setTiempoTotal(sqlTiempo);
@@ -122,6 +128,7 @@ public class HabitoController extends HttpServlet {
 		
 		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
 		String tiempo = req.getParameter("tiempoTotal");
+		System.out.println("Tiempo Total:"+tiempo);
 		String horario = req.getParameter("horario");
 		Habito h = new Habito();
 		h.setMetaAsociada(meta);
@@ -138,7 +145,15 @@ public class HabitoController extends HttpServlet {
 		}
 		h.setEstado(true);
 		try {
-			tiempo = tiempo + ":00";
+			
+			// Validar si el valor de tiempo es nulo o vacío antes de procesarlo
+		    if (tiempo == null || tiempo.trim().isEmpty()) {
+		        tiempo = null;
+		    } else {
+		        // Si el formato es "mm:ss", agregar ":00" para convertirlo a "hh:mm:ss"
+		    	tiempo = tiempo + ":00";
+		    }
+			
 			Date ti = format.parse(tiempo);
 		    java.sql.Time sqlTiempo = new java.sql.Time(ti.getTime());
 		    h.setTiempoTotal(sqlTiempo);

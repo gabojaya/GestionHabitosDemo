@@ -47,7 +47,9 @@ public class EstadisticaController extends HttpServlet {
 		case "actualizarEstadisticas":
 			this.actualizarEstadisticas(req, resp);
 			break;
-	
+		case "verEstadistica":
+			this.obtenerEstadisticaPorHabito(req, resp);
+			break;
 		}
 	}
 
@@ -129,5 +131,19 @@ public class EstadisticaController extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void obtenerEstadisticaPorHabito(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException{
+		System.out.println("Se entro en obtener estadisticas");
+		System.out.println(req.getParameter("habito"));
+		HttpSession session = req.getSession();
+		int idhab = Integer.parseInt(req.getParameter("habito"));
+		System.out.println(idhab);
+		EstadisticaDAO estdao= new EstadisticaDAO();
+		Estadistica est = new Estadistica();
+		est = estdao.obtenerEstadisticasPorHabito(idhab);
+		req.setAttribute("estadistica", est);
+		String data = "&data-ca="+est.getCantidadAcumulada()+"&data-cf="+est.getCantidadFinalEsperada()+"&data-ta="+est.getTiempoAcumulado()+"&data-tf="+est.getTiempoFinalEsperado();
+		resp.sendRedirect("HabitoController?ruta=listarHabitosUsuario"+data);
 	}
 }

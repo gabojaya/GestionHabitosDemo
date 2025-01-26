@@ -16,10 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		notifi();
 		
 	}else if (ruta === 'listarHabitosUsuario') {
-				showPage(4);
-				setupTabs();
+		showPage(4);
+		setupTabs();
+		setUpEstadisticas();
+		mostrarEstadisticas();
 
-	} else {
+	}else {
 		showPage(2);
 		setupTabs();
 		setupMetaScreen();
@@ -532,6 +534,67 @@ function setUpEjecuciones() {
 
 
 }
+
+function setUpEstadisticas(){
+	const verButton = document.querySelectorAll('[data-ver]');
+	verButton.forEach(function(btn){
+		btn.addEventListener('click',function(){
+			const idhabito = btn.getAttribute('data-id');
+			window.location.href = `EstadisticaController?ruta=verEstadistica&habito=${idhabito}`;
+		});
+	});
+}
+function mostrarEstadisticas(){
+	console.log("Entro a mostrar");
+	const valores = window.location.search;
+	const urlParams = new URLSearchParams(valores);
+	const ca= urlParams.get('data-ca');
+	console.log(ca);
+	const cf= urlParams.get('data-cf');
+	console.log(cf);
+	const ta= urlParams.get('data-ta');
+	console.log(ta);
+	const tf= urlParams.get('data-tf');
+	console.log(tf);
+	var tan = (parseFloat(ta.substring(0,2)))+((parseFloat(ta.substring(3,5)))/60);
+	var tfn = (parseFloat(tf.substring(0,2)))+((parseFloat(tf.substring(3,5)))/60);
+	console.log(tan);
+	console.log(tfn);
+	const ctx = document.getElementById('myChart');
+	const data = {
+	  labels: ['cantidad acumulada','cantidad esperada','tiempo acumulado','tiempo esperado'],
+	  datasets: [{
+	    label: 'Estadisticas',
+	    data: [ca, cf, tan, tfn],
+	    backgroundColor: [
+	      'rgba(255, 99, 132, 0.2)',
+	      'rgba(255, 159, 64, 0.2)',
+	      'rgba(255, 205, 86, 0.2)',
+	      'rgba(75, 192, 192, 0.2)'
+	    ],
+	    borderColor: [
+	      'rgb(255, 99, 132)',
+	      'rgb(255, 159, 64)',
+	      'rgb(255, 205, 86)',
+	      'rgb(75, 192, 192)'
+	    ],
+	    borderWidth: 1
+	  }]
+	};
+	const config = {
+	  type: 'bar',
+	  data: data,
+	  options: {
+	    scales: {
+	      y: {
+	        beginAtZero: true
+	      }
+	    }
+	  },
+	};
+	new Chart(ctx,config);
+}
+
 function notifi() {
 	var records = document.querySelectorAll('.noti');
 	var time = new Date().toLocaleTimeString('es-ES');
@@ -543,13 +606,7 @@ function notifi() {
 
 	} else if (Notification.permission === "granted") {
 		// Lanzar notificacion si ya esta autorizado el servicio
-		records.forEach((item) => {
-			console.log(time);
-			console.log(item.dataset.idre);
-			console.log(item.dataset.mes);
-			console.log(item.dataset.hor);
-			console.log(time.substring(0, 5));
-			console.log(item.dataset.hor.substring(0, 5));
+		records.forEach((item) => {;
 			if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
 				var notification = new Notification(item.dataset.mes);
 			}
@@ -561,12 +618,6 @@ function notifi() {
 			if (Notification.permission === "granted") {
 				// Lanzar notificacion si ya esta autorizado el servicio
 				records.forEach((item) => {
-					console.log(time.toLocaleTimeString());
-					console.log(item.dataset.idre);
-					console.log(item.dataset.mes);
-					console.log(item.dataset.hor);
-					console.log(time.substring(0, 5));
-					console.log(item.dataset.hor.substring(0, 5));
 					if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
 						var notification = new Notification(item.dataset.mes);
 					}

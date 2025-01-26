@@ -1,27 +1,44 @@
-//selecciona el cambas
-const ctx = document.getElementById('myChart');
-//se crean los datos para el grafico
-const data = {
-    labels: ['Comer','Tomar agua','Dormir','Jugar','Trabajar','Gym','Correr'],//aquie se cargaran los habitos de la meta
-    datasets: [{
-        label:'General',
-        data: [65, 59, 90, 81, 56, 55, 40],//aqui las ejecuciones para el grafico
-        fill: true,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',//estilo del grafico
-        borderColor: 'rgb(255, 99, 132)',
-        pointBackgroundColor: 'rgb(255, 99, 132)',
-        pointBorderColor: '#fff',
-    }]
-};
-const config = {
-    type: 'radar',
-    data: data,
-    options: {
-        elements: {
-        line: {
-            borderWidth: 3
-        }
-        }
-    },
-};
-new Chart(ctx,config);//se crea el grafico en el canvas indicado
+console.log("Entro a mostrar");
+	const valores = window.location.search;
+	const urlParams = new URLSearchParams(valores);
+	const ca= urlParams.get('data-ca');
+	console.log(ca);
+	const cf= urlParams.get('data-cf');
+	console.log(cf);
+	const ta= urlParams.get('data-ta');
+	console.log(ta);
+	const tf= urlParams.get('data-tf');
+	console.log(tf);
+	const ctx = document.getElementById('myChart');
+	const data = {
+	  labels: ['cantidad acumulada','cantidad esperada','tiempo acumulado','tiempo esperado'],
+	  datasets: [{
+	    label: 'Estadisticas',
+	    data: [ca, cf, ta, tf],
+	    backgroundColor: [
+	      'rgba(255, 99, 132, 0.2)',
+	      'rgba(255, 159, 64, 0.2)',
+	      'rgba(255, 205, 86, 0.2)',
+	      'rgba(75, 192, 192, 0.2)'
+	    ],
+	    borderColor: [
+	      'rgb(255, 99, 132)',
+	      'rgb(255, 159, 64)',
+	      'rgb(255, 205, 86)',
+	      'rgb(75, 192, 192)'
+	    ],
+	    borderWidth: 1
+	  }]
+	};
+	const config = {
+	  type: 'bar',
+	  data: data,
+	  options: {
+	    scales: {
+	      y: {
+	        beginAtZero: true
+	      }
+	    }
+	  },
+	};
+	new chart(ctx,config);

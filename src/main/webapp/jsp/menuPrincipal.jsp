@@ -490,7 +490,7 @@
 									<td>${habito.frecuencia}</td>
 									<td>${habito.estado ? 'Activo' : 'Inactivo'}</td>
 									<td>
-										<button class="editar-habito" data-id="${habito.idHabito}">Ver estadistica</button>
+										<button data-ver="verbutton" class="editar-habito" data-id="${habito.idHabito}">Ver estadistica</button>
 									</td>
 								</tr>
 							</c:forEach>
@@ -595,9 +595,7 @@
 
 
 		<script src="${pageContext.request.contextPath}/jsp/scripts/menu.js"></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-		<script src="${pageContext.request.contextPath}/jsp/scripts/radar.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 		<script>
 		function pruebaf(){
         	//document.getElementById("idmeta").value= window.location.search.get(idmeta);

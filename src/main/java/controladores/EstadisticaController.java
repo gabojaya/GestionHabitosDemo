@@ -144,6 +144,7 @@ public class EstadisticaController extends HttpServlet {
 		est = estdao.obtenerEstadisticasPorHabito(idhab);
 		req.setAttribute("estadistica", est);
 		String data = "&data-ca="+est.getCantidadAcumulada()+"&data-cf="+est.getCantidadFinalEsperada()+"&data-ta="+est.getTiempoAcumulado()+"&data-tf="+est.getTiempoFinalEsperado();
+		System.out.println("este es el data: " + data);
 		resp.sendRedirect("HabitoController?ruta=listarHabitosUsuario"+data);
 	}
 }

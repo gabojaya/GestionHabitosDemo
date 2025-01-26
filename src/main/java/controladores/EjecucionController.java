@@ -196,7 +196,8 @@ public class EjecucionController extends HttpServlet {
 			}
 
 		}
-
+		//getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
+		resp.sendRedirect("EjecucionController?ruta=listarEjecuciones");
 		// req.getRequestDispatcher("HabitoController?ruta=listar&idmeta="+
 		// meta.getIdMeta()).forward(req, resp);
 

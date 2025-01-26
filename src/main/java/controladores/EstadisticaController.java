@@ -104,16 +104,20 @@ public class EstadisticaController extends HttpServlet {
 	            // Usar LocalTime para crear el nuevo tiempo
 	            LocalTime tiempoFinal = LocalTime.of((int) horas, (int) minutos, (int) segundos);
 	            tiempoFinalEsperado = Time.valueOf(tiempoFinal);
-	        }
-	        
+	            Time tiempoInicial = Time.valueOf("00:00:00");
+	            est.setTiempoAcumulado(tiempoInicial);
+	            System.out.println("Luego del 00:00:00 ");
+	        }else {
+		        est.setTiempoAcumulado(null); // Tiempo inicial acumulado en 0
+	        }        
 			System.out.println("Nombre del habito: " + habito.getNombre());
 			 // Configurar los valores en la estadística
 	        est.setHabito(habito);
 	        est.setCantidadAcumulada(0);
-	        est.setTiempoAcumulado(null); // Tiempo inicial acumulado en 0
+
 	        est.setTotalEjecuciones(0);
 	        est.setCantidadFinalEsperada(cantidadFinalEsperada);
-	        est.setTiempoFinalEsperado(tiempoFinalEsperado);
+	        est.setTiempoFinalEsperado(habito.getTiempoTotal());
 	        est.setProgresoAcumulado(0.0);
 	        est.setEstado(false); // Estado inicial
 			

@@ -128,36 +128,66 @@ public class EjecucionController extends HttpServlet {
 				estadisticas.setCantidadAcumulada(cantidadAcumulada);
 
 				 // Obtener el tiempo acumulado desde la base de datos
-	            long tiempoAcumuladoSegundos = 0;
-	            if (estadisticas.getTiempoAcumulado() != null) {
-	                // Convertir el tiempo acumulado a segundos
-	                tiempoAcumuladoSegundos = convertirTimeASegundos(estadisticas.getTiempoAcumulado());
-	            }
+				// Verificar si tiempoCompletado no es null antes de procesar
+				if (estadisticas.getTiempoAcumulado() != null) {
+				    // Obtener el tiempo acumulado desde la base de datos
+				    long tiempoAcumuladoSegundos = 0;
+				    if (estadisticas.getTiempoAcumulado() != null) {
+				        // Convertir el tiempo acumulado a segundos
+				        tiempoAcumuladoSegundos = convertirTimeASegundos(estadisticas.getTiempoAcumulado());
+				    }
 
-	            System.out.println("Tiempo acumulado antes de sumar (en segundos): " + tiempoAcumuladoSegundos);
+				    System.out.println("Tiempo acumulado antes de sumar (en segundos): " + tiempoAcumuladoSegundos);
 
-	            // Convertir tiempoCompletado a segundos
-	            long tiempoCompletadoSegundos = convertirTimeASegundos(tiempoCompletado);
-	            System.out.println("Tiempo completado (en segundos): " + tiempoCompletadoSegundos);
+				    // Convertir tiempoCompletado a segundos
+				    long tiempoCompletadoSegundos = convertirTimeASegundos(tiempoCompletado);
+				    System.out.println("Tiempo completado (en segundos): " + tiempoCompletadoSegundos);
 
-	            // Sumar los tiempos en segundos
-	            long tiempoTotalSegundos = tiempoAcumuladoSegundos + tiempoCompletadoSegundos;
-	            System.out.println("Tiempo acumulado después de sumar (en segundos): " + tiempoTotalSegundos);
+				    // Sumar los tiempos en segundos
+				    long tiempoTotalSegundos = tiempoAcumuladoSegundos + tiempoCompletadoSegundos;
+				    System.out.println("Tiempo acumulado después de sumar (en segundos): " + tiempoTotalSegundos);
 
-	            // Convertir el total de segundos a formato HH:mm:ss
-	            String tiempoFinalStr = convertirSegundosAFormato(tiempoTotalSegundos);
-	            System.out.println("Tiempo acumulado final en formato HH:mm:ss: " + tiempoFinalStr);
+				    // Convertir el total de segundos a formato HH:mm:ss
+				    String tiempoFinalStr = convertirSegundosAFormato(tiempoTotalSegundos);
+				    System.out.println("Tiempo acumulado final en formato HH:mm:ss: " + tiempoFinalStr);
 
-	            // Guardar el tiempo acumulado actualizado en la base de datos
-	            Time tiempoAcumuladoFinal = Time.valueOf(tiempoFinalStr);
-	            estadisticas.setTiempoAcumulado(tiempoAcumuladoFinal);
+				    // Guardar el tiempo acumulado actualizado en la base de datos
+				    Time tiempoAcumuladoFinal = Time.valueOf(tiempoFinalStr);
+				    estadisticas.setTiempoAcumulado(tiempoAcumuladoFinal);
+				} else {
+				    System.out.println("El tiempoCompletado es null. No se actualizará el tiempo acumulado.");
+				}
 
 				// Actualizar el progreso acumulado (como ejemplo)
 				double progresoAcumulado = 0;
-				if (estadisticas.getCantidadFinalEsperada() != 0) {
-					progresoAcumulado = (double) cantidadAcumulada / estadisticas.getCantidadFinalEsperada() * 100;
+		
+				if (estadisticas.getTiempoFinalEsperado() != null) {
+				    // El progreso se calcula en base al tiempo
+				    Time tiempoAcumulado = estadisticas.getTiempoAcumulado();
+				    Time tiempoFinalEsperado = estadisticas.getTiempoFinalEsperado();
+
+				    // Convertir ambos tiempos a segundos para calcular el progreso
+				    long tiempoAcumuladoSegundos = convertirTimeASegundos(tiempoAcumulado);
+				    long tiempoFinalEsperadoSegundos = convertirTimeASegundos(tiempoFinalEsperado);
+
+				    if (tiempoFinalEsperadoSegundos != 0) {
+				        progresoAcumulado = (double) tiempoAcumuladoSegundos / tiempoFinalEsperadoSegundos * 100;
+				    }
+				}else {
+					
+					if (estadisticas.getCantidadFinalEsperada() != 0) {
+						progresoAcumulado = (double) cantidadAcumulada / estadisticas.getCantidadFinalEsperada() * 100;
+					}
 				}
+				
+				
 				estadisticas.setProgresoAcumulado(progresoAcumulado);
+				
+				// Incrementar el total de ejecuciones
+			    int totalEjecuciones = estadisticas.getTotalEjecuciones() + 1;
+			    estadisticas.setTotalEjecuciones(totalEjecuciones);
+
+			    System.out.println("Total de ejecuciones actualizado: " + totalEjecuciones);
 
 				// Guardar cambios en las estadísticas
 				estadisticasDAO.actualizarEstadisticas(estadisticas);

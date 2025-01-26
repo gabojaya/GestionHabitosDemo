@@ -561,38 +561,68 @@ function mostrarEstadisticas(){
 	console.log(tan);
 	console.log(tfn);
 	const ctx = document.getElementById('myChart');
-	const data = {
-	  labels: ['cantidad acumulada','cantidad esperada','tiempo acumulado','tiempo esperado'],
-	  datasets: [{
-	    label: 'Estadisticas',
-	    data: [ca, cf, tan, tfn],
-	    backgroundColor: [
-	      'rgba(255, 99, 132, 0.2)',
-	      'rgba(255, 159, 64, 0.2)',
-	      'rgba(255, 205, 86, 0.2)',
-	      'rgba(75, 192, 192, 0.2)'
-	    ],
-	    borderColor: [
-	      'rgb(255, 99, 132)',
-	      'rgb(255, 159, 64)',
-	      'rgb(255, 205, 86)',
-	      'rgb(75, 192, 192)'
-	    ],
-	    borderWidth: 1
-	  }]
-	};
-	const config = {
-	  type: 'bar',
-	  data: data,
-	  options: {
-	    scales: {
-	      y: {
-	        beginAtZero: true
-	      }
-	    }
-	  },
-	};
-	new Chart(ctx,config);
+	var data;
+	if(isNaN(tan)){
+		console.log("entro en el nan");
+		data = {
+		  labels: ['cantidad acumulada','cantidad esperada'],
+		  datasets: [{
+		    label: 'Estadisticas',
+		    data: [ca, cf],
+		    backgroundColor: [
+		      'rgba(255, 99, 132, 0.2)',
+		      'rgba(255, 159, 64, 0.2)'
+		    ],
+		    borderColor: [
+		      'rgb(255, 99, 132)',
+		      'rgb(255, 159, 64)'
+		    ],
+		    borderWidth: 1
+		  }]
+		};
+		const config = {
+		  type: 'bar',
+		  data: data,
+		  options: {
+		    scales: {
+		      y: {
+		        beginAtZero: true
+		      }
+		    }
+		  },
+		};
+		new Chart(ctx,config);
+	}else{
+		console.log("entro en el no nan");
+		data = {
+		  labels: ['tiempo acumulado','tiempo esperado'],
+		  datasets: [{
+		    label: 'Estadisticas',
+		    data: [tan, tfn],
+		    backgroundColor: [
+		      'rgba(255, 205, 86, 0.2)',
+		      'rgba(75, 192, 192, 0.2)'
+		    ],
+		    borderColor: [
+		      'rgb(255, 205, 86)',
+		      'rgb(75, 192, 192)'
+		    ],
+		    borderWidth: 1
+		  }]
+		};
+		const config = {
+		  type: 'bar',
+		  data: data,
+		  options: {
+		    scales: {
+		      y: {
+		        beginAtZero: true
+		      }
+		    }
+		  },
+		};
+		new Chart(ctx,config);
+	}
 }
 
 function notifi() {

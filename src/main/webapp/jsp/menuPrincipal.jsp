@@ -75,7 +75,7 @@
 			<!-- Sección 2: Metas -->
 			<div class="page" id="page2" style="display: none;">
 				<h2 class="create-account">Metas Registradas</h2>
-				<div class="lista-Metas" style="overflow:auto;">
+				<div class="lista-Metas" style="overflow: auto;">
 					<table class="tabla-metas">
 						<thead>
 							<tr>
@@ -188,7 +188,7 @@
 				style="display: none;">
 				<div class="container-form-2">
 					<h3>Registrar Hábitos</h3>
-					<div class="lista-habitos" style="overflow:auto;">
+					<div class="lista-habitos" style="overflow: auto;">
 						<!--<input type="hidden" name="idmeta" id="idmeta" value="${idMeta}"> -->
 						<table class="tabla-habitos">
 							<thead>
@@ -217,8 +217,7 @@
 												hab-med="${habitos.tipoMedicion}"
 												meta-id="${habitos.metaAsociada}"
 												hab-can="${habitos.cantidadTotal}"
-												hab-time="${habitos.tiempoTotal}"
-												>Editar</button>
+												hab-time="${habitos.tiempoTotal}">Editar</button>
 											<button class="eliminar-habito" hab-id="${habitos.idHabito}"
 												meta-id="${habitos.metaAsociada}">Eliminar</button>
 											<button class="agregar-horarios-habito"
@@ -330,7 +329,7 @@
 			<div class="page" id="page3" style="display: none;">
 
 				<h2 class="create-account">Registrar Ejecución</h2>
-				<div class="lista-Metas" style="overflow:auto;">
+				<div class="lista-Metas" style="overflow: auto;">
 					<table class="tabla-habitos">
 						<thead>
 							<tr>
@@ -437,10 +436,10 @@
 					<!-- Sección para tiempo -->
 					<div id="tiempoSection" style="display: none;">
 						<p>
-							<strong>Tiempo Realizado:</strong> <span
-								id="tiempoTranscurrido">00:00:00</span>
-								<input type="hidden" id="tiempoTranscurridoInput" name="tiempoTranscurrido" value="00:00:00">
-								
+							<strong>Tiempo Realizado:</strong> <span id="tiempoTranscurrido">00:00:00</span>
+							<input type="hidden" id="tiempoTranscurridoInput"
+								name="tiempoTranscurrido" value="00:00:00">
+
 						</p>
 						<p>
 							<strong>Tiempo Total:</strong> <span id="tiempoTotal"></span>
@@ -473,27 +472,28 @@
 			<div class="lista-Metas" style="display: flex;">
 				<div class="Metas" style="width: 50%;">
 					<table class="tabla-metas">
+
 						<thead>
 							<tr>
-								<th>Meta</th>
+								<th>Nombre</th>
+								<th>Categoría</th>
+								<th>Frecuencia</th>
+								<th>Estado</th>
+								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td style="color: rgb(0, 0, 0);">Actividades diarias</td>
-							</tr>
-							<tr>
-								<td style="color: rgb(0, 0, 0);">Meta de ejercicio</td>
-							</tr>
-							<tr>
-								<td style="color: rgb(0, 0, 0);">Meta de ejercicio intenso</td>
-							</tr>
-							<tr>
-								<td style="color: rgb(0, 0, 0);">Trabajo intenso</td>
-							</tr>
-							<tr>
-								<td style="color: rgb(0, 0, 0);">Meta de oscio</td>
-							</tr>
+							<c:forEach var="habito" items="${habitos}">
+								<tr>
+									<td>${habito.nombre}</td>
+									<td>${habito.categoria}</td>
+									<td>${habito.frecuencia}</td>
+									<td>${habito.estado ? 'Activo' : 'Inactivo'}</td>
+									<td>
+										<button class="editar-habito" data-id="${habito.idHabito}">Ver estadistica</button>
+									</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -565,7 +565,7 @@
 		<!-- Sección 5: Notificaciones-->
 		<div class="page" id="page5" style="display: none;">
 			<h2 class="create-account">Notificaciones</h2>
-			<div class="lista-Metas" style="overflow:auto;">
+			<div class="lista-Metas" style="overflow: auto;">
 				<table class="tabla-metas">
 					<thead>
 						<tr>
@@ -577,7 +577,10 @@
 						<!-- Iterar sobre los recordatorios -->
 						<c:forEach var="recordatorio" items="${recordatorios}">
 							<tr>
-								<td data-idre="${recordatorio.idRecordatorio}" data-mes="${recordatorio.mensaje}" data-hor="${recordatorio.hora}" class="noti" style="color: black;">${recordatorio.mensaje}</td>
+								<td data-idre="${recordatorio.idRecordatorio}"
+									data-mes="${recordatorio.mensaje}"
+									data-hor="${recordatorio.hora}" class="noti"
+									style="color: black;">${recordatorio.mensaje}</td>
 								<td>
 									<button style="font-size: 24px">
 										Check<i class="fa fa-calendar-check-o"></i>

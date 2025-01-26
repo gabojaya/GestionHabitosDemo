@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		showPage(5);
 		setupTabs();
 		notifi();
+		
+	}else if (ruta === 'listarHabitosUsuario') {
+				showPage(4);
+				setupTabs();
 
 	} else {
 		showPage(2);
@@ -38,6 +42,9 @@ function setupTabs() {
 			if (pageNumber === 3) {
 				fetchEjecuciones();
 			}
+			if (pageNumber === 4) {
+				fetchEstadisticas();
+			}
 			if (pageNumber === 5) {
 				fetchNotificaciones();
 			}
@@ -57,6 +64,9 @@ function showPage(pageNumber) {
 	}
 }
 
+function fetchEstadisticas() {
+	window.location.href = `HabitoController?ruta=listarHabitosUsuario`;
+}
 function fetchNotificaciones() {
 	window.location.href = `NotificacionController?ruta=listarRecordatorios`;
 }
@@ -276,11 +286,11 @@ function setupMetaScreen() {
 			//document.getElementById('horario-habito').value = hho || '';
 			editar = true;
 			screenOverlayRegistroHabitos.style.display = 'flex';
-			if(document.getElementById("tipo-medicion").value=="cantidad"){
-			    document.getElementById("divcan").style.display = 'flex';
-			    document.getElementById("divtime").style.display = 'none';
+			if (document.getElementById("tipo-medicion").value == "cantidad") {
+				document.getElementById("divcan").style.display = 'flex';
+				document.getElementById("divtime").style.display = 'none';
 			}
-			if(document.getElementById("tipo-medicion").value=="tiempo"){
+			if (document.getElementById("tipo-medicion").value == "tiempo") {
 				document.getElementById("divtime").style.display = 'flex';
 				document.getElementById("divcan").style.display = 'none';
 			}
@@ -421,7 +431,7 @@ function setUpEjecuciones() {
 	cerrarEjecucionBtn.addEventListener('click', function() {
 		screenOverlayEjecucion.style.display = 'none';
 	});
-	
+
 
 	// Obtener referencias a los elementos del DOM
 	const tiempoSection = document.getElementById('tiempoSection');
@@ -437,40 +447,40 @@ function setUpEjecuciones() {
 	let tiempoEnSegundos = 0;
 	let tiempoTotalEnSegundos = 0;
 
-	
+
 	// Función para iniciar el temporizador
 	iniciarBtn.addEventListener('click', () => {
-	    if (!intervalo) {
-	        // Obtener el tiempo total desde el input oculto
-	        const tiempoTotalTexto = document.getElementById('tiempoEjecHabito').value;
+		if (!intervalo) {
+			// Obtener el tiempo total desde el input oculto
+			const tiempoTotalTexto = document.getElementById('tiempoEjecHabito').value;
 
-	        // Soporte para formato hh:mm:ss
-	        const [horasTotales, minutosTotales, segundosTotales] = tiempoTotalTexto.split(':').map(Number);
-	        tiempoTotalEnSegundos = (horasTotales * 3600) + (minutosTotales * 60) + segundosTotales;
+			// Soporte para formato hh:mm:ss
+			const [horasTotales, minutosTotales, segundosTotales] = tiempoTotalTexto.split(':').map(Number);
+			tiempoTotalEnSegundos = (horasTotales * 3600) + (minutosTotales * 60) + segundosTotales;
 
-	        intervalo = setInterval(() => {
-	            if (tiempoEnSegundos < tiempoTotalEnSegundos) {
-	                tiempoEnSegundos++;
-	                const horas = String(Math.floor(tiempoEnSegundos / 3600)).padStart(2, '0');
-	                const minutos = String(Math.floor((tiempoEnSegundos % 3600) / 60)).padStart(2, '0');
-	                const segundos = String(tiempoEnSegundos % 60).padStart(2, '0');
-	                tiempoTranscurrido.textContent = `${horas}:${minutos}:${segundos}`;
+			intervalo = setInterval(() => {
+				if (tiempoEnSegundos < tiempoTotalEnSegundos) {
+					tiempoEnSegundos++;
+					const horas = String(Math.floor(tiempoEnSegundos / 3600)).padStart(2, '0');
+					const minutos = String(Math.floor((tiempoEnSegundos % 3600) / 60)).padStart(2, '0');
+					const segundos = String(tiempoEnSegundos % 60).padStart(2, '0');
+					tiempoTranscurrido.textContent = `${horas}:${minutos}:${segundos}`;
 
-	                // Actualizar el campo oculto con el tiempo transcurrido
-	                document.getElementById('tiempoTranscurridoInput').value = `${horas}:${minutos}:${segundos}`;
-	            } else {
-	                // Detener el temporizador automáticamente al alcanzar el límite
-	                clearInterval(intervalo);
-	                intervalo = null;
-	                iniciarBtn.disabled = true;
-	                pausarBtn.disabled = true;
-	                alert("Has alcanzado el tiempo total asignado.");
-	            }
-	        }, 1000);
+					// Actualizar el campo oculto con el tiempo transcurrido
+					document.getElementById('tiempoTranscurridoInput').value = `${horas}:${minutos}:${segundos}`;
+				} else {
+					// Detener el temporizador automáticamente al alcanzar el límite
+					clearInterval(intervalo);
+					intervalo = null;
+					iniciarBtn.disabled = true;
+					pausarBtn.disabled = true;
+					alert("Has alcanzado el tiempo total asignado.");
+				}
+			}, 1000);
 
-	        iniciarBtn.disabled = true;
-	        pausarBtn.disabled = false;
-	    }
+			iniciarBtn.disabled = true;
+			pausarBtn.disabled = false;
+		}
 	});
 
 
@@ -506,10 +516,10 @@ function setUpEjecuciones() {
 
 	guardarEjecucionBtn.addEventListener('click', function() {
 		// Detener el temporizador si está corriendo
-		    if (intervalo) {
-		        clearInterval(intervalo);
-		        intervalo = null;
-		    }
+		if (intervalo) {
+			clearInterval(intervalo);
+			intervalo = null;
+		}
 		// Asignar el valor del cronómetro al campo de formulario
 		document.getElementById('tiempoTranscurrido').value = tiempoTranscurrido.textContent;
 
@@ -522,49 +532,49 @@ function setUpEjecuciones() {
 
 
 }
-function notifi(){
+function notifi() {
 	var records = document.querySelectorAll('.noti');
 	var time = new Date().toLocaleTimeString('es-ES');
 	console.log("Se entro en la funcionnde notificaciones");
 	// Verificar que el navegador soporta notificaciones
 	if (!("Notification" in window)) {
-	  
-	  alert("Tu navegador no soporta notificaciones");
 
-	}else if(Notification.permission === "granted"){
-	  // Lanzar notificacion si ya esta autorizado el servicio
-	  records.forEach((item)=>{
-		console.log(time);
-		console.log(item.dataset.idre);
-		console.log(item.dataset.mes);
-		console.log(item.dataset.hor);
-		console.log(time.substring(0,5));
-		console.log(item.dataset.hor.substring(0,5));
-		if(time.substring(0,5)==item.dataset.hor.substring(0,5)){
-			var notification = new Notification(item.dataset.mes);
-		}
-	  });
+		alert("Tu navegador no soporta notificaciones");
 
-	}else if(Notification.permission !== "denied"){
-	  Notification.requestPermission(function(permission){
-
-	    if(Notification.permission === "granted"){
-			// Lanzar notificacion si ya esta autorizado el servicio
-			records.forEach((item)=>{
-			console.log(time.toLocaleTimeString());
+	} else if (Notification.permission === "granted") {
+		// Lanzar notificacion si ya esta autorizado el servicio
+		records.forEach((item) => {
+			console.log(time);
 			console.log(item.dataset.idre);
 			console.log(item.dataset.mes);
 			console.log(item.dataset.hor);
-			console.log(time.substring(0,5));
-			console.log(item.dataset.hor.substring(0,5));
-			if(time.substring(0,5)==item.dataset.hor.substring(0,5)){
+			console.log(time.substring(0, 5));
+			console.log(item.dataset.hor.substring(0, 5));
+			if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
 				var notification = new Notification(item.dataset.mes);
 			}
-			});
+		});
 
-	    }
+	} else if (Notification.permission !== "denied") {
+		Notification.requestPermission(function(permission) {
 
-	  });
+			if (Notification.permission === "granted") {
+				// Lanzar notificacion si ya esta autorizado el servicio
+				records.forEach((item) => {
+					console.log(time.toLocaleTimeString());
+					console.log(item.dataset.idre);
+					console.log(item.dataset.mes);
+					console.log(item.dataset.hor);
+					console.log(time.substring(0, 5));
+					console.log(item.dataset.hor.substring(0, 5));
+					if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
+						var notification = new Notification(item.dataset.mes);
+					}
+				});
+
+			}
+
+		});
 
 	}
 }

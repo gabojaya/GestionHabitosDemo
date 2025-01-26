@@ -103,6 +103,28 @@ public class HabitoDAO {
 	        emf.close();
 	    }
 	}
+	
+	public List<Habito> obtenerHabitosPorUsuario(int idUsuario) throws SQLException {
+	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionHabitosWeb");
+	    EntityManager em = emf.createEntityManager();
+	    
+	    // Usamos una consulta JPQL para obtener todos los hábitos asociados a metas de un usuario específico
+	    String jpql = "SELECT h FROM Habito h WHERE h.metaAsociada.usuario.idUsuario = :idUsuario";
+	    Query query = em.createQuery(jpql);
+	    query.setParameter("idUsuario", idUsuario);
+
+	    List<Habito> habitos = query.getResultList();
+	    
+	    if (habitos == null) {
+	        habitos = new ArrayList<>();
+	    }
+	    
+	    em.close();
+	    emf.close();
+	    
+	    return habitos;
+	}
+
 
 	
 

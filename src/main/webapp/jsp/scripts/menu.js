@@ -34,7 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		setupMetaScreen();
 		screenOverlayHabitos.style.display = 'flex';
 	} else {
-
+		showPage(2);
+		setupTabs();
+		setupMetaScreen();
+		screenOverlayHabitos.style.display = 'flex';
 
 	}
 });

@@ -49,5 +49,28 @@ public class UsuarioDAO {
             return false;
         }
 	}
+	
+	public boolean modificarUsuario(Usuario usuario) {
+	    try {
+	        em.getTransaction().begin();
+	        em.merge(usuario); // Actualiza el usuario en la base de datos
+	        em.getTransaction().commit();
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback(); // Revierte los cambios si ocurre un error
+	        }
+	        return false;
+	    }
+	}
+	public Usuario obtenerUsuarioPorId(int idUsuario) {
+	    try {
+	        return em.find(Usuario.class, idUsuario);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
 
 }

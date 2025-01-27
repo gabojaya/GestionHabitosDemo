@@ -50,8 +50,34 @@ public class NotificacionController extends HttpServlet {
 			System.out.println("Llamando a listarRecordatorios");
 			this.listarRecordatorios(req, resp);
 			break;
+		case "marcarLeido":
+			System.out.println("Llamando a marcarLeido");
+			this.marcarLeido(req, resp);
+			break;
 
 		}
+	}
+
+	private void marcarLeido(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException {
+		
+		int idRecordatorio = Integer.parseInt(req.getParameter("idRecordatorio"));
+
+	    NotificacionDAO notificacionDAO = new NotificacionDAO();
+	    Recordatorio recordatorio = notificacionDAO.obtenerRecordatorioPorId(idRecordatorio);
+	    if (recordatorio != null) {
+	        recordatorio.setEstado(false); // Cambia el estado del recordatorio
+	        boolean actualizado = notificacionDAO.actualizarRecordatorio(recordatorio);
+
+	        if (actualizado) {
+	            System.out.println("Recordatorio marcado como leído exitosamente");
+	        } else {
+	            System.out.println("Error al actualizar el recordatorio");
+	        }
+	    }
+
+	    // Redirige de vuelta a la lista de recordatorios
+	    resp.sendRedirect("NotificacionController?ruta=listarRecordatorios");
+		
 	}
 
 	private void listarRecordatorios(HttpServletRequest req, HttpServletResponse resp)
@@ -104,7 +130,7 @@ public class NotificacionController extends HttpServlet {
 			// Imprimir los elementos de la lista
 			System.out.println("Horarios registrados:");
 			for (Time horario : horarios) {
-			    System.out.println(horario);
+				System.out.println(horario);
 			}
 
 			NotificacionDAO notificacionDAO = new NotificacionDAO();

@@ -67,10 +67,65 @@
 					</div>
 				</div>
 				<div class="botones-perfil">
-					<a href="#" class="button-user">Editar perfil</a> <a
-						href="index.html" class="button-user">Eliminar perfil</a>
+					<button class="button-user editar-usuario" 
+						data-id="${usuario.idUsuario}" data-nombre="${usuario.nombre}"
+						data-apellido="${usuario.apellido}" data-nombreUsuario="${usuario.nombreUsuario}"
+						data-email="${usuario.email}" data-clave="${usuario.clave}">Editar
+						perfil</button>
+					<button class="button-user eliminarUsuario">Eliminar
+						perfil</button>
 				</div>
 			</div>
+
+
+			<div class="screenOverlay" id="screenOverlayPerfil"
+				style="display: none;">
+				<form method="POST" action="PerfilController?ruta=modificarUsuario">
+					<div class="container-form-2">
+						<h3>Editar Usuario</h3>
+						<!-- Campo oculto para ID del usuario -->
+						<input type="hidden" name="idUsuario" id="idUsuario" />
+
+						<!-- Campo para Nombre -->
+						<div class="input-group">
+							<label for="nombre">Nombre:</label> <input type="text"
+								id="nombreM" name="nombreM" required />
+						</div>
+
+						<!-- Campo para Apellido -->
+						<div class="input-group">
+							<label for="apellido">Apellido:</label> <input type="text"
+								id="apellidoM" name="apellidoM" required />
+						</div>
+
+						<!-- Campo para Nombre de Usuario -->
+						<div class="input-group">
+							<label for="nombreUsuario">Nombre Usuario:</label> <input
+								type="text" id="nombreUsuarioM" name="nombreUsuarioM" required />
+						</div>
+
+						<!-- Campo para Email -->
+						<div class="input-group">
+							<label for="email">Correo:</label> <input type="email" id="emailM"
+								name="emailM" required />
+						</div>
+
+						<!-- Campo para Clave -->
+						<div class="input-group">
+							<label for="clave">Clave:</label> <input type="text"
+								id="claveM" name="claveM" required />
+						</div>
+
+						<!-- Botones de acción -->
+						<div class="botones-meta">
+							<button class="button-user" id="continuar-btn" type="submit">Guardar
+								Cambios</button>
+							<button class="button-user" id="cerrar-btn" type="button">Cancelar</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
 
 			<!-- Sección 2: Metas -->
 			<div class="page" id="page2" style="display: none;">
@@ -89,7 +144,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="meta" items="${sessionScope.metas}">
+							<c:forEach var="meta" items="${metas}">
 								<tr>
 									<td>${meta.idMeta}</td>
 									<td>${meta.nombre}</td>
@@ -120,7 +175,7 @@
 			</div>
 
 			<!-- Pantalla Oculta para el Formulario de Meta -->
-			<div class="screenOverlay" id="screenOverlay" style="display: none;">
+			<div class="screenOverlay" id="screenOverlayModificarMeta" style="display: none;">
 				<form method="POST" action="MetaController?ruta=modificarMeta">
 					<div class="container-form-2">
 						<h3>Registrar Meta</h3>
@@ -143,8 +198,8 @@
 								id="fecha-fin" name="fecha-fin" required />
 						</div>
 						<div class="botones-meta">
-							<button class="button-user" id="continuar-btn" type="submit">Continuar</button>
-							<button class="button-user" id="cerrar-btn" type="button">Cancelar</button>
+							<button class="button-user" id="continuar-btn-modificar" type="submit">Continuar</button>
+							<button class="button-user" id="cerrar-btn-modificar" type="button">Cancelar</button>
 						</div>
 					</div>
 				</form>
@@ -490,7 +545,8 @@
 									<td>${habito.frecuencia}</td>
 									<td>${habito.estado ? 'Activo' : 'Inactivo'}</td>
 									<td>
-										<button data-ver="verbutton" class="editar-habito" data-id="${habito.idHabito}">Ver estadistica</button>
+										<button data-ver="verbutton" class="editar-habito"
+											data-id="${habito.idHabito}">Ver estadistica</button>
 									</td>
 								</tr>
 							</c:forEach>
@@ -582,7 +638,9 @@
 									data-hor="${recordatorio.hora}" class="noti"
 									style="color: black;">${recordatorio.mensaje}</td>
 								<td>
-									<button style="font-size: 24px">
+									<button style="font-size: 24px; cursor: pointer;"
+										class="marcar-leido-btn"
+										data-id="${recordatorio.idRecordatorio}">
 										Check<i class="fa fa-calendar-check-o"></i>
 									</button>
 								</td>
@@ -595,7 +653,8 @@
 
 
 		<script src="${pageContext.request.contextPath}/jsp/scripts/menu.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 		<script>
 		function pruebaf(){
         	//document.getElementById("idmeta").value= window.location.search.get(idmeta);

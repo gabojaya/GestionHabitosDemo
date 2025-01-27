@@ -235,11 +235,13 @@ public class MetaController extends HttpServlet {
 
 	private void solicitarMetas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("Entro a obtener metas");
-	    int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
+		HttpSession session = req.getSession();
+	    Usuario usuario = (Usuario) session.getAttribute("usuario");
+	    
+	    int idUsuario = usuario.getIdUsuario();
 	    
 	    List<Meta> metas; 
 	    MetaDAO metaDAO = new MetaDAO(); 
-	    HttpSession session = req.getSession();
 	    
 	    try {
 	        metas = metaDAO.obtenerMetasPorUsuario(idUsuario);
@@ -247,34 +249,9 @@ public class MetaController extends HttpServlet {
 	        System.out.println("Metas obtenidas: " + metas.size());
 	        System.out.println("Ingreso a obtenerMetas");
 
-	        // Configurar la respuesta como JSON
-	        resp.setContentType("application/json");
-	        resp.setCharacterEncoding("UTF-8");
-	        
-	        // Construir el JSON manualmente
-	        StringBuilder json = new StringBuilder();
-	        json.append("[");
-	        
-	        for (int i = 0; i < metas.size(); i++) {
-	            Meta meta = metas.get(i);
-	            json.append("{");
-	            json.append("\"idMeta\":").append(meta.getIdMeta()).append(",");
-	            json.append("\"nombre\":\"").append(meta.getNombre()).append("\",");
-	            json.append("\"descripcion\":\"").append(meta.getDescripcion()).append("\",");
-	            json.append("\"fechaInicio\":\"").append(meta.getFechaInicio()).append("\",");
-	            json.append("\"fechaFin\":\"").append(meta.getFechaFin()).append("\",");
-	            json.append("\"progreso\":").append(meta.getProgreso());
-	            json.append("}");
-	            
-	            if (i < metas.size() - 1) {
-	                json.append(","); // Si no es el último elemento, agrega una coma
-	            }
-	        }
-	        
-	        json.append("]");
-	        
-	        // Escribir el JSON en la respuesta
-	        resp.getWriter().write(json.toString());
+	        req.setAttribute("metas", metas);
+
+			getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
 	        
 	    } catch (SQLException e) {
 	        e.printStackTrace();

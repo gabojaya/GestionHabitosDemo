@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
 	const par = new URLSearchParams(window.location.search);
 	const ruta = par.get('ruta');
-	if (ruta === 'iniciarSesion' || ruta === 'registrarUsuario') {
+	if (ruta === 'iniciarSesion' || ruta === 'registrarUsuario' || ruta === 'modificarUsuario') {
 		showPage(1); // Mostrar la primera página al cargar la página
+		setUpPerfil();
 		setupTabs();
 
 
@@ -13,19 +14,27 @@ document.addEventListener('DOMContentLoaded', function() {
 	} else if (ruta === 'listarRecordatorios') {
 		showPage(5);
 		setupTabs();
+		setUpRecordatorios();
 		notifi();
-		
-	}else if (ruta === 'listarHabitosUsuario') {
+
+	} else if (ruta === 'listarHabitosUsuario') {
 		showPage(4);
 		setupTabs();
 		setUpEstadisticas();
 		mostrarEstadisticas();
 
-	}else {
+	} else if (ruta === 'solicitarMetas') {
+		showPage(2);
+		setupTabs();
+		setupMetaScreen();
+
+	} else if (ruta === 'modificarMeta') {
 		showPage(2);
 		setupTabs();
 		setupMetaScreen();
 		screenOverlayHabitos.style.display = 'flex';
+	} else {
+
 
 	}
 });
@@ -76,43 +85,7 @@ function fetchEjecuciones() {
 	window.location.href = `EjecucionController?ruta=listarEjecuciones`;
 }
 function fetchMetas() {
-	const idUsuario = document.getElementById('idUsuario').value;
-
-	// Realizar una petición al servidor
-	fetch('MetaController?ruta=solicitarMetas&idUsuario=' + idUsuario)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error('Error al obtener las metas');
-			}
-			return response.json(); // Parsear la respuesta como JSON
-		})
-		.then(metas => {
-			// Obtener la referencia a la tabla en el HTML
-			const tbody = document.querySelector('#page2 .tabla-metas tbody');
-			tbody.innerHTML = ''; // Limpiar cualquier contenido previo
-
-			// Recorrer las metas y agregar las filas a la tabla
-			metas.forEach(meta => {
-				const row = document.createElement('tr');
-				row.innerHTML = `
-                    <td>${meta.idMeta}</td>
-                    <td>${meta.nombre}</td>
-                    <td>${meta.descripcion}</td>
-                    <td>${meta.fechaInicio}</td>
-                    <td>${meta.fechaFin}</td>
-                    <td>${meta.progreso}%</td>
-                    <td>
-                        <button class="editar-meta" data-id="${meta.idMeta}" data-nombre="${meta.nombre}" data-descripcion="${meta.descripcion}" data-fecha-inicio="${meta.fechaInicio}" data-fecha-fin="${meta.fechaFin}">Editar meta</button>
-                        <button class="eliminar-meta" data-id="${meta.idMeta}" onclick="eliminarMeta(${meta.idMeta}, ${idUsuario})">Eliminar meta</button>
-                    </td>
-                `;
-				tbody.appendChild(row);
-			});
-			setupMetaScreen();
-		})
-		.catch(error => {
-			console.error('Error:', error);
-		});
+	window.location.href = `MetaController?ruta=solicitarMetas`;
 }
 
 function eliminarMeta(idMeta, idUsuario) {
@@ -134,17 +107,49 @@ function eliminarMeta(idMeta, idUsuario) {
 		});
 }
 
+function setUpPerfil() {
 
+	const editarUsuarioBtns = document.querySelectorAll('.editar-usuario');
+	const screenOverlayPerfil = document.getElementById('screenOverlayPerfil');
+	const cerrarBtn = document.getElementById('cerrar-btn');
+
+	editarUsuarioBtns.forEach(function(btn) {
+		btn.addEventListener('click', function() {
+			const userId = btn.getAttribute('data-id');
+			const userNombre = btn.getAttribute('data-nombre');
+			const userApellido = btn.getAttribute('data-apellido');
+			const userNombreUsuario = btn.getAttribute('data-nombreUsuario');
+			const userEmail = btn.getAttribute('data-email');
+			const userClave = btn.getAttribute('data-clave');
+
+			// Llenar el formulario con los datos del usuario seleccionado
+			document.getElementById('idUsuario').value = userId || '';
+			document.getElementById('nombreM').value = userNombre || '';
+			document.getElementById('apellidoM').value = userApellido || '';
+			document.getElementById('nombreUsuarioM').value = userNombreUsuario || '';
+			document.getElementById('emailM').value = userEmail || '';
+			document.getElementById('claveM').value = userClave || '';
+
+			// Mostrar el formulario de edición
+			screenOverlayPerfil.style.display = 'flex';
+		});
+	});
+
+	// Cerrar el formulario
+	cerrarBtn.addEventListener('click', function() {
+		screenOverlayPerfil.style.display = 'none';
+	});
+}
 
 function setupMetaScreen() {
 
 	const addMetaBtn = document.getElementById('add-meta-btn');
 	const editarMetaBtns = document.querySelectorAll('.editar-meta');
-	const screenOverlay = document.getElementById('screenOverlay');
+	const screenOverlayModificarMeta = document.getElementById('screenOverlayModificarMeta');
 	const screenOverlayAgregarMeta = document.getElementById('screenOverlayAgregarMeta');
-	const cerrarBtn = document.getElementById('cerrar-btn');
+	const cerrarModificarBtn = document.getElementById('cerrar-btn-modificar');
+	const continuaModificarrBtn = document.getElementById('continuar-btn-modificar');
 	const cerrarBtnAgregar = document.getElementById('cerrar-btn-agregar');
-	const continuarBtn = document.getElementById('continuar-btn');
 	//const continuarBtnAgregar = document.getElementById('continuar-btn-agregar');
 	const screenOverlayHabitos = document.getElementById('screenOverlayHabitos');
 
@@ -154,12 +159,17 @@ function setupMetaScreen() {
 		screenOverlayAgregarMeta.style.display = 'flex';
 	});
 
-	cerrarBtn.addEventListener('click', function() {
-		screenOverlay.style.display = 'none';
+
+
+	cerrarModificarBtn.addEventListener('click', function() {
+		screenOverlayModificarMeta.style.display = 'none';
 	});
+
 	cerrarBtnAgregar.addEventListener('click', function() {
 		screenOverlayAgregarMeta.style.display = 'none';
 	});
+
+
 
 	editarMetaBtns.forEach(function(btn) {
 		btn.addEventListener('click', function() {
@@ -178,7 +188,7 @@ function setupMetaScreen() {
 
 			selectedMetaId = metaId; // Guardar el ID de la meta seleccionada
 
-			screenOverlay.style.display = 'flex';
+			screenOverlayModificarMeta.style.display = 'flex';
 		});
 	});
 
@@ -535,94 +545,94 @@ function setUpEjecuciones() {
 
 }
 
-function setUpEstadisticas(){
+function setUpEstadisticas() {
 	const verButton = document.querySelectorAll('[data-ver]');
-	verButton.forEach(function(btn){
-		btn.addEventListener('click',function(){
+	verButton.forEach(function(btn) {
+		btn.addEventListener('click', function() {
 			const idhabito = btn.getAttribute('data-id');
 			window.location.href = `EstadisticaController?ruta=verEstadistica&habito=${idhabito}`;
 		});
 	});
 }
-function mostrarEstadisticas(){
+function mostrarEstadisticas() {
 	console.log("Entro a mostrar");
 	const valores = window.location.search;
 	const urlParams = new URLSearchParams(valores);
-	const ca= urlParams.get('data-ca');
+	const ca = urlParams.get('data-ca');
 	console.log(ca);
-	const cf= urlParams.get('data-cf');
+	const cf = urlParams.get('data-cf');
 	console.log(cf);
-	const ta= urlParams.get('data-ta');
+	const ta = urlParams.get('data-ta');
 	console.log(ta);
-	const tf= urlParams.get('data-tf');
+	const tf = urlParams.get('data-tf');
 	console.log(tf);
-	console.log(ta.substring(3,5));
-	var tan = (parseFloat(ta.substring(0,2)))+((parseFloat(ta.substring(3,5)))/60)+((parseFloat(ta.substring(6,8)))/3600);
-	var tfn = (parseFloat(tf.substring(0,2)))+((parseFloat(tf.substring(3,5)))/60);
+	console.log(ta.substring(3, 5));
+	var tan = (parseFloat(ta.substring(0, 2))) + ((parseFloat(ta.substring(3, 5))) / 60) + ((parseFloat(ta.substring(6, 8))) / 3600);
+	var tfn = (parseFloat(tf.substring(0, 2))) + ((parseFloat(tf.substring(3, 5))) / 60);
 	console.log(tan);
 	console.log(tfn);
 	const ctx = document.getElementById('myChart');
 	var data;
-	if(isNaN(tan)){
+	if (isNaN(tan)) {
 		console.log("entro en el nan");
 		data = {
-		  labels: ['cantidad acumulada','cantidad esperada'],
-		  datasets: [{
-		    label: 'Estadisticas',
-		    data: [ca, cf],
-		    backgroundColor: [
-		      'rgba(255, 99, 132, 0.2)',
-		      'rgba(255, 159, 64, 0.2)'
-		    ],
-		    borderColor: [
-		      'rgb(255, 99, 132)',
-		      'rgb(255, 159, 64)'
-		    ],
-		    borderWidth: 1
-		  }]
+			labels: ['cantidad acumulada', 'cantidad esperada'],
+			datasets: [{
+				label: 'Estadisticas',
+				data: [ca, cf],
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.2)',
+					'rgba(255, 159, 64, 0.2)'
+				],
+				borderColor: [
+					'rgb(255, 99, 132)',
+					'rgb(255, 159, 64)'
+				],
+				borderWidth: 1
+			}]
 		};
 		const config = {
-		  type: 'bar',
-		  data: data,
-		  options: {
-		    scales: {
-		      y: {
-		        beginAtZero: true
-		      }
-		    }
-		  },
+			type: 'bar',
+			data: data,
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			},
 		};
-		new Chart(ctx,config);
-	}else{
+		new Chart(ctx, config);
+	} else {
 		console.log("entro en el no nan");
 		data = {
-		  labels: ['tiempo acumulado','tiempo esperado'],
-		  datasets: [{
-		    label: 'Estadisticas',
-		    data: [tan, tfn],
-		    backgroundColor: [
-		      'rgba(255, 205, 86, 0.2)',
-		      'rgba(75, 192, 192, 0.2)'
-		    ],
-		    borderColor: [
-		      'rgb(255, 205, 86)',
-		      'rgb(75, 192, 192)'
-		    ],
-		    borderWidth: 1
-		  }]
+			labels: ['tiempo acumulado', 'tiempo esperado'],
+			datasets: [{
+				label: 'Estadisticas',
+				data: [tan, tfn],
+				backgroundColor: [
+					'rgba(255, 205, 86, 0.2)',
+					'rgba(75, 192, 192, 0.2)'
+				],
+				borderColor: [
+					'rgb(255, 205, 86)',
+					'rgb(75, 192, 192)'
+				],
+				borderWidth: 1
+			}]
 		};
 		const config = {
-		  type: 'bar',
-		  data: data,
-		  options: {
-		    scales: {
-		      y: {
-		        beginAtZero: true
-		      }
-		    }
-		  },
+			type: 'bar',
+			data: data,
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			},
 		};
-		new Chart(ctx,config);
+		new Chart(ctx, config);
 	}
 }
 
@@ -637,7 +647,8 @@ function notifi() {
 
 	} else if (Notification.permission === "granted") {
 		// Lanzar notificacion si ya esta autorizado el servicio
-		records.forEach((item) => {;
+		records.forEach((item) => {
+			;
 			if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
 				var notification = new Notification(item.dataset.mes);
 			}
@@ -659,4 +670,13 @@ function notifi() {
 		});
 
 	}
+}
+function setUpRecordatorios() {
+	document.querySelectorAll('.marcar-leido-btn').forEach(button => {
+		button.addEventListener('click', function() {
+			const recordatorioId = this.getAttribute('data-id');
+			window.location.href = `NotificacionController?ruta=marcarLeido&idRecordatorio=${recordatorioId}`;
+		});
+	});
+
 }

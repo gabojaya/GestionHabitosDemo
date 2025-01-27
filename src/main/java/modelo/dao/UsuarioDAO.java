@@ -65,12 +65,13 @@ public class UsuarioDAO {
 	    }
 	}
 	public Usuario obtenerUsuarioPorId(int idUsuario) {
+		Usuario usuario = null;
 	    try {
-	        return em.find(Usuario.class, idUsuario);
+	        usuario = em.find(Usuario.class, idUsuario);
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        return null;
 	    }
+	    return usuario;
 	}
 
 }

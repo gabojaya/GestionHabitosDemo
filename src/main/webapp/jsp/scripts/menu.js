@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		showPage(2);
 		setupTabs();
 		setupMetaScreen();
+		
 		screenOverlayHabitos.style.display = 'flex';
 
 	}

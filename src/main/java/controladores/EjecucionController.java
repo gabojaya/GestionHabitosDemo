@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpSession;
 import modelo.dao.EjecucionDAO;
 import modelo.dao.EstadisticaDAO;
 import modelo.dao.HabitoDAO;
-import modelo.dao.NotificacionDAO;
 import modelo.dao.RecordatorioDAO;
 import modelo.entidades.Ejecucion;
 import modelo.entidades.Estadistica;
@@ -114,7 +113,7 @@ public class EjecucionController extends HttpServlet {
 			if (recordatorio != null) {
 				recordatorio.setEstado(false);
 
-				NotificacionDAO notificacionDAO = new NotificacionDAO();
+				RecordatorioDAO notificacionDAO = new RecordatorioDAO();
 				notificacionDAO.actualizarRecordatorio(recordatorio);
 				System.out.println("Recordatorio actualizado con éxito.");
 			}
@@ -235,7 +234,7 @@ public class EjecucionController extends HttpServlet {
 		int idUsuario = usuario.getIdUsuario();
 		System.out.println("Se creo ejecuciones para el usuario: " + idUsuario);
 
-		NotificacionDAO notificacionDAO = new NotificacionDAO();
+		RecordatorioDAO notificacionDAO = new RecordatorioDAO();
 		List<Recordatorio> recordatorios = notificacionDAO.obtenerRecordatoriosPorHabito(idHabito);
 		java.util.Date fechaActual = new java.util.Date(); // Fecha actual del sistema
 		java.sql.Date fechaSQL = new java.sql.Date(fechaActual.getTime());

@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import modelo.dao.HabitoDAO;
-import modelo.dao.NotificacionDAO;
+import modelo.dao.RecordatorioDAO;
 import modelo.entidades.Habito;
 import modelo.entidades.Meta;
 import modelo.entidades.Recordatorio;
@@ -62,7 +62,7 @@ public class NotificacionController extends HttpServlet {
 		
 		int idRecordatorio = Integer.parseInt(req.getParameter("idRecordatorio"));
 
-	    NotificacionDAO notificacionDAO = new NotificacionDAO();
+		RecordatorioDAO notificacionDAO = new RecordatorioDAO();
 	    Recordatorio recordatorio = notificacionDAO.obtenerRecordatorioPorId(idRecordatorio);
 	    if (recordatorio != null) {
 	        recordatorio.setEstado(false); // Cambia el estado del recordatorio
@@ -87,11 +87,12 @@ public class NotificacionController extends HttpServlet {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		System.out.println("Este es el usuario: " + usuario);
 		System.out.println("Este es el ID usuario: " + usuario.getIdUsuario());
+		int idUsuario = usuario.getIdUsuario();
 
 		// Obtener recordatorios activos del usuario desde el DAO
-		NotificacionDAO notificacionDAO = new NotificacionDAO();
+		RecordatorioDAO notificacionDAO = new RecordatorioDAO();
 		List<Recordatorio> recordatoriosActivos = notificacionDAO
-				.obtenerRecordatoriosActivosPorUsuario(usuario.getIdUsuario());
+				.obtenerRecordatoriosActivosPorUsuario(idUsuario);
 
 		// Añadir los recordatorios a la solicitud
 		req.setAttribute("recordatorios", recordatoriosActivos);
@@ -133,7 +134,7 @@ public class NotificacionController extends HttpServlet {
 				System.out.println(horario);
 			}
 
-			NotificacionDAO notificacionDAO = new NotificacionDAO();
+			RecordatorioDAO notificacionDAO = new RecordatorioDAO();
 			for (Time hora : horarios) {
 				Recordatorio recordatorio = new Recordatorio();
 				recordatorio.setMensaje("Recordatorio para hábito " + idHabito);

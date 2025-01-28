@@ -10,34 +10,51 @@ document.addEventListener('DOMContentLoaded', function() {
 	} else if (ruta === 'listarEjecuciones') {
 		showPage(3);
 		setupTabs();
+		setUpPerfil();
 		setUpEjecuciones();
 	} else if (ruta === 'listarRecordatorios') {
 		showPage(5);
 		setupTabs();
+		setUpPerfil();
 		setUpRecordatorios();
 		notifi();
 
 	} else if (ruta === 'listarHabitosUsuario') {
 		showPage(4);
 		setupTabs();
+		setUpPerfil();
 		setUpEstadisticas();
 		mostrarEstadisticas();
 
 	} else if (ruta === 'solicitarMetas') {
 		showPage(2);
 		setupTabs();
+		setUpPerfil();
 		setupMetaScreen();
 
 	} else if (ruta === 'modificarMeta') {
 		showPage(2);
 		setupTabs();
+		setUpPerfil();
 		setupMetaScreen();
 		screenOverlayHabitos.style.display = 'flex';
+	} else if (ruta === 'solicitarModificarUsuario') {
+		showPage(1);
+		setUpPerfil();
+		setupTabs();
+		screenOverlayPerfil.style.display = 'flex';
+
+	} else if (ruta === 'solicitarUsuario') {
+		showPage(1);
+		setUpPerfil();
+		setupTabs();
+
 	} else {
 		showPage(2);
 		setupTabs();
+		setUpPerfil();
 		setupMetaScreen();
-		
+
 		screenOverlayHabitos.style.display = 'flex';
 
 	}
@@ -50,7 +67,9 @@ function setupTabs() {
 			const pageNumber = parseInt(tab.dataset.page);
 			showPage(pageNumber);
 
-			// Verifica si la pestaña seleccionada es la de Metas (página 2)
+			if (pageNumber === 1) {
+				fetchUsuario();
+			}
 			if (pageNumber === 2) {
 				fetchMetas();
 			}
@@ -63,6 +82,7 @@ function setupTabs() {
 			if (pageNumber === 5) {
 				fetchNotificaciones();
 			}
+
 		});
 	});
 }
@@ -79,6 +99,9 @@ function showPage(pageNumber) {
 	}
 }
 
+function fetchUsuario() {
+	window.location.href = `UsuarioController?ruta=solicitarUsuario`;
+}
 function fetchEstadisticas() {
 	window.location.href = `HabitoController?ruta=listarHabitosUsuario`;
 }
@@ -119,21 +142,7 @@ function setUpPerfil() {
 
 	editarUsuarioBtns.forEach(function(btn) {
 		btn.addEventListener('click', function() {
-			const userId = btn.getAttribute('data-id');
-			const userNombre = btn.getAttribute('data-nombre');
-			const userApellido = btn.getAttribute('data-apellido');
-			const userNombreUsuario = btn.getAttribute('data-nombreUsuario');
-			const userEmail = btn.getAttribute('data-email');
-			const userClave = btn.getAttribute('data-clave');
-
-			// Llenar el formulario con los datos del usuario seleccionado
-			document.getElementById('idUsuario').value = userId || '';
-			document.getElementById('nombreM').value = userNombre || '';
-			document.getElementById('apellidoM').value = userApellido || '';
-			document.getElementById('nombreUsuarioM').value = userNombreUsuario || '';
-			document.getElementById('emailM').value = userEmail || '';
-			document.getElementById('claveM').value = userClave || '';
-
+			window.location.href = `UsuarioController?ruta=solicitarModificarUsuario`;
 			// Mostrar el formulario de edición
 			screenOverlayPerfil.style.display = 'flex';
 		});

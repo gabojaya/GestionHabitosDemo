@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import modelo.dao.UsuarioDAO;
 import modelo.entidades.Usuario;
 
-@WebServlet("/PerfilController")
-public class PerfilController extends HttpServlet {
+@WebServlet("/UsuarioController")
+public class UsuarioController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,61 @@ public class PerfilController extends HttpServlet {
 		case "modificarUsuario":
 			this.modificarUsuario(req, resp);
 			break;
+		case "solicitarModificarUsuario":
+			this.solicitarModificarUsuario(req, resp);
+			break;
+
+		case "solicitarUsuario":
+			this.solicitarUsuario(req, resp);
+			break;
 		}
+
+	}
+
+	private void solicitarUsuario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		
+		HttpSession session = req.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null) {
+			// Redirige al login si el usuario no está en sesión
+			resp.sendRedirect("login.jsp");
+			return;
+		}
+
+		// Obtener el ID del usuario de la sesión
+		int idUsuario = usuario.getIdUsuario();
+
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		// Cargar el usuario desde la base de datos
+		Usuario usuarioActualizado = usuarioDAO.obtenerUsuarioPorId(idUsuario);
+		session.setAttribute("usuario", usuarioActualizado);
+
+		getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
+		
+	}
+
+	private void solicitarModificarUsuario(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		if (usuario == null) {
+			// Redirige al login si el usuario no está en sesión
+			resp.sendRedirect("login.jsp");
+			return;
+		}
+
+		// Obtener el ID del usuario de la sesión
+		int idUsuario = usuario.getIdUsuario();
+
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		// Cargar el usuario desde la base de datos
+		Usuario usuarioModificado = usuarioDAO.obtenerUsuarioPorId(idUsuario);
+		session.setAttribute("usuario", usuarioModificado);
+
+		getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
+
 	}
 
 	private void modificarUsuario(HttpServletRequest req, HttpServletResponse resp)
@@ -48,15 +102,15 @@ public class PerfilController extends HttpServlet {
 			resp.sendRedirect("login.jsp");
 			return;
 		}
-		
+
 		// Obtener el ID del usuario de la sesión
-	    int idUsuario = usuario.getIdUsuario();
+		int idUsuario = usuario.getIdUsuario();
 
-	    // Crear una instancia de UsuarioDAO
-	    UsuarioDAO usuarioDAO = new UsuarioDAO();
+		// Crear una instancia de UsuarioDAO
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-	    // Cargar el usuario desde la base de datos
-	    Usuario usuarioModificado = usuarioDAO.obtenerUsuarioPorId(idUsuario);
+		// Cargar el usuario desde la base de datos
+		Usuario usuarioModificado = usuarioDAO.obtenerUsuarioPorId(idUsuario);
 
 		// Obtener los nuevos datos desde el formulario
 		String nombre = req.getParameter("nombreM");
@@ -72,7 +126,6 @@ public class PerfilController extends HttpServlet {
 		usuarioModificado.setEmail(email);
 		usuarioModificado.setClave(clave);
 
-
 		try {
 			boolean actualizado = usuarioDAO.modificarUsuario(usuarioModificado);
 			if (actualizado) {
@@ -84,7 +137,7 @@ public class PerfilController extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
 	}
 

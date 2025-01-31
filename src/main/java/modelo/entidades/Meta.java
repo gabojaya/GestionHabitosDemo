@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,6 +43,7 @@ public class Meta implements Serializable {
 	private Date fechaFin;
 	
 	@OneToMany(mappedBy = "metaAsociada", cascade = CascadeType.REFRESH)
+	@JsonIgnore
 	private List<Habito> habitos;
 
 	@Column(name="progreso")

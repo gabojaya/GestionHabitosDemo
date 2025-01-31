@@ -80,7 +80,7 @@
 
 			<div class="screenOverlay" id="screenOverlayPerfil"
 				style="display: none;">
-				<form method="POST" action="PerfilController?ruta=modificarUsuario">
+				<form method="POST" action="UsuarioController?ruta=modificarUsuario">
 					<div class="container-form-2">
 						<h3>Editar Usuario</h3>
 						<!-- Campo oculto para ID del usuario -->
@@ -89,31 +89,31 @@
 						<!-- Campo para Nombre -->
 						<div class="input-group">
 							<label for="nombre">Nombre:</label> <input type="text"
-								id="nombreM" name="nombreM" required />
+								id="nombreM" name="nombreM"  placeholder="${usuario.nombre}" required />
 						</div>
 
 						<!-- Campo para Apellido -->
 						<div class="input-group">
 							<label for="apellido">Apellido:</label> <input type="text"
-								id="apellidoM" name="apellidoM" required />
+								id="apellidoM" name="apellidoM" placeholder="${usuario.apellido}" required />
 						</div>
 
 						<!-- Campo para Nombre de Usuario -->
 						<div class="input-group">
 							<label for="nombreUsuario">Nombre Usuario:</label> <input
-								type="text" id="nombreUsuarioM" name="nombreUsuarioM" required />
+								type="text" id="nombreUsuarioM" name="nombreUsuarioM" placeholder="${usuario.nombreUsuario}"required />
 						</div>
 
 						<!-- Campo para Email -->
 						<div class="input-group">
 							<label for="email">Correo:</label> <input type="email" id="emailM"
-								name="emailM" required />
+								name="emailM" placeholder="${usuario.email}"required />
 						</div>
 
 						<!-- Campo para Clave -->
 						<div class="input-group">
 							<label for="clave">Clave:</label> <input type="text"
-								id="claveM" name="claveM" required />
+								id="claveM" name="claveM" placeholder="${usuario.clave}" required />
 						</div>
 
 						<!-- Botones de acción -->

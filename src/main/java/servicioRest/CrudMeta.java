@@ -15,7 +15,7 @@ public class CrudMeta {
     private MetaRestDAO metaDAO;
 
     public CrudMeta() {
-        this.metaDAO = new MetaImpDAO(); // Inyección manual de DAO
+        this.metaDAO = new MetaImpDAO();
     }
 
     @GET

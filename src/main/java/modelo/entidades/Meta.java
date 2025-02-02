@@ -42,12 +42,9 @@ public class Meta implements Serializable {
 	@Column(name="fechaFin")
 	private Date fechaFin;
 	
-	@OneToMany(mappedBy = "metaAsociada", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "metaAsociada", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
 	@JsonIgnore
 	private List<Habito> habitos;
-
-	@Column(name="progreso")
-	private double progreso;
 	
 	@Column(name="estado")
 	private boolean estado;
@@ -65,7 +62,7 @@ public class Meta implements Serializable {
 	
 
 	public Meta(int idMeta, Usuario usuario, String descripcion, Date fechaInicio, Date fechaFin, List<Habito> habitos,
-			double progreso, boolean estado, int diasObjetivo, String nombre) {
+			boolean estado, int diasObjetivo, String nombre) {
 		super();
 		this.idMeta = idMeta;
 		this.usuario = usuario;
@@ -73,11 +70,11 @@ public class Meta implements Serializable {
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.habitos = habitos;
-		this.progreso = progreso;
 		this.estado = estado;
 		this.diasObjetivo = diasObjetivo;
 		this.nombre = nombre;
 	}
+
 
 
 	public int getIdMeta() {
@@ -110,14 +107,6 @@ public class Meta implements Serializable {
 
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
-	}
-
-	public double getProgreso() {
-		return progreso;
-	}
-
-	public void setProgreso(double progreso) {
-		this.progreso = progreso;
 	}
 
 	public boolean isEstado() {

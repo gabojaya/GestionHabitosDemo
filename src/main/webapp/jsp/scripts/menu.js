@@ -114,62 +114,135 @@ function fetchEjecuciones() {
 function fetchMetas() {
 	window.location.href = `MetaController?ruta=solicitarMetas`;
 }
-
 function eliminarMeta(idMeta, idUsuario) {
-	fetch(`MetaController?ruta=eliminarMeta&idMeta=${idMeta}&idUsuario=${idUsuario}`, {
-		method: 'POST'
-	})
-		.then(response => response.json())
-		.then(data => {
-			if (data.status === "success") {
-				// Eliminar la fila de la tabla
-				const row = document.querySelector(`button[data-id="${idMeta}"]`).closest('tr');
-				row.remove();
-			} else {
-				console.error('Error al eliminar la meta');
-			}
-		})
-		.catch(error => {
-			console.error('Error:', error);
-		});
+	// Mostrar la alerta de confirmación antes de eliminar
+	Swal.fire({
+		title: "¿Eliminar Meta?",
+		text: "¿Estás seguro de que deseas eliminar esta meta? Esta acción no se puede deshacer.",
+		icon: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#3085d6",
+		cancelButtonColor: "#d33",
+		confirmButtonText: "Sí, eliminar",
+		cancelButtonText: "Cancelar"
+	}).then((result) => {
+		// Si el usuario confirma, proceder con la eliminación
+		if (result.isConfirmed) {
+			// Hacer la solicitud fetch para eliminar la meta
+			fetch(`MetaController?ruta=eliminarMeta&idMeta=${idMeta}&idUsuario=${idUsuario}`, {
+				method: 'POST'
+			})
+				.then(response => response.json())
+				.then(data => {
+					if (data.status === "success") {
+						// Eliminar la fila de la tabla
+						const row = document.querySelector(`button[data-id="${idMeta}"]`).closest('tr');
+						row.remove();
+						// Mostrar alerta con SweetAlert2
+						Swal.fire({
+							icon: 'success',
+							title: 'Meta eliminada',
+							text: 'La meta ha sido eliminada correctamente',
+							confirmButtonColor: '#3085d6',
+							confirmButtonText: 'OK'
+						});
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'No se pudo eliminar la meta',
+							confirmButtonColor: '#d33'
+						});
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+	});
 }
+
 function setUpPerfil() {
-    const editarUsuarioBtns = document.querySelectorAll('.editar-usuario');
-    const screenOverlayPerfil = document.getElementById('screenOverlayPerfil');
-    const cerrarBtn = document.getElementById('cerrar-btn');
+	const editarUsuarioBtns = document.querySelectorAll('.editar-usuario');
+	const screenOverlayPerfil = document.getElementById('screenOverlayPerfil');
+	const cerrarBtn = document.getElementById('cerrar-btn');
+	const eliminarUsuario = document.querySelectorAll('.eliminarUsuario');
 
-    editarUsuarioBtns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            const usuarioId = btn.getAttribute('data-id');
+	editarUsuarioBtns.forEach(function(btn) {
+		btn.addEventListener('click', function() {
+			const usuarioId = btn.getAttribute('data-id');
 
-            // Hacer una solicitud fetch para obtener los datos del usuario
-            fetch(`UsuarioController?ruta=obtenerUsuario&idUsuario=${usuarioId}`)
-                .then(response => {
-                    const idUsuario = response.headers.get('idUsuario');
-                    const nombre = response.headers.get('nombre');
-                    const apellido = response.headers.get('apellido');
-                    const nombreUsuario = response.headers.get('nombreUsuario');
-                    const email = response.headers.get('email');
-                    const clave = response.headers.get('clave');
+			// Hacer una solicitud fetch para obtener los datos del usuario
+			fetch(`UsuarioController?ruta=obtenerUsuario&idUsuario=${usuarioId}`)
+				.then(response => {
+					const idUsuario = response.headers.get('idUsuario');
+					const nombre = response.headers.get('nombre');
+					const apellido = response.headers.get('apellido');
+					const nombreUsuario = response.headers.get('nombreUsuario');
+					const email = response.headers.get('email');
+					const clave = response.headers.get('clave');
 
-                    // Llenar el formulario con los datos del usuario
-                    document.getElementById('idUsuario').value = idUsuario || '';
-                    document.getElementById('nombreM').value = nombre || '';
-                    document.getElementById('apellidoM').value = apellido || '';
-                    document.getElementById('nombreUsuarioM').value = nombreUsuario || '';
-                    document.getElementById('emailM').value = email || '';
-                    document.getElementById('claveM').value = clave || '';
+					// Llenar el formulario con los datos del usuario
+					document.getElementById('idUsuario').value = idUsuario || '';
+					document.getElementById('nombreM').value = nombre || '';
+					document.getElementById('apellidoM').value = apellido || '';
+					document.getElementById('nombreUsuarioM').value = nombreUsuario || '';
+					document.getElementById('emailM').value = email || '';
+					document.getElementById('claveM').value = clave || '';
 
-                    // Mostrar el formulario
-                    screenOverlayPerfil.style.display = 'flex';
-                });
-        });
-    });
+					// Mostrar el formulario
+					screenOverlayPerfil.style.display = 'flex';
+				});
+		});
+	});
 
-    // Cerrar el formulario
-    cerrarBtn.addEventListener('click', function() {
-        screenOverlayPerfil.style.display = 'none';
-    });
+	// Cerrar el formulario
+	cerrarBtn.addEventListener('click', function() {
+		screenOverlayPerfil.style.display = 'none';
+	});
+
+	eliminarUsuario.forEach(function(btn) {
+		btn.addEventListener('click', function() {
+			const usuarioId = btn.getAttribute('data-id');
+			Swal.fire({
+				title: "Eliminar Cuenta",
+				text: "Los datos del usuario serán eliminados.",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Sí, eliminar",
+				cancelButtonText: "Cancelar"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// Redirigir a la URL de eliminación
+					window.location.href = `UsuarioController?ruta=eliminarUsuario&idUsuario=${usuarioId}`;
+				}
+			});
+		});
+	});
+
+
+	document.getElementById("formEditarUsuario").addEventListener("submit", function(event) {
+		event.preventDefault(); // Evita el envío automático del formulario
+
+		Swal.fire({
+			title: "¿Guardar cambios?",
+			text: "Los datos del usuario serán actualizados.",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Sí, guardar",
+			cancelButtonText: "Cancelar"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Enviar el formulario manualmente si el usuario confirma
+				event.target.submit();
+			}
+		});
+	});
+
 }
 
 
@@ -204,35 +277,75 @@ function setupMetaScreen() {
 
 
 	editarMetaBtns.forEach(function(btn) {
-	    btn.addEventListener('click', function() {
-	        const metaId = btn.getAttribute('data-id');
-	        
-	        // Realizar la solicitud al servidor para obtener los datos de la meta
-	        fetch('MetaController?ruta=obtenerMeta&idmeta=' + metaId)
-	            .then(response => {
-	                // Obtener los encabezados de la respuesta
-	                const idMeta = response.headers.get('idmeta');
-	                const nombreMeta = response.headers.get('nombre');
-	                const descripcionMeta = response.headers.get('descripcion');
-	                const fechaInicioMeta = response.headers.get('fechaInicio');
-	                const fechaFinMeta = response.headers.get('fechaFin');
-	                
-	                // Llenar el formulario con los datos de la meta
-	                document.getElementById('idMeta').value = idMeta || '';
-	                document.getElementById('nombre-meta').value = nombreMeta || '';
-	                document.getElementById('descripcion-meta').value = descripcionMeta || '';
-	                document.getElementById('fecha-inicio').value = fechaInicioMeta || '';
-	                document.getElementById('fecha-fin').value = fechaFinMeta || '';
+		btn.addEventListener('click', function() {
+			const metaId = btn.getAttribute('data-id');
 
-	                // Mostrar el formulario de edición de meta
-	                screenOverlayModificarMeta.style.display = 'flex';
-	            })
-	            .catch(error => {
-	                console.error('Error al obtener los datos de la meta:', error);
-	            });
-	    });
+			// Realizar la solicitud al servidor para obtener los datos de la meta
+			fetch('MetaController?ruta=obtenerMeta&idmeta=' + metaId)
+				.then(response => {
+					// Obtener los encabezados de la respuesta
+					const idMeta = response.headers.get('idmeta');
+					const nombreMeta = response.headers.get('nombre');
+					const descripcionMeta = response.headers.get('descripcion');
+					const fechaInicioMeta = response.headers.get('fechaInicio');
+					const fechaFinMeta = response.headers.get('fechaFin');
+
+					// Llenar el formulario con los datos de la meta
+					document.getElementById('idMeta').value = idMeta || '';
+					document.getElementById('nombre-meta').value = nombreMeta || '';
+					document.getElementById('descripcion-meta').value = descripcionMeta || '';
+					document.getElementById('fecha-inicio').value = fechaInicioMeta || '';
+					document.getElementById('fecha-fin').value = fechaFinMeta || '';
+
+					// Mostrar el formulario de edición de meta
+					screenOverlayModificarMeta.style.display = 'flex';
+				})
+				.catch(error => {
+					console.error('Error al obtener los datos de la meta:', error);
+				});
+		});
 	});
 
+
+	document.getElementById("formModificarMeta").addEventListener("submit", function(event) {
+		event.preventDefault(); // Evita el envío automático del formulario
+
+		Swal.fire({
+			title: "¿Guardar cambios?",
+			text: "Los datos de la meta serán actualizados.",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Sí, guardar",
+			cancelButtonText: "Cancelar"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Enviar el formulario manualmente si el usuario confirma
+				event.target.submit();
+			}
+		});
+	});
+
+	document.getElementById("formAgregarMeta").addEventListener("submit", function(event) {
+		event.preventDefault(); // Evita el envío automático del formulario
+
+		Swal.fire({
+			title: "¿Agregar esta meta?",
+			text: "Se añadirá una nueva meta con los datos proporcionados.",
+			icon: "question",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Sí, agregar",
+			cancelButtonText: "Cancelar"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Enviar el formulario manualmente si el usuario confirma
+				event.target.submit();
+			}
+		});
+	});
 
 
 
@@ -322,68 +435,68 @@ function setupMetaScreen() {
 
 	editarHabitoBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
-			/*
 			const hid = btn.getAttribute('hab-id');
-			const hnom = btn.getAttribute('hab-nom');
-			const hcat = btn.getAttribute('hab-cat');
-			const hf = btn.getAttribute('hab-f');
-			const hmed = btn.getAttribute('hab-med');
-			const hcan = btn.getAttribute('hab-can');
-			const htime = btn.getAttribute('hab-time');
-			//const hho = btn.getAttribute('hab-ho');
-			document.getElementById('idhab').value = hid;
-			document.getElementById('nombre-habito').value = hnom || '';
-			document.getElementById('categoria-habito').value = hcat || '';
-			document.getElementById('tipo-medicion').value = hmed || '';
-			document.getElementById('frecuencia-habito').value = hf || '';
-			document.getElementById('cantidad-habito').value = hcan || '';
-			document.getElementById('tiempo-habito').value = htime || '';
-			//document.getElementById('horario-habito').value = hho || '';
-			*/
-			const hid = btn.getAttribute('hab-id');
-			fetch('HabitoController?ruta=obtenerHabito&idhabito='+hid)
-			  .then(response => {
-				const hid = response.headers.get('idhabito');
-				const hnom = response.headers.get('nombre');
-				const hcat = response.headers.get('categoria');
-				const hf = response.headers.get('frecuencia');
-				const hmed = response.headers.get('tipoMedicion');
-				const hcan = response.headers.get('cantidadTotal');
-				const htime = response.headers.get('tiempoTotal');
-				document.getElementById('idhab').value = hid;
-				document.getElementById('nombre-habito').value = hnom || '';
-				document.getElementById('categoria-habito').value = hcat || '';
-				document.getElementById('tipo-medicion').value = hmed || '';
-				document.getElementById('frecuencia-habito').value = hf || '';
-				document.getElementById('cantidad-habito').value = hcan || '';
-				document.getElementById('tiempo-habito').value = htime || '';
-				if(hmed=="cantidad"){
-					console.log(hmed);
-					document.getElementById("divcan").style.display = 'flex';
-					document.getElementById("divtime").style.display = 'none';
-				}else{
-					document.getElementById("divtime").style.display = 'flex';
-					document.getElementById("divcan").style.display = 'none';
-				}
-			  });
-			  //.catch(error => console.error('Error:', error));
+			fetch('HabitoController?ruta=obtenerHabito&idhabito=' + hid)
+				.then(response => {
+					const hid = response.headers.get('idhabito');
+					const hnom = response.headers.get('nombre');
+					const hcat = response.headers.get('categoria');
+					const hf = response.headers.get('frecuencia');
+					const hmed = response.headers.get('tipoMedicion');
+					const hcan = response.headers.get('cantidadTotal');
+					const htime = response.headers.get('tiempoTotal');
+					document.getElementById('idhab').value = hid;
+					document.getElementById('nombre-habito').value = hnom || '';
+					document.getElementById('categoria-habito').value = hcat || '';
+					document.getElementById('tipo-medicion').value = hmed || '';
+					document.getElementById('frecuencia-habito').value = hf || '';
+					document.getElementById('cantidad-habito').value = hcan || '';
+					document.getElementById('tiempo-habito').value = htime || '';
+					if (hmed == "cantidad") {
+						console.log(hmed);
+						document.getElementById("divcan").style.display = 'flex';
+						document.getElementById("divtime").style.display = 'none';
+					} else {
+						document.getElementById("divtime").style.display = 'flex';
+						document.getElementById("divcan").style.display = 'none';
+					}
+				});
+			//.catch(error => console.error('Error:', error));
 			editar = true;
 			console.log(document.getElementById("tipo-medicion").value);
-			if ( document.getElementById("tipo-medicion").value == "cantidad") {
+			if (document.getElementById("tipo-medicion").value == "cantidad") {
 				document.getElementById("divcan").style.display = 'flex';
 				document.getElementById("divtime").style.display = 'none';
-			}else if (document.getElementById("tipo-medicion").value == "tiempo"){
+			} else if (document.getElementById("tipo-medicion").value == "tiempo") {
 				document.getElementById("divtime").style.display = 'flex';
 				document.getElementById("divcan").style.display = 'none';
 			}
 			screenOverlayRegistroHabitos.style.display = 'flex';
 		});
 	});
+
 	eliminarHabitoBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
 			const hid = btn.getAttribute('hab-id');
 			const mid = btn.getAttribute('meta-id');
-			window.location.href = `HabitoController?ruta=eliminarHabito&idmeta=${mid}&idhab=${hid}`;
+
+			// Mostrar la alerta de confirmación antes de eliminar
+			Swal.fire({
+				title: "¿Eliminar Hábito?",
+				text: "¿Estás seguro de que deseas eliminar este hábito? Esta acción no se puede deshacer.",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Sí, eliminar",
+				cancelButtonText: "Cancelar"
+			}).then((result) => {
+				// Si el usuario confirma, proceder con la eliminación
+				if (result.isConfirmed) {
+					// Hacer la solicitud fetch para eliminar el hábito
+					window.location.href = `HabitoController?ruta=eliminarHabito&idmeta=${mid}&idhab=${hid}`;
+				}
+			});
 		});
 	});
 

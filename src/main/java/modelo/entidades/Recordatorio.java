@@ -49,7 +49,7 @@ public class Recordatorio implements Serializable {
 	@Column(name="fechaFin")
 	private Date fechaFin;
 	
-	@OneToMany(mappedBy = "recordatorio", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "recordatorio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ejecucion> ejecuciones;
 
 	public Recordatorio() {

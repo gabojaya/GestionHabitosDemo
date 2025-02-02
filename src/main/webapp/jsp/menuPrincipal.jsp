@@ -18,6 +18,8 @@
 	href="${pageContext.request.contextPath}/jsp/css/menu.css">
 <script
 	src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -67,20 +69,21 @@
 					</div>
 				</div>
 				<div class="botones-perfil">
-					<button class="button-user editar-usuario" 
+					<button class="button-user editar-usuario"
 						data-id="${usuario.idUsuario}" data-nombre="${usuario.nombre}"
-						data-apellido="${usuario.apellido}" data-nombreUsuario="${usuario.nombreUsuario}"
+						data-apellido="${usuario.apellido}"
+						data-nombreUsuario="${usuario.nombreUsuario}"
 						data-email="${usuario.email}" data-clave="${usuario.clave}">Editar
 						perfil</button>
-					<button class="button-user eliminarUsuario" data-id="${usuario.idUsuario}" >Eliminar
-						perfil</button>
+					<button class="button-user eliminarUsuario"
+						data-id="${usuario.idUsuario}">Eliminar perfil</button>
 				</div>
 			</div>
 
 
 			<div class="screenOverlay" id="screenOverlayPerfil"
 				style="display: none;">
-				<form method="POST" action="UsuarioController?ruta=modificarUsuario">
+				<form  id="formEditarUsuario"  method="POST" action="UsuarioController?ruta=modificarUsuario">
 					<div class="container-form-2">
 						<h3>Editar Usuario</h3>
 						<!-- Campo oculto para ID del usuario -->
@@ -89,31 +92,35 @@
 						<!-- Campo para Nombre -->
 						<div class="input-group">
 							<label for="nombre">Nombre:</label> <input type="text"
-								id="nombreM" name="nombreM"  placeholder="${usuario.nombre}" required />
+								id="nombreM" name="nombreM" placeholder="${usuario.nombre}"
+								required />
 						</div>
 
 						<!-- Campo para Apellido -->
 						<div class="input-group">
 							<label for="apellido">Apellido:</label> <input type="text"
-								id="apellidoM" name="apellidoM" placeholder="${usuario.apellido}" required />
+								id="apellidoM" name="apellidoM"
+								placeholder="${usuario.apellido}" required />
 						</div>
 
 						<!-- Campo para Nombre de Usuario -->
 						<div class="input-group">
 							<label for="nombreUsuario">Nombre Usuario:</label> <input
-								type="text" id="nombreUsuarioM" name="nombreUsuarioM" placeholder="${usuario.nombreUsuario}"required />
+								type="text" id="nombreUsuarioM" name="nombreUsuarioM"
+								placeholder="${usuario.nombreUsuario}" required />
 						</div>
 
 						<!-- Campo para Email -->
 						<div class="input-group">
-							<label for="email">Correo:</label> <input type="email" id="emailM"
-								name="emailM" placeholder="${usuario.email}"required />
+							<label for="email">Correo:</label> <input type="email"
+								id="emailM" name="emailM" placeholder="${usuario.email}"
+								required />
 						</div>
 
 						<!-- Campo para Clave -->
 						<div class="input-group">
-							<label for="clave">Clave:</label> <input type="text"
-								id="claveM" name="claveM" placeholder="${usuario.clave}" required />
+							<label for="clave">Clave:</label> <input type="text" id="claveM"
+								name="claveM" placeholder="${usuario.clave}" required />
 						</div>
 
 						<!-- Botones de acción -->
@@ -139,7 +146,7 @@
 								<th>Descripción</th>
 								<th>Fecha Inicio</th>
 								<th>Fecha Fin</th>
-								<th>Progreso</th>
+
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -151,7 +158,7 @@
 									<td>${meta.descripcion}</td>
 									<td>${meta.fechaInicio}</td>
 									<td>${meta.fechaFin}</td>
-									<td>${meta.progreso}%</td>
+
 									<td>
 										<button class="editar-meta" data-id="${meta.idMeta}"
 											data-nombre="${meta.nombre}"
@@ -175,8 +182,9 @@
 			</div>
 
 			<!-- Pantalla Oculta para el Formulario de Meta -->
-			<div class="screenOverlay" id="screenOverlayModificarMeta" style="display: none;">
-				<form method="POST" action="MetaController?ruta=modificarMeta">
+			<div class="screenOverlay" id="screenOverlayModificarMeta"
+				style="display: none;">
+				<form id="formModificarMeta" method="POST" action="MetaController?ruta=modificarMeta">
 					<div class="container-form-2">
 						<h3>Registrar Meta</h3>
 						<input type="hidden" name="idMeta" id="idMeta">
@@ -198,8 +206,10 @@
 								id="fecha-fin" name="fecha-fin" required />
 						</div>
 						<div class="botones-meta">
-							<button class="button-user" id="continuar-btn-modificar" type="submit">Continuar</button>
-							<button class="button-user" id="cerrar-btn-modificar" type="button">Cancelar</button>
+							<button class="button-user" id="continuar-btn-modificar"
+								type="submit">Continuar</button>
+							<button class="button-user" id="cerrar-btn-modificar"
+								type="button">Cancelar</button>
 						</div>
 					</div>
 				</form>
@@ -208,7 +218,7 @@
 			<!-- Pantalla Oculta para el Formulario de Agregar Meta -->
 			<div class="screenOverlay" id="screenOverlayAgregarMeta"
 				style="display: none;">
-				<form method="POST"
+				<form id="formAgregarMeta" method="POST"
 					action="MetaController?ruta=agregarMeta&idUsuario=${usuario.idUsuario}">
 					<div class="container-form-2">
 						<h3>Registrar Meta</h3>

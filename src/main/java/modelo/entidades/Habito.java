@@ -31,7 +31,7 @@ public class Habito implements Serializable {
 	@Column(name="categoria")
 	private String categoria;
 	
-	@ManyToOne(cascade = {CascadeType.REMOVE})
+	@ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "idMeta", nullable = false)
 	private Meta metaAsociada;
 	
@@ -46,13 +46,13 @@ public class Habito implements Serializable {
 	@Column(name="tiempoTotal")
 	private Time tiempoTotal;
 	
-	@OneToMany(mappedBy = "habito", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "habito", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ejecucion> ejecuciones;
 
     @OneToMany(mappedBy = "habito", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Estadistica> estadisticas;
 
-    @OneToMany(mappedBy = "habitoAsociado", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "habitoAsociado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recordatorio> recordatorios;
 	
 	

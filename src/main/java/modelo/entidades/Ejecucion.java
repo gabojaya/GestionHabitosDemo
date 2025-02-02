@@ -29,12 +29,12 @@ public class Ejecucion implements Serializable {
 	@JoinColumn(name = "idUsuario", nullable = false)
 	private Usuario usuario;
 
-	@ManyToOne(cascade = {CascadeType.REMOVE})
+	@ManyToOne
 	@JoinColumn(name = "idHabito", nullable = false)
 	private Habito habito;
 
 	@ManyToOne(cascade = {CascadeType.REMOVE})
-	@JoinColumn(name = "idRecordatorio", nullable = false)
+	@JoinColumn(name = "idRecordatorio", referencedColumnName = "idRecordatorio")
 	private Recordatorio recordatorio;
 
 	@Column(name = "fecha")

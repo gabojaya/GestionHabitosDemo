@@ -86,21 +86,10 @@ public class EstadisticaController extends HttpServlet {
 			// Calcular tiempoFinalEsperado
 			Time tiempoFinalEsperado = null;
 			if (tiempoTotal != null) {
-				// Obtener los milisegundos del tiempo total
-				long tiempoEnMilisegundos = tiempoTotal.getTime();
-
-				// Calcular tiempo esperado en milisegundos
-				long tiempoTotalEsperadoMilisegundos = frecuencia * tiempoEnMilisegundos * diasObjetivos;
-				System.out.println("Este es el tiempoTotalEsperadoMilisegundos " + tiempoTotalEsperadoMilisegundos);
-
-				// Convertir milisegundos en horas, minutos y segundos
-				long horas = (tiempoTotalEsperadoMilisegundos / (1000 * 60 * 60)) % 24;
-				long minutos = (tiempoTotalEsperadoMilisegundos / (1000 * 60)) % 60;
-				long segundos = (tiempoTotalEsperadoMilisegundos / 1000) % 60;
-
-				// Usar LocalTime para crear el nuevo tiempo
-				LocalTime tiempoFinal = LocalTime.of((int) horas, (int) minutos, (int) segundos);
-				tiempoFinalEsperado = Time.valueOf(tiempoFinal);
+				long tiempoEnSegundos = convertirTimeASegundos(tiempoTotal);
+				long tiempoTotalEsperadoSegundos = frecuencia * tiempoEnSegundos * diasObjetivos;
+				String tiempoFinalStr = convertirSegundosAFormato(tiempoTotalEsperadoSegundos);
+				tiempoFinalEsperado = Time.valueOf(tiempoFinalStr);
 			}
 
 			// Obtener la estadística actual del hábito
@@ -113,11 +102,6 @@ public class EstadisticaController extends HttpServlet {
 				estadistica.setTiempoFinalEsperado(tiempoFinalEsperado);
 				estadistica.setTiempoAcumulado(estadistica.getTiempoAcumulado()); // Mantener tiempo acumulado actual
 				estadistica.setCantidadAcumulada(estadistica.getCantidadAcumulada()); // Mantener cantidad acumulada
-																						// actual
-
-				// Calcular el progreso acumulado (puedes ajustar la fórmula según lo necesites)
-				double progresoAcumulado = (double) estadistica.getCantidadAcumulada() / cantidadFinalEsperada * 100;
-				estadistica.setProgresoAcumulado(progresoAcumulado);
 
 				// Actualizar la estadística en la base de datos
 				estadisticaDAO.actualizarEstadisticas(estadistica);
@@ -169,25 +153,25 @@ public class EstadisticaController extends HttpServlet {
 			Time tiempoFinalEsperado = null;
 			if (tiempoTotal != null) {
 				// Obtener los milisegundos del tiempo total
-				long tiempoEnMilisegundos = tiempoTotal.getTime();
+				long tiempoEnSegundos = convertirTimeASegundos(tiempoTotal);
 
-				// Calcular tiempo esperado en milisegundos
-				long tiempoTotalEsperadoMilisegundos = frecuencia * tiempoEnMilisegundos * diasObjetivos;
-				System.out.println("Este es el tiempoTotalEsperadoMilisegundos " + tiempoTotalEsperadoMilisegundos);
+				// Calcular tiempo esperado en segundos
+				long tiempoTotalEsperadoSegundos = frecuencia * tiempoEnSegundos * diasObjetivos;
+				System.out.println("Este es el tiempoTotalEsperadoSegundos " + tiempoTotalEsperadoSegundos);
 
-				// Convertir milisegundos en horas, minutos y segundos
-				long horas = (tiempoTotalEsperadoMilisegundos / (1000 * 60 * 60)) % 24;
-				long minutos = (tiempoTotalEsperadoMilisegundos / (1000 * 60)) % 60;
-				long segundos = (tiempoTotalEsperadoMilisegundos / 1000) % 60;
+				// Convertir los segundos a formato HH:mm:ss
+				String tiempoFinalStr = convertirSegundosAFormato(tiempoTotalEsperadoSegundos);
+				System.out.println("Tiempo Final Esperado (formato HH:mm:ss): " + tiempoFinalStr);
 
-				// Usar LocalTime para crear el nuevo tiempo
-				LocalTime tiempoFinal = LocalTime.of((int) horas, (int) minutos, (int) segundos);
-				tiempoFinalEsperado = Time.valueOf(tiempoFinal);
+				// Usar el nuevo formato convertido
+				tiempoFinalEsperado = Time.valueOf(tiempoFinalStr);
 				Time tiempoInicial = Time.valueOf("00:00:00");
 				est.setTiempoAcumulado(tiempoInicial);
 				System.out.println("Luego del 00:00:00 ");
+				est.setTiempoFinalEsperado(tiempoFinalEsperado);
 			} else {
 				est.setTiempoAcumulado(null); // Tiempo inicial acumulado en 0
+				est.setTiempoFinalEsperado(habito.getTiempoTotal());
 			}
 			System.out.println("Nombre del habito: " + habito.getNombre());
 			// Configurar los valores en la estadística
@@ -196,7 +180,6 @@ public class EstadisticaController extends HttpServlet {
 
 			est.setTotalEjecuciones(0);
 			est.setCantidadFinalEsperada(cantidadFinalEsperada);
-			est.setTiempoFinalEsperado(habito.getTiempoTotal());
 			est.setProgresoAcumulado(0.0);
 			est.setEstado(false); // Estado inicial
 
@@ -211,6 +194,27 @@ public class EstadisticaController extends HttpServlet {
 			e.printStackTrace();
 		}
 
+	}
+
+	// Método para convertir Time a segundos (HH:mm:ss)
+	private long convertirTimeASegundos(Time time) {
+		String timeStr = time.toString(); // Convertir Time a String (HH:mm:ss)
+		String[] parts = timeStr.split(":"); // Dividir el String por ":"
+		int horas = Integer.parseInt(parts[0]);
+		int minutos = Integer.parseInt(parts[1]);
+		int segundos = Integer.parseInt(parts[2]);
+		return (horas * 3600) + (minutos * 60) + segundos; // Convertir todo a segundos
+	}
+
+	// Método para convertir segundos a formato HH:mm:ss
+	private String convertirSegundosAFormato(long segundos) {
+		int horas = (int) (segundos / 3600); // Obtener horas
+		segundos %= 3600;
+		int minutos = (int) (segundos / 60); // Obtener minutos
+		segundos %= 60;
+
+		// Retornar el String en formato "HH:mm:ss"
+		return String.format("%02d:%02d:%02d", horas, minutos, (int) segundos);
 	}
 
 	private void obtenerEstadisticaPorHabito(HttpServletRequest req, HttpServletResponse resp)

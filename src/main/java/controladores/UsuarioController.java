@@ -80,7 +80,7 @@ public class UsuarioController extends HttpServlet {
 	private void eliminarUsuario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		
 		// Obtener el id del usuario desde la URL
-	    String idUsuario = req.getParameter("id");
+	    String idUsuario = req.getParameter("idUsuario");
 	    
 	    if (idUsuario != null) {
 	        try {
@@ -90,18 +90,21 @@ public class UsuarioController extends HttpServlet {
 	            // Llamar al DAO para eliminar el usuario
 	            UsuarioDAO usuarioDAO = new UsuarioDAO();
 	            boolean eliminado = usuarioDAO.eliminarUsuario(usuarioId);
-	            
+	            System.out.println("Eliminado: " + eliminado); // Verificación de la eliminación
 	            // Redirigir a una página de éxito o a la lista de usuarios
 	            if (eliminado) {
 	            	resp.sendRedirect("LoginController?ruta=solicitarIniciar");
 	            } else {
+	            	System.out.println("SOLO ERROR");
 	                resp.sendRedirect("error.jsp"); // Redirige a una página de error si no se eliminó correctamente
 	            }
 	        } catch (NumberFormatException e) {
+	        	System.out.println("Error en la conversión del ID: " + e.getMessage());
 	            // Manejo de errores si el id no es válido
 	            resp.sendRedirect("error.jsp");
 	        }
 	    } else {
+	    	System.out.println("ID de usuario no recibido");
 	        resp.sendRedirect("error.jsp"); // Si no se pasa un id, redirigir a una página de error
 	    }
 		

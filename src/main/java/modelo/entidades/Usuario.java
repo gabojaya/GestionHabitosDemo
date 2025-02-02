@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuario")
+@JsonIgnoreProperties({"metas"}) // Ignora la propiedad 'metas' durante la serialización
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -46,6 +52,7 @@ public class Usuario implements Serializable {
 	private List<Meta> metas;
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JsonIgnore
 	private List<Ejecucion> ejecuciones;
 	
 

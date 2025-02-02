@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,7 +32,6 @@ public class Meta implements Serializable {
 	
 	@ManyToOne(cascade = {CascadeType.REFRESH})
 	@JoinColumn(name = "idUsuario", nullable = false)
-	//@Column(name="idUsuario")
 	private Usuario usuario;
 	
 	@Column(name="descripcion")

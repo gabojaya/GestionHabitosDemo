@@ -20,7 +20,6 @@ public class UsuarioDAO {
 	}
 
 	public Usuario validarCredenciales(String nombreUsuario, String clave) throws SQLException {
-		System.out.println("Entro a validar");
 
 		try {
 
@@ -38,13 +37,13 @@ public class UsuarioDAO {
 	public boolean crearUsuario(Usuario usuario) throws SQLException {
 		try {
 			em.getTransaction().begin();
-			em.persist(usuario); // Inserta el nuevo usuario
+			em.persist(usuario);
 			em.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback(); // Revierte si ocurre un error
+				em.getTransaction().rollback();
 			}
 			return false;
 		}
@@ -53,13 +52,13 @@ public class UsuarioDAO {
 	public boolean modificarUsuario(Usuario usuario) {
 		try {
 			em.getTransaction().begin();
-			em.merge(usuario); // Actualiza el usuario en la base de datos
+			em.merge(usuario);
 			em.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback(); // Revierte los cambios si ocurre un error
+				em.getTransaction().rollback();
 			}
 			return false;
 		}
@@ -78,13 +77,13 @@ public class UsuarioDAO {
 	public boolean actualizarListasUsuario(Usuario usuario) {
 		try {
 			em.getTransaction().begin();
-			em.merge(usuario); // Actualiza el usuario en la base de datos junto con sus metas
+			em.merge(usuario);
 			em.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback(); // Revierte los cambios si ocurre un error
+				em.getTransaction().rollback();
 			}
 			return false;
 		}
@@ -94,41 +93,39 @@ public class UsuarioDAO {
 		try {
 			em.getTransaction().begin();
 
-			// Buscar el usuario por su id
 			Usuario usuario = em.find(Usuario.class, idUsuario);
 			if (usuario != null) {
-				// Obtener las metas asociadas al usuario
-				List<Meta> metas = usuario.getMetas(); // Suponiendo que tienes una relación entre Usuario y Meta
+
+				List<Meta> metas = usuario.getMetas();
 				if (metas != null && !metas.isEmpty()) {
-					MetaDAO metaDAO = new MetaDAO(); // Crear instancia de MetaDAO
+					MetaDAO metaDAO = new MetaDAO();
 					for (Meta meta : metas) {
-						System.out.println("Eliminando meta con ID: " + meta.getIdMeta());
-						metaDAO.eliminarMeta(meta.getIdMeta()); // Llamar a eliminarMeta desde MetaDAO
+
+						metaDAO.eliminarMeta(meta.getIdMeta());
 					}
 				}
 
-				// Eliminar al usuario después de sus metas
 				em.remove(usuario);
 				em.getTransaction().commit();
 				return true;
 			} else {
-				em.getTransaction().rollback(); // En caso de que no exista el usuario
+				em.getTransaction().rollback();
 				return false;
 			}
 		} catch (SQLException e) {
 			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback(); // Si ocurre algún error, revertir la transacción
+				em.getTransaction().rollback();
 			}
 			e.printStackTrace();
 			return false;
 		} catch (Exception e) {
 			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback(); // Si ocurre algún error general, revertir la transacción
+				em.getTransaction().rollback();
 			}
 			e.printStackTrace();
 			return false;
 		} finally {
-			em.close(); // Asegurarse de cerrar el EntityManager
+			em.close();
 		}
 	}
 

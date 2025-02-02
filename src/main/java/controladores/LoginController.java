@@ -60,7 +60,7 @@ public class LoginController extends HttpServlet {
 	}
 
 	private void cerrarSesion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		System.out.println("Entro a CERRAR SESION");
+		
 	    HttpSession session = req.getSession(false);
 	    if (session != null) {
 	        session.invalidate();
@@ -77,20 +77,20 @@ public class LoginController extends HttpServlet {
 	}
 
 	private void solicitarIniciar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("Entro por iniciar");
+		
 		req.setAttribute("form", "iniciar");
 		req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
 	}
 
 	private void solicitarRegistro(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("Entro por registrar");
+		
 		req.setAttribute("form", "registrar");
 		req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
 	}
 
 	private void iniciarSesion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("Entro a iniciar sesion");
+		
 		String nombreUsuario = req.getParameter("nombreUsuario");
 		String clave = req.getParameter("clave");
 
@@ -116,7 +116,7 @@ public class LoginController extends HttpServlet {
 	private void mostrarPantallaPrincipal(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		req.getRequestDispatcher("jsp/menuPrincipal.jsp").forward(req, resp); 
-		System.out.println("Entro al menu principal");
+		
 	}
 
 	private void registrarUsuario(HttpServletRequest req, HttpServletResponse resp)

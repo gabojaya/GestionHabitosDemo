@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuario")
-@JsonIgnoreProperties({"metas"}) // Ignora la propiedad 'metas' durante la serialización
+@JsonIgnoreProperties({"metas"}) 
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;

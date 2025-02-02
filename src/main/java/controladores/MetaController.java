@@ -19,7 +19,7 @@ import modelo.entidades.Usuario;
 
 @WebServlet("/MetaController")
 public class MetaController extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -33,264 +33,225 @@ public class MetaController extends HttpServlet {
 		// TODO Auto-generated method stub
 		this.ruteador(req, resp);
 	}
-	
-	private void ruteador(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// Logica del control
+
+	private void ruteador(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		String ruta = (req.getParameter("ruta") == null) ? "listar" : req.getParameter("ruta");
 
 		switch (ruta) {
 		case "solicitarMetas":
-			System.out.println("Llamando a obtenerMetas");
+
 			this.solicitarMetas(req, resp);
 			break;
-			
+
 		case "eliminarMeta":
-			System.out.println("Llamando a eliminarMeta");
+
 			this.eliminarMeta(req, resp);
 			break;
 		case "agregarMeta":
-			System.out.println("Llamando a agregarMeta");
+
 			this.agregarMeta(req, resp);
 			break;
 		case "modificarMeta":
-			System.out.println("Llamando a modificarMeta");
+
 			this.modificarMeta(req, resp);
 			break;
 		case "obtenerMeta":
-			System.out.println("Llamando a modificarMeta");
+
 			this.obtenerMeta(req, resp);
 			break;
-		
+
 		}
 	}
-	
 
-	private void obtenerMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
-		System.out.println("Entro a obtener meta");
-	    int id = Integer.parseInt(req.getParameter("idmeta"));
-	    System.out.println(id);
-	    MetaDAO metaDAO = new MetaDAO();
-	    
-	    Meta meta = metaDAO.obtenerMetaPorId(id);  // Obtener la meta desde la base de datos
+	private void obtenerMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		// Agregar los datos de la meta como encabezados en la respuesta
+		int id = Integer.parseInt(req.getParameter("idmeta"));
+
+		MetaDAO metaDAO = new MetaDAO();
+
+		Meta meta = metaDAO.obtenerMetaPorId(id);
+
 		resp.addIntHeader("idmeta", meta.getIdMeta());
 		resp.addHeader("nombre", meta.getNombre());
 		resp.addHeader("descripcion", meta.getDescripcion());
 		resp.addHeader("fechaInicio", meta.getFechaInicio().toString());
 		resp.addHeader("fechaFin", meta.getFechaFin().toString());
-		
-		// Redirigir o devolver la respuesta
+
 		getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
-		
+
 	}
 
 	private void modificarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    System.out.println("Entro a editar meta");
-	    int idMeta = Integer.parseInt(req.getParameter("idMeta"));
-	    HttpSession session = req.getSession();
-	    Usuario usuario = (Usuario) session.getAttribute("usuario");
-	    System.out.println("La id de la meta que se edita es: "+idMeta);
-	    String nombre = req.getParameter("nombre-meta");
-	    System.out.println("El nombre de la meta a editar es : "+nombre);
-	    String descripcion = req.getParameter("descripcion-meta");
-	    System.out.println("La descripcion de la meta que se edita es: "+descripcion);
-	    String fechaInicioStr = req.getParameter("fecha-inicio");
-	    System.out.println("La fechaInicio de la meta que se edita es: "+fechaInicioStr);
-	    String fechaFinStr = req.getParameter("fecha-fin");
-	    System.out.println("La fechaFin de la meta que se edita es: "+fechaFinStr);
 
-	    try {
+		int idMeta = Integer.parseInt(req.getParameter("idMeta"));
+		HttpSession session = req.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-	        // Definir un SimpleDateFormat para el formato yyyy-MM-dd
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String nombre = req.getParameter("nombre-meta");
 
-	        // Convertir las fechas a formato java.util.Date
-	        Date fechaInicioUtil = dateFormat.parse(fechaInicioStr);
-	        Date fechaFinUtil = dateFormat.parse(fechaFinStr);
+		String descripcion = req.getParameter("descripcion-meta");
 
-	        // Convertir java.util.Date a java.sql.Date
-	        java.sql.Date fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
-	        java.sql.Date fechaFin = new java.sql.Date(fechaFinUtil.getTime());
+		String fechaInicioStr = req.getParameter("fecha-inicio");
 
-	        // Calcular días objetivo
-	        long diasObjetivo = java.time.temporal.ChronoUnit.DAYS.between(
-	            fechaInicio.toLocalDate(),
-	            fechaFin.toLocalDate()
-	        );
+		String fechaFinStr = req.getParameter("fecha-fin");
 
-	        if (diasObjetivo < 0) {
-	            req.setAttribute("error", "La fecha de inicio no puede ser posterior a la fecha de fin.");
-	            req.getRequestDispatcher("error.jsp").forward(req, resp);
-	            return;
-	        }
-	        
-	        
-	        // Crear objeto Meta
-	        Meta meta = new Meta();
-	        meta.setIdMeta(idMeta);
-	        meta.setNombre(nombre);
-	        meta.setDescripcion(descripcion);
-	        meta.setFechaInicio(fechaInicio);
-	        meta.setFechaFin(fechaFin);
-	        //meta.setProgreso(0.0); // Progreso inicial
-	        meta.setEstado(true); // Activa por defecto
-	        meta.setDiasObjetivo((int) diasObjetivo); // Convertimos a int
-	        meta.setUsuario(usuario);
+		try {
 
-	        // Llamar al DAO para modificar la meta
-	        MetaDAO metaDAO = new MetaDAO();
-	        boolean isUpdated = metaDAO.modificarMeta(meta);
+			// Definir un SimpleDateFormat para el formato yyyy-MM-dd
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	        if (isUpdated) {
-	            System.out.println("Meta modificada correctamente con id: " + idMeta);
-	            req.getRequestDispatcher("HabitoController?ruta=listar&idmeta="+ idMeta).forward(req, resp);
-	        } else {
-	            req.setAttribute("error", "Error al modificar la meta");
-	            req.getRequestDispatcher("error.jsp").forward(req, resp); // Redirige a una página de error
-	        }
+			// Convertir las fechas a formato java.util.Date
+			Date fechaInicioUtil = dateFormat.parse(fechaInicioStr);
+			Date fechaFinUtil = dateFormat.parse(fechaFinStr);
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        req.setAttribute("error", "Error en el procesamiento de la solicitud");
-	        req.getRequestDispatcher("error.jsp").forward(req, resp); // Redirige a una página de error
-	    }
+			// Convertir java.util.Date a java.sql.Date
+			java.sql.Date fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
+			java.sql.Date fechaFin = new java.sql.Date(fechaFinUtil.getTime());
+
+			// Calcular días objetivo
+			long diasObjetivo = java.time.temporal.ChronoUnit.DAYS.between(fechaInicio.toLocalDate(),
+					fechaFin.toLocalDate());
+
+			if (diasObjetivo < 0) {
+				req.setAttribute("error", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+				req.getRequestDispatcher("error.jsp").forward(req, resp);
+				return;
+			}
+
+			// Crear objeto Meta
+			Meta meta = new Meta();
+			meta.setIdMeta(idMeta);
+			meta.setNombre(nombre);
+			meta.setDescripcion(descripcion);
+			meta.setFechaInicio(fechaInicio);
+			meta.setFechaFin(fechaFin);
+
+			meta.setEstado(true);
+			meta.setDiasObjetivo((int) diasObjetivo);
+			meta.setUsuario(usuario);
+
+			MetaDAO metaDAO = new MetaDAO();
+			boolean isUpdated = metaDAO.modificarMeta(meta);
+
+			if (isUpdated) {
+
+				req.getRequestDispatcher("HabitoController?ruta=listarHabitos&idmeta=" + idMeta).forward(req, resp);
+			} else {
+				req.setAttribute("error", "Error al modificar la meta");
+				req.getRequestDispatcher("error.jsp").forward(req, resp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			req.setAttribute("error", "Error en el procesamiento de la solicitud");
+			req.getRequestDispatcher("error.jsp").forward(req, resp);
+		}
 	}
-
 
 	private void agregarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    System.out.println("Entrando a agregarMeta");
-	    HttpSession session = req.getSession();
-	    try {
-	    	
-	        int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
-	        Usuario usuario = (Usuario) session.getAttribute("usuario");
-	        System.out.println("La id del usuario es: "+ idUsuario);
-	        String nombre = req.getParameter("nombre-meta");
-	        String descripcion = req.getParameter("descripcion-meta");
 
-	        // Obtener las fechas en formato dd/MM/yyyy desde el formulario
-	        String fechaInicioStr = req.getParameter("fecha-inicio");
-	        String fechaFinStr = req.getParameter("fecha-fin");
+		HttpSession session = req.getSession();
+		try {
 
-	        // Definir un SimpleDateFormat para el formato dd/MM/yyyy
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Usuario usuario = (Usuario) session.getAttribute("usuario");
+			String nombre = req.getParameter("nombre-meta");
+			String descripcion = req.getParameter("descripcion-meta");
 
-	        // Convertir las fechas a formato java.util.Date
-	        Date fechaInicioUtil = dateFormat.parse(fechaInicioStr);
-	        Date fechaFinUtil = dateFormat.parse(fechaFinStr);
+			String fechaInicioStr = req.getParameter("fecha-inicio");
+			String fechaFinStr = req.getParameter("fecha-fin");
 
-	        // Convertir java.util.Date a java.sql.Date
-	        java.sql.Date fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
-	        java.sql.Date fechaFin = new java.sql.Date(fechaFinUtil.getTime());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	        // Calcular días objetivo
-	        long diasObjetivo = java.time.temporal.ChronoUnit.DAYS.between(
-	            fechaInicio.toLocalDate(),
-	            fechaFin.toLocalDate()
-	        );
+			Date fechaInicioUtil = dateFormat.parse(fechaInicioStr);
+			Date fechaFinUtil = dateFormat.parse(fechaFinStr);
 
-	        if (diasObjetivo < 0) {
-	            req.setAttribute("error", "La fecha de inicio no puede ser posterior a la fecha de fin.");
-	            req.getRequestDispatcher("error.jsp").forward(req, resp);
-	            return;
-	        }
+			java.sql.Date fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
+			java.sql.Date fechaFin = new java.sql.Date(fechaFinUtil.getTime());
 
-	        // Crear objeto Meta
-	        Meta meta = new Meta();
-	        meta.setUsuario(usuario);
-	        meta.setNombre(nombre);
-	        meta.setDescripcion(descripcion);
-	        meta.setFechaInicio(fechaInicio);
-	        meta.setFechaFin(fechaFin);
-	        meta.setEstado(true); // Activa por defecto
-	        meta.setDiasObjetivo((int) diasObjetivo); // Convertimos a int
-	        
-	        // **Agregar la meta a la lista del usuario**
-	        //usuario.getMetas().add(meta);
+			long diasObjetivo = java.time.temporal.ChronoUnit.DAYS.between(fechaInicio.toLocalDate(),
+					fechaFin.toLocalDate());
 
-	        // Llamar al DAO para actualizar usuario y meta
-	        UsuarioDAO usuarioDAO = new UsuarioDAO();        
-	        usuarioDAO.actualizarListasUsuario(usuario); 
+			if (diasObjetivo < 0) {
+				req.setAttribute("error", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+				req.getRequestDispatcher("error.jsp").forward(req, resp);
+				return;
+			}
 
-	        // Llamar al DAO para agregar la meta
-	        MetaDAO metaDAO = new MetaDAO();
-	        boolean isInserted = metaDAO.insertarMeta(meta);
+			Meta meta = new Meta();
+			meta.setUsuario(usuario);
+			meta.setNombre(nombre);
+			meta.setDescripcion(descripcion);
+			meta.setFechaInicio(fechaInicio);
+			meta.setFechaFin(fechaFin);
+			meta.setEstado(true);
+			meta.setDiasObjetivo((int) diasObjetivo);
 
-	        if (isInserted) {
-	            System.out.println("Meta agregada correctamente con id: "+ meta.getIdMeta());
-	            req.getRequestDispatcher("HabitoController?ruta=listar&idmeta="+ meta.getIdMeta()).forward(req, resp);
-	        } else {
-	            req.setAttribute("error", "Error al agregar la meta");
-	            req.getRequestDispatcher("error.jsp").forward(req, resp);
-	        }
+			MetaDAO metaDAO = new MetaDAO();
+			boolean isInserted = metaDAO.insertarMeta(meta);
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        req.setAttribute("error", "Error en el procesamiento de la solicitud");
-	        req.getRequestDispatcher("error.jsp").forward(req, resp);
-	    }
+			if (isInserted) {
+
+				req.getRequestDispatcher("HabitoController?ruta=listarHabitos&idmeta=" + meta.getIdMeta()).forward(req,
+						resp);
+			} else {
+				req.setAttribute("error", "Error al agregar la meta");
+				req.getRequestDispatcher("error.jsp").forward(req, resp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			req.setAttribute("error", "Error en el procesamiento de la solicitud");
+			req.getRequestDispatcher("error.jsp").forward(req, resp);
+		}
 	}
 
-
-
 	private void eliminarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("Entro a eliminar meta");
+
 		int idMeta = Integer.parseInt(req.getParameter("idMeta"));
-		System.out.println("Esta es la id de la Meta"+idMeta);
+
 		int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
-		System.out.println("Esta es la id del Usuario"+idUsuario);
-		
-		
+
 		// Instanciar el DAO y ejecutar el método de eliminación
-	    MetaDAO metaDAO = new MetaDAO();
-	    
-	    try {
-	        metaDAO.eliminarMeta(idMeta);
-	        
-	        // Responder con un mensaje de éxito
-	        resp.setContentType("application/json");
-	        resp.setCharacterEncoding("UTF-8");
-	        resp.getWriter().write("{\"status\":\"success\"}");
-	        System.out.println("Se elimino la meta con id "+ idMeta);
-	        
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al eliminar la meta");
-	    }
-		
-		
-		
+		MetaDAO metaDAO = new MetaDAO();
+
+		try {
+			metaDAO.eliminarMeta(idMeta);
+
+			// Responder con un mensaje de éxito
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.getWriter().write("{\"status\":\"success\"}");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al eliminar la meta");
+		}
+
 	}
 
 	private void solicitarMetas(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("Entro a obtener metas");
-		HttpSession session = req.getSession();
-	    Usuario usuario = (Usuario) session.getAttribute("usuario");
-	    
-	    int idUsuario = usuario.getIdUsuario();
-	    
-	    List<Meta> metas; 
-	    MetaDAO metaDAO = new MetaDAO(); 
-	    
-	    try {
-	        metas = metaDAO.obtenerMetasPorUsuario(idUsuario);
-	        session.setAttribute("metas", metas);
-	        System.out.println("Metas obtenidas: " + metas.size());
-	        System.out.println("Ingreso a obtenerMetas");
 
-	        req.setAttribute("metas", metas);
+		HttpSession session = req.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+		int idUsuario = usuario.getIdUsuario();
+
+		List<Meta> metas;
+		MetaDAO metaDAO = new MetaDAO();
+
+		try {
+			metas = metaDAO.obtenerMetasPorUsuario(idUsuario);
+			session.setAttribute("metas", metas);
+
+			req.setAttribute("metas", metas);
 
 			getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
-	        
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al obtener las metas");
-	    }
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al obtener las metas");
+		}
 	}
 
-	
-	
-	
 }

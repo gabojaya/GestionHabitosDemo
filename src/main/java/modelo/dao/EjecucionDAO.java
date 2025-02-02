@@ -49,7 +49,7 @@ public class EjecucionDAO {
 	public void actualizarEjecucion(Ejecucion ejecucion) {
 	    try {
 	        em.getTransaction().begin();
-	        em.merge(ejecucion);  // Utilizar merge para actualizar la ejecución
+	        em.merge(ejecucion);  
 	        em.getTransaction().commit();
 	    } catch (Exception e) {
 	        if (em.getTransaction().isActive()) {

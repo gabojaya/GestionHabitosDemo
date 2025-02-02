@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const par = new URLSearchParams(window.location.search);
 	const ruta = par.get('ruta');
 	if (ruta === 'iniciarSesion' || ruta === 'registrarUsuario' || ruta === 'modificarUsuario') {
-		showPage(1); // Mostrar la primera página al cargar la página
+		showPage(1); 
 		setUpPerfil();
 		setupTabs();
 
@@ -115,7 +115,7 @@ function fetchMetas() {
 	window.location.href = `MetaController?ruta=solicitarMetas`;
 }
 function eliminarMeta(idMeta, idUsuario) {
-	// Mostrar la alerta de confirmación antes de eliminar
+	
 	Swal.fire({
 		title: "¿Eliminar Meta?",
 		text: "¿Estás seguro de que deseas eliminar esta meta? Esta acción no se puede deshacer.",
@@ -126,19 +126,19 @@ function eliminarMeta(idMeta, idUsuario) {
 		confirmButtonText: "Sí, eliminar",
 		cancelButtonText: "Cancelar"
 	}).then((result) => {
-		// Si el usuario confirma, proceder con la eliminación
+		
 		if (result.isConfirmed) {
-			// Hacer la solicitud fetch para eliminar la meta
+			
 			fetch(`MetaController?ruta=eliminarMeta&idMeta=${idMeta}&idUsuario=${idUsuario}`, {
 				method: 'POST'
 			})
 				.then(response => response.json())
 				.then(data => {
 					if (data.status === "success") {
-						// Eliminar la fila de la tabla
+						
 						const row = document.querySelector(`button[data-id="${idMeta}"]`).closest('tr');
 						row.remove();
-						// Mostrar alerta con SweetAlert2
+						
 						Swal.fire({
 							icon: 'success',
 							title: 'Meta eliminada',
@@ -172,7 +172,7 @@ function setUpPerfil() {
 		btn.addEventListener('click', function() {
 			const usuarioId = btn.getAttribute('data-id');
 
-			// Hacer una solicitud fetch para obtener los datos del usuario
+			
 			fetch(`UsuarioController?ruta=obtenerUsuario&idUsuario=${usuarioId}`)
 				.then(response => {
 					const idUsuario = response.headers.get('idUsuario');
@@ -182,7 +182,7 @@ function setUpPerfil() {
 					const email = response.headers.get('email');
 					const clave = response.headers.get('clave');
 
-					// Llenar el formulario con los datos del usuario
+					
 					document.getElementById('idUsuario').value = idUsuario || '';
 					document.getElementById('nombreM').value = nombre || '';
 					document.getElementById('apellidoM').value = apellido || '';
@@ -190,13 +190,13 @@ function setUpPerfil() {
 					document.getElementById('emailM').value = email || '';
 					document.getElementById('claveM').value = clave || '';
 
-					// Mostrar el formulario
+					
 					screenOverlayPerfil.style.display = 'flex';
 				});
 		});
 	});
 
-	// Cerrar el formulario
+
 	cerrarBtn.addEventListener('click', function() {
 		screenOverlayPerfil.style.display = 'none';
 	});
@@ -215,7 +215,7 @@ function setUpPerfil() {
 				cancelButtonText: "Cancelar"
 			}).then((result) => {
 				if (result.isConfirmed) {
-					// Redirigir a la URL de eliminación
+					
 					window.location.href = `UsuarioController?ruta=eliminarUsuario&idUsuario=${usuarioId}`;
 				}
 			});
@@ -224,7 +224,7 @@ function setUpPerfil() {
 
 
 	document.getElementById("formEditarUsuario").addEventListener("submit", function(event) {
-		event.preventDefault(); // Evita el envío automático del formulario
+		event.preventDefault(); 
 
 		Swal.fire({
 			title: "¿Guardar cambios?",
@@ -237,7 +237,7 @@ function setUpPerfil() {
 			cancelButtonText: "Cancelar"
 		}).then((result) => {
 			if (result.isConfirmed) {
-				// Enviar el formulario manualmente si el usuario confirma
+				
 				event.target.submit();
 			}
 		});
@@ -255,7 +255,7 @@ function setupMetaScreen() {
 	const cerrarModificarBtn = document.getElementById('cerrar-btn-modificar');
 	const continuaModificarrBtn = document.getElementById('continuar-btn-modificar');
 	const cerrarBtnAgregar = document.getElementById('cerrar-btn-agregar');
-	//const continuarBtnAgregar = document.getElementById('continuar-btn-agregar');
+	
 	const screenOverlayHabitos = document.getElementById('screenOverlayHabitos');
 
 
@@ -280,24 +280,24 @@ function setupMetaScreen() {
 		btn.addEventListener('click', function() {
 			const metaId = btn.getAttribute('data-id');
 
-			// Realizar la solicitud al servidor para obtener los datos de la meta
+			
 			fetch('MetaController?ruta=obtenerMeta&idmeta=' + metaId)
 				.then(response => {
-					// Obtener los encabezados de la respuesta
+					
 					const idMeta = response.headers.get('idmeta');
 					const nombreMeta = response.headers.get('nombre');
 					const descripcionMeta = response.headers.get('descripcion');
 					const fechaInicioMeta = response.headers.get('fechaInicio');
 					const fechaFinMeta = response.headers.get('fechaFin');
 
-					// Llenar el formulario con los datos de la meta
+					
 					document.getElementById('idMeta').value = idMeta || '';
 					document.getElementById('nombre-meta').value = nombreMeta || '';
 					document.getElementById('descripcion-meta').value = descripcionMeta || '';
 					document.getElementById('fecha-inicio').value = fechaInicioMeta || '';
 					document.getElementById('fecha-fin').value = fechaFinMeta || '';
 
-					// Mostrar el formulario de edición de meta
+					
 					screenOverlayModificarMeta.style.display = 'flex';
 				})
 				.catch(error => {
@@ -308,7 +308,7 @@ function setupMetaScreen() {
 
 
 	document.getElementById("formModificarMeta").addEventListener("submit", function(event) {
-		event.preventDefault(); // Evita el envío automático del formulario
+		event.preventDefault(); 
 
 		Swal.fire({
 			title: "¿Guardar cambios?",
@@ -321,14 +321,14 @@ function setupMetaScreen() {
 			cancelButtonText: "Cancelar"
 		}).then((result) => {
 			if (result.isConfirmed) {
-				// Enviar el formulario manualmente si el usuario confirma
+				
 				event.target.submit();
 			}
 		});
 	});
 
 	document.getElementById("formAgregarMeta").addEventListener("submit", function(event) {
-		event.preventDefault(); // Evita el envío automático del formulario
+		event.preventDefault(); 
 
 		Swal.fire({
 			title: "¿Agregar esta meta?",
@@ -341,24 +341,12 @@ function setupMetaScreen() {
 			cancelButtonText: "Cancelar"
 		}).then((result) => {
 			if (result.isConfirmed) {
-				// Enviar el formulario manualmente si el usuario confirma
+				
 				event.target.submit();
 			}
 		});
 	});
 
-
-
-
-	//	continuarBtnAgregar.addEventListener('click', function() {
-	//		if (selectedMetaId) {
-	//					// Redirige a la URL con el idMeta seleccionado
-	//					window.location.href = `HabitoController?ruta=listar&idmeta=${selectedMetaId}`;
-	//				} else {
-	//					alert('Seleccione una meta antes de continuar.');
-	//				}
-	//
-	//	});
 
 
 	/* Seccion 2: Registrar Habito*/
@@ -380,8 +368,8 @@ function setupMetaScreen() {
 	addHabitoBtn.addEventListener('click', function() {
 
 		const urlParams = new URLSearchParams(window.location.search);
-		const metaid = urlParams.get("idmeta"); // Obtén el idMeta de la URL
-		document.getElementById('idmeta').value = metaid; // Asigna el valor al input oculto
+		const metaid = urlParams.get("idmeta"); 
+		document.getElementById('idmeta').value = metaid; 
 
 
 		document.getElementById('nombre-habito').value = '';
@@ -398,12 +386,12 @@ function setupMetaScreen() {
 		var id = new URLSearchParams(window.location.search);
 		let metaid = id.get("idmeta");
 
-		// Obtiene el formulario
+	
 		const form = document.getElementById('habito-form');
 
-		// Verifica si el formulario es válido
+
 		if (form.checkValidity()) {
-			// Si es válido, se asigna la acción del formulario y se envía
+			
 			if (editar) {
 				document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
 				Swal.fire({
@@ -438,10 +426,10 @@ function setupMetaScreen() {
 						}
 				});
 			}
-			// Oculta la pantalla de overlay después de enviar el formulario
+			
 			screenOverlayRegistroHabitos.style.display = 'none';
 		} else {
-			// Si el formulario no es válido, muestra un mensaje de alerta
+			
 			alert("Por favor, completa todos los campos requeridos.");
 		}
 	});
@@ -453,7 +441,7 @@ function setupMetaScreen() {
 
 	volverAMetasBtn.addEventListener('click', function() {
 		screenOverlayHabitos.style.display = 'none';
-		// Obtén el idUsuario del campo oculto
+
 		const idUsuario = document.getElementById('idUsuario').value;
 
 		fetchMetas(idUsuario);
@@ -488,7 +476,7 @@ function setupMetaScreen() {
 						document.getElementById("divcan").style.display = 'none';
 					}
 				});
-			//.catch(error => console.error('Error:', error));
+
 			editar = true;
 			console.log(document.getElementById("tipo-medicion").value);
 			if (document.getElementById("tipo-medicion").value == "cantidad") {
@@ -508,7 +496,7 @@ function setupMetaScreen() {
 			const hid = btn.getAttribute('hab-id');
 			const mid = btn.getAttribute('meta-id');
 
-			// Mostrar la alerta de confirmación antes de eliminar
+		
 			Swal.fire({
 				title: "¿Eliminar Hábito?",
 				text: "¿Estás seguro de que deseas eliminar este hábito? Esta acción no se puede deshacer.",
@@ -519,9 +507,9 @@ function setupMetaScreen() {
 				confirmButtonText: "Sí, eliminar",
 				cancelButtonText: "Cancelar"
 			}).then((result) => {
-				// Si el usuario confirma, proceder con la eliminación
+				
 				if (result.isConfirmed) {
-					// Hacer la solicitud fetch para eliminar el hábito
+					
 					window.location.href = `HabitoController?ruta=eliminarHabito&idmeta=${mid}&idhab=${hid}`;
 				}
 			});
@@ -531,7 +519,7 @@ function setupMetaScreen() {
 
 	asginarHorariosBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
-			// Mostrar el div al hacer clic en el botón
+			
 			screenOverlayAsignarHorarios.style.display = 'flex';
 
 			const idHabito = this.getAttribute("hab-id");
@@ -539,9 +527,9 @@ function setupMetaScreen() {
 
 			document.getElementById("idHabito").value = idHabito;
 
-			// Generar campos dinámicos
+
 			const horariosContainer = document.getElementById("horariosContainer");
-			horariosContainer.innerHTML = ""; // Limpiar campos previos
+			horariosContainer.innerHTML = ""; 
 			for (let i = 1; i <= frecuencia; i++) {
 				const horarioDiv = document.createElement("div");
 				horarioDiv.className = "horario-item";
@@ -565,7 +553,6 @@ function setupMetaScreen() {
 
 function setUpEjecuciones() {
 
-	/* Seccion 3: Registrar Ejecucion*/
 	const registrarEjecucionBtn = document.querySelectorAll('.registrar-ejecucion');
 	const guardarEjecucionBtn = document.getElementById('guardar-ejecucion-btn');
 	const cerrarEjecucionBtn = document.getElementById('cerrar-ejecucion-btn');
@@ -582,7 +569,7 @@ function setUpEjecuciones() {
 			const dataEjecHabtioCantidad = btn.getAttribute('data-ejec-habitoCantidad');
 			const dataEjecHabtioTiempo = btn.getAttribute('data-ejec-habitoTiempo');
 
-			// Llenar el formulario con los datos de la meta seleccionada
+
 			document.getElementById('idEjecucion').value = dataEjecId;
 			document.getElementById('idEjecHabito').value = dataEjecHabitoId;
 			document.getElementById('nameEjecHabito').value = dataEjecHabtioName;
@@ -590,37 +577,37 @@ function setUpEjecuciones() {
 			document.getElementById('cantidadEjecHabito').value = dataEjecHabtioCantidad;
 			document.getElementById('tiempoEjecHabito').value = dataEjecHabtioTiempo;
 
-			// Limpiar los campos de cantidad y tiempo antes de llenar con nuevos valores
+
 			document.getElementById('cantidadActual').value = '';
 			document.getElementById('tiempoTranscurrido').value = '';
 			document.getElementById('tiempoTranscurridoInput').value = '';
 
-			// Mostrar los datos en pantalla
-			document.getElementById('nombreHabitoTexto').textContent = dataEjecHabtioName;
-			document.getElementById('fechaActualTexto').textContent = new Date().toLocaleDateString(); // Fecha actual
 
-			// Dependiendo del tipo, mostrar la sección correcta
+			document.getElementById('nombreHabitoTexto').textContent = dataEjecHabtioName;
+			document.getElementById('fechaActualTexto').textContent = new Date().toLocaleDateString(); 
+
+
 			if (dataEjecHabtioTipo === "cantidad") {
 				document.getElementById('cantidadSection').style.display = 'block';
 				document.getElementById('tiempoSection').style.display = 'none';
 				document.getElementById('cantidadTotal').textContent = dataEjecHabtioCantidad;
 
-				// Establecer el máximo de cantidad
-				// Establecer el máximo de cantidad
+
+
 				const cantidadTotal = parseInt(dataEjecHabtioCantidad);
 				const cantidadInput = document.getElementById('cantidadActual');
 				cantidadInput.max = cantidadTotal;
 
-				// Validar si el valor ingresado es mayor al máximo
-				// Bloquear la entrada de números mayores que el máximo
+
+
 				cantidadInput.addEventListener('input', function() {
 					const cantidadIngresada = parseInt(cantidadInput.value);
 					if (cantidadIngresada > cantidadTotal) {
-						cantidadInput.value = cantidadTotal; // Si se excede, ajustamos al máximo
+						cantidadInput.value = cantidadTotal; 
 					}
 				});
 
-				// Ocultar botones de tiempo
+
 				document.getElementById('iniciar-temporizador').style.display = 'none';
 				document.getElementById('pausar-temporizador').style.display = 'none';
 				document.getElementById('reiniciar-temporizador').style.display = 'none';
@@ -640,23 +627,11 @@ function setUpEjecuciones() {
 		});
 	});
 
-	//	document.getElementById('formRegistrarEjecucion').addEventListener('submit', function(e) {
-	//		const cantidadInput = document.getElementById('cantidadActual');
-	//		const cantidadTotal = parseInt(document.getElementById('cantidadEjecHabito').value);
-	//
-	//		// Verificamos antes de enviar el formulario si el valor excede el máximo
-	//		if (parseInt(cantidadInput.value) > cantidadTotal) {
-	//			e.preventDefault(); // Evitar que el formulario se envíe si el valor es mayor
-	//			alert(`El valor de la cantidad no puede ser mayor a ${cantidadTotal}.`);
-	//		}
-	//	});
-
 	cerrarEjecucionBtn.addEventListener('click', function() {
 		screenOverlayEjecucion.style.display = 'none';
 	});
 
 
-	// Obtener referencias a los elementos del DOM
 	const tiempoSection = document.getElementById('tiempoSection');
 	const tiempoTranscurrido = document.getElementById('tiempoTranscurrido');
 	const tiempoTotal = document.getElementById('tiempoTotal');
@@ -671,13 +646,13 @@ function setUpEjecuciones() {
 	let tiempoTotalEnSegundos = 0;
 
 
-	// Función para iniciar el temporizador
+
 	iniciarBtn.addEventListener('click', () => {
 		if (!intervalo) {
-			// Obtener el tiempo total desde el input oculto
+
 			const tiempoTotalTexto = document.getElementById('tiempoEjecHabito').value;
 
-			// Soporte para formato hh:mm:ss
+
 			const [horasTotales, minutosTotales, segundosTotales] = tiempoTotalTexto.split(':').map(Number);
 			tiempoTotalEnSegundos = (horasTotales * 3600) + (minutosTotales * 60) + segundosTotales;
 
@@ -689,10 +664,10 @@ function setUpEjecuciones() {
 					const segundos = String(tiempoEnSegundos % 60).padStart(2, '0');
 					tiempoTranscurrido.textContent = `${horas}:${minutos}:${segundos}`;
 
-					// Actualizar el campo oculto con el tiempo transcurrido
+
 					document.getElementById('tiempoTranscurridoInput').value = `${horas}:${minutos}:${segundos}`;
 				} else {
-					// Detener el temporizador automáticamente al alcanzar el límite
+					
 					clearInterval(intervalo);
 					intervalo = null;
 					iniciarBtn.disabled = true;
@@ -707,7 +682,7 @@ function setUpEjecuciones() {
 	});
 
 
-	// Función para pausar el temporizador
+
 	pausarBtn.addEventListener('click', () => {
 		clearInterval(intervalo);
 		intervalo = null;
@@ -715,7 +690,7 @@ function setUpEjecuciones() {
 		pausarBtn.disabled = true;
 	});
 
-	// Función para reiniciar el temporizador
+
 	reiniciarBtn.addEventListener('click', () => {
 		clearInterval(intervalo);
 		intervalo = null;
@@ -725,7 +700,7 @@ function setUpEjecuciones() {
 		pausarBtn.disabled = true;
 	});
 
-	// Función para reiniciar el temporizador al cerrar
+
 	cerrarEjecucionBtn.addEventListener('click', () => {
 		clearInterval(intervalo);
 		intervalo = null;
@@ -738,21 +713,21 @@ function setUpEjecuciones() {
 	});
 
 	guardarEjecucionBtn.addEventListener('click', function() {
-		// Detener el temporizador si está corriendo
+
 		if (intervalo) {
 			clearInterval(intervalo);
 			intervalo = null;
 		}
-		// Asignar el valor del cronómetro al campo de formulario
+
 		document.getElementById('tiempoTranscurrido').value = tiempoTranscurrido.textContent;
 
-		// Proceder con el resto del código para guardar la ejecución
+
 		screenOverlayEjecucion.style.display = 'none';
 	});
 
 
 	document.getElementById("formRegistrarEjecucion").addEventListener("submit", function(event) {
-	        event.preventDefault(); // Evita el envío automático del formulario
+	        event.preventDefault(); 
 
 	        Swal.fire({
 	            title: "¿Registrar Ejecución?",
@@ -765,7 +740,7 @@ function setUpEjecuciones() {
 	            cancelButtonText: "Cancelar"
 	        }).then((result) => {
 	            if (result.isConfirmed) {
-	                // Enviar el formulario manualmente si el usuario confirma
+	                
 	                event.target.submit();
 	            }
 	        });
@@ -870,13 +845,13 @@ function notifi() {
 	var records = document.querySelectorAll('.noti');
 	var time = new Date().toLocaleTimeString('es-ES');
 	console.log("Se entro en la funcionnde notificaciones");
-	// Verificar que el navegador soporta notificaciones
+	
 	if (!("Notification" in window)) {
 
 		alert("Tu navegador no soporta notificaciones");
 
 	} else if (Notification.permission === "granted") {
-		// Lanzar notificacion si ya esta autorizado el servicio
+		
 		records.forEach((item) => {
 			;
 			if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
@@ -888,7 +863,7 @@ function notifi() {
 		Notification.requestPermission(function(permission) {
 
 			if (Notification.permission === "granted") {
-				// Lanzar notificacion si ya esta autorizado el servicio
+				
 				records.forEach((item) => {
 					if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
 						var notification = new Notification(item.dataset.mes);

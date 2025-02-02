@@ -27,41 +27,36 @@ public class MetaDAO {
 	}
 
 	public void eliminarMeta(int idMeta) throws SQLException {
-	    // Obtener la meta por su ID
-	    System.out.println("ESTÁS EN META DAO");
-	    Meta meta = em.find(Meta.class, idMeta);
 
-	    if (meta != null) {
-	        List<Habito> habs;
-	        HabitoDAO hdao = new HabitoDAO();
-	        habs = hdao.obtenerHabitos(idMeta); // Obtiene los hábitos asociados a la meta
-	        System.out.println("Esta es la lista de hábitos en META DAO: " + habs);
+		Meta meta = em.find(Meta.class, idMeta);
 
-	        try {
-	            em.getTransaction().begin();
+		if (meta != null) {
+			List<Habito> habs;
+			HabitoDAO hdao = new HabitoDAO();
+			habs = hdao.obtenerHabitos(idMeta);
 
-	            // Eliminar los hábitos asociados utilizando el método eliminarHabito
-	            for (Habito habito : habs) {
-	                System.out.println("Eliminando hábito con ID: " + habito.getIdHabito() + ", Nombre: " + habito.getNombre());
-	                hdao.eliminarHabito(habito.getIdHabito()); // Llama al método eliminarHabito para eliminar cada hábito
-	            }
+			try {
+				em.getTransaction().begin();
 
-	            // Eliminar la meta
-	            em.remove(meta);
+				for (Habito habito : habs) {
+					
+					hdao.eliminarHabito(habito.getIdHabito());
+				}
 
-	            em.getTransaction().commit();
-	        } catch (Exception e) {
-	            if (em.getTransaction().isActive()) {
-	                em.getTransaction().rollback();
-	            }
-	            e.printStackTrace();
-	            throw new SQLException("Error al eliminar la meta y sus hábitos asociados.", e);
-	        }
-	    } else {
-	        throw new SQLException("Meta no encontrada con ID: " + idMeta);
-	    }
+				em.remove(meta);
+
+				em.getTransaction().commit();
+			} catch (Exception e) {
+				if (em.getTransaction().isActive()) {
+					em.getTransaction().rollback();
+				}
+				e.printStackTrace();
+				throw new SQLException("Error al eliminar la meta y sus hábitos asociados.", e);
+			}
+		} else {
+			throw new SQLException("Meta no encontrada con ID: " + idMeta);
+		}
 	}
-
 
 	public boolean insertarMeta(Meta meta) throws SQLException {
 		try {

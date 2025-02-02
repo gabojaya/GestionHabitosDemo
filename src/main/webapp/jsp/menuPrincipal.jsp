@@ -83,7 +83,8 @@
 
 			<div class="screenOverlay" id="screenOverlayPerfil"
 				style="display: none;">
-				<form  id="formEditarUsuario"  method="POST" action="UsuarioController?ruta=modificarUsuario">
+				<form id="formEditarUsuario" method="POST"
+					action="UsuarioController?ruta=modificarUsuario">
 					<div class="container-form-2">
 						<h3>Editar Usuario</h3>
 						<!-- Campo oculto para ID del usuario -->
@@ -184,7 +185,8 @@
 			<!-- Pantalla Oculta para el Formulario de Meta -->
 			<div class="screenOverlay" id="screenOverlayModificarMeta"
 				style="display: none;">
-				<form id="formModificarMeta" method="POST" action="MetaController?ruta=modificarMeta">
+				<form id="formModificarMeta" method="POST"
+					action="MetaController?ruta=modificarMeta">
 					<div class="container-form-2">
 						<h3>Registrar Meta</h3>
 						<input type="hidden" name="idMeta" id="idMeta">
@@ -380,7 +382,8 @@
 
 
 						<div onmouseover="pruebaf()" class="botones-meta2">
-							<button type="button" class="button-user" id="guardar-habito-btn">Guardar Habito</button>
+							<button type="button" class="button-user" id="guardar-habito-btn">Guardar
+								Habito</button>
 							<button type="button" class="button-user" id="cerrar-habito-btn">Cancelar</button>
 						</div>
 					</form>
@@ -434,35 +437,7 @@
 			</div>
 		</div>
 
-		<!-- Pantalla Oculta Registrar Ejecución -->
-		<!--
-        <div class="screenOverlay" id="screenOverlayEjecucion" style="display:none;">
-            <div class="container-form-2">
-                <h3>Registrar Ejecución del Hábito</h3>
-				
-				<input type="hidden" name="idEjecucion" id="idEjecucion" >
-				<input type="hidden" name="idEjecHabito" id="idEjecHabito">
-				<input type="hidden" name="nameEjecHabito" id="nameEjecHabito" >
-				<input type="hidden" name="tipoEjecHabito" id="tipoEjecHabito" >
-				<input type="hidden" name="cantidadEjecHabito" id="cantidadEjecHabito" >
-				<input type="hidden" name="tiempoEjecHabito" id="tiempoEjecHabito" >
-                <p><strong>Nombre del Hábito:</strong> <span id="nombreHabitoTexto"></span></p>
 
-                <p><strong>Fecha Actual:</strong> <span id="fechaActualTexto">--/--/----</span></p>
-
-                <p><strong>Tiempo Transcurrido:</strong> <span id="tiempoTranscurrido">00:00</span></p>
-
-                <div class="botones-control">
-                    <button class="button-user" id="iniciar-temporizador">Iniciar</button>
-                    <button class="button-user" id="pausar-temporizador" disabled>Pausar</button>
-                </div>
-
-                <div class="botones-meta">
-                    <button class="button-user" id="guardar-ejecucion-btn">Guardar Hábito</button>
-                    <button class="button-user" id="cerrar-ejecucion-btn">Cancelar</button>
-                </div>
-            </div>
-        </div>  -->
 
 		<div class="screenOverlay" id="screenOverlayEjecucion"
 			style="display: none;">
@@ -567,64 +542,7 @@
 		</div>
 
 
-		<!-- Sección 5: Notificaciones-->
-		<!--
-		<div class="page" id="page5" style="display: none;">
-			<h2 class="create-account">Notificaciones</h2>
-			<div class="lista-Metas">
-				<table class="tabla-metas">
-					<thead>
-						<tr>
-							<th>Notificacion</th>
-							<th>Marcar como leido</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td style="color: black;">Hora de correr</td>
-							<td>
-								<button style="font-size: 24px">
-									Check<i class="fa fa-calendar-check-o"></i>
-								</button>
-							</td>
-						</tr>
-						<tr>
-							<td style="color: black;">Hora de comer</td>
-							<td>
-								<button style="font-size: 24px">
-									Check<i class="fa fa-calendar-check-o"></i>
-								</button>
-							</td>
-						</tr>
-						<tr>
-							<td style="color: black;">Hora de ir al GYM</td>
-							<td>
-								<button style="font-size: 24px">
-									Check<i class="fa fa-calendar-check-o"></i>
-								</button>
-							</td>
-						</tr>
-						<tr>
-							<td style="color: black;">Hora de dormir</td>
-							<td>
-								<button style="font-size: 24px">
-									Check<i class="fa fa-calendar-check-o"></i>
-								</button>
-							</td>
-						</tr>
-						<tr>
-							<td style="color: black;">Hora de tomar agua</td>
-							<td>
-								<button style="font-size: 24px">
-									Check<i class="fa fa-calendar-check-o"></i>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div> -->
+
 
 
 		<!-- Sección 5: Notificaciones-->
@@ -666,7 +584,7 @@
 			src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 		<script>
 		function pruebaf(){
-        	//document.getElementById("idmeta").value= window.location.search.get(idmeta);
+        	
         	 var id = new URLSearchParams(window.location.search);
         	 console.log(id.get("idmeta"));
         	 document.getElementById("idmeta").value=id.get("idmeta");

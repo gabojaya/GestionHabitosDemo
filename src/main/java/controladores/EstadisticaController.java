@@ -36,7 +36,7 @@ public class EstadisticaController extends HttpServlet {
 	}
 
 	private void ruteador(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// Logica del control
+		
 		String ruta = (req.getParameter("ruta") == null) ? "listar" : req.getParameter("ruta");
 
 		switch (ruta) {
@@ -54,36 +54,34 @@ public class EstadisticaController extends HttpServlet {
 
 	private void actualizarEstadisticas(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("Entró a actualizar estadísticas");
+		
 
-		// Obtenemos el id del hábito y la meta
 		int idHabito = Integer.parseInt(req.getParameter("idhab"));
 		HttpSession session = req.getSession();
 		int idMeta = (int) session.getAttribute("idmeta");
 
-		// Obtener la meta para obtener días objetivo
+
 		MetaDAO metaDAO = new MetaDAO();
 		Meta meta = metaDAO.obtenerMetaPorId(idMeta);
 		int diasObjetivos = meta.getDiasObjetivo();
 
-		// Obtener el hábito actualizado
 		HabitoDAO habitoDAO = new HabitoDAO();
 		Habito habito;
 		try {
 			habito = habitoDAO.obtenerHabitoPorId(idHabito);
 
-			// Calcular los nuevos valores para la estadística
+
 			int frecuencia = habito.getFrecuencia();
 			int cantidadTotal = habito.getCantidadTotal();
 			Time tiempoTotal = habito.getTiempoTotal();
 
-			// Calcular cantidadFinalEsperada
+
 			int cantidadFinalEsperada = 0;
 			if (cantidadTotal > 0) {
 				cantidadFinalEsperada = frecuencia * cantidadTotal * diasObjetivos;
 			}
 
-			// Calcular tiempoFinalEsperado
+
 			Time tiempoFinalEsperado = null;
 			if (tiempoTotal != null) {
 				long tiempoEnSegundos = convertirTimeASegundos(tiempoTotal);
@@ -92,21 +90,21 @@ public class EstadisticaController extends HttpServlet {
 				tiempoFinalEsperado = Time.valueOf(tiempoFinalStr);
 			}
 
-			// Obtener la estadística actual del hábito
+
 			EstadisticaDAO estadisticaDAO = new EstadisticaDAO();
 			Estadistica estadistica = estadisticaDAO.obtenerEstadisticasPorHabito(idHabito);
 
 			if (estadistica != null) {
-				// Actualizar los valores de la estadística con los nuevos cálculos
+				
 				estadistica.setCantidadFinalEsperada(cantidadFinalEsperada);
 				estadistica.setTiempoFinalEsperado(tiempoFinalEsperado);
-				estadistica.setTiempoAcumulado(estadistica.getTiempoAcumulado()); // Mantener tiempo acumulado actual
-				estadistica.setCantidadAcumulada(estadistica.getCantidadAcumulada()); // Mantener cantidad acumulada
+				estadistica.setTiempoAcumulado(estadistica.getTiempoAcumulado()); 
+				estadistica.setCantidadAcumulada(estadistica.getCantidadAcumulada()); 
 
-				// Actualizar la estadística en la base de datos
+
 				estadisticaDAO.actualizarEstadisticas(estadistica);
 
-				System.out.println("Estadística actualizada con éxito");
+				
 			}
 
 		} catch (SQLException e) {
@@ -114,16 +112,16 @@ public class EstadisticaController extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		// Redirigir después de la actualización
-		resp.sendRedirect("HabitoController?ruta=listar&idmeta=" + idMeta);
+	
+		resp.sendRedirect("HabitoController?ruta=listarHabitos&idmeta=" + idMeta);
 
 	}
 
 	private void crearEstadistica(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("Entro a crear Estadistica");
+		
 		int idHabito = (int) req.getAttribute("idHabito");
-		System.out.println("La id del habito extraido es: " + idHabito);
+		
 		HttpSession session = req.getSession();
 		int id = (int) session.getAttribute("idmeta");
 
@@ -157,23 +155,23 @@ public class EstadisticaController extends HttpServlet {
 
 				// Calcular tiempo esperado en segundos
 				long tiempoTotalEsperadoSegundos = frecuencia * tiempoEnSegundos * diasObjetivos;
-				System.out.println("Este es el tiempoTotalEsperadoSegundos " + tiempoTotalEsperadoSegundos);
+				
 
 				// Convertir los segundos a formato HH:mm:ss
 				String tiempoFinalStr = convertirSegundosAFormato(tiempoTotalEsperadoSegundos);
-				System.out.println("Tiempo Final Esperado (formato HH:mm:ss): " + tiempoFinalStr);
+				
 
 				// Usar el nuevo formato convertido
 				tiempoFinalEsperado = Time.valueOf(tiempoFinalStr);
 				Time tiempoInicial = Time.valueOf("00:00:00");
 				est.setTiempoAcumulado(tiempoInicial);
-				System.out.println("Luego del 00:00:00 ");
+				
 				est.setTiempoFinalEsperado(tiempoFinalEsperado);
 			} else {
 				est.setTiempoAcumulado(null); // Tiempo inicial acumulado en 0
 				est.setTiempoFinalEsperado(habito.getTiempoTotal());
 			}
-			System.out.println("Nombre del habito: " + habito.getNombre());
+			
 			// Configurar los valores en la estadística
 			est.setHabito(habito);
 			est.setCantidadAcumulada(0);
@@ -188,7 +186,7 @@ public class EstadisticaController extends HttpServlet {
 
 			habitoDAO.actualizarListaHabito(habito);
 
-			resp.sendRedirect("HabitoController?ruta=listar&idmeta=" + id);
+			resp.sendRedirect("HabitoController?ruta=listarHabitos&idmeta=" + id);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -219,18 +217,18 @@ public class EstadisticaController extends HttpServlet {
 
 	private void obtenerEstadisticaPorHabito(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("Se entro en obtener estadisticas");
-		System.out.println(req.getParameter("habito"));
+		
+		
 		HttpSession session = req.getSession();
 		int idhab = Integer.parseInt(req.getParameter("habito"));
-		System.out.println(idhab);
+		
 		EstadisticaDAO estdao = new EstadisticaDAO();
 		Estadistica est = new Estadistica();
 		est = estdao.obtenerEstadisticasPorHabito(idhab);
 		req.setAttribute("estadistica", est);
 		String data = "&data-ca=" + est.getCantidadAcumulada() + "&data-cf=" + est.getCantidadFinalEsperada()
 				+ "&data-ta=" + est.getTiempoAcumulado() + "&data-tf=" + est.getTiempoFinalEsperado();
-		System.out.println("este es el data: " + data);
+		
 		resp.sendRedirect("HabitoController?ruta=listarHabitosUsuario" + data);
 	}
 }

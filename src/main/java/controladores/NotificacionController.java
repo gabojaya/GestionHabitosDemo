@@ -61,7 +61,7 @@ public class NotificacionController extends HttpServlet {
 	private void marcarLeido(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		int idRecordatorio = Integer.parseInt(req.getParameter("idRecordatorio"));
-
+		//Instancia del DAO
 		RecordatorioDAO notificacionDAO = new RecordatorioDAO();
 		Recordatorio recordatorio = notificacionDAO.obtenerRecordatorioPorId(idRecordatorio);
 		if (recordatorio != null) {

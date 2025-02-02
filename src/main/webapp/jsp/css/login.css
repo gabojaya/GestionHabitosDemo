@@ -217,3 +217,97 @@ body {
 #confirm-btn:hover {
   background-color: #6464f8;
 }
+
+
+/* Estilos para la pantalla de Asignar Horarios */
+#screenOverlayAsignarHorarios {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Asegura que el overlay esté por encima de otros elementos */
+  transition: all 0.5s ease;
+}
+
+.container-form-2 {
+  width: 90%;
+  max-width: 600px;
+  background-color: rgba(51, 51, 51, 0.8); /* Fondo oscuro con opacidad */
+  padding: 2rem;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.container-form-2 h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#horariosContainer {
+  margin-bottom: 2rem;
+}
+
+#btnAsignarHorarios, #volver-a-habitos-btn {
+  padding: 0.7rem 2rem;
+  margin-top: 1rem;
+  background-color: #4a4aee;
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#btnAsignarHorarios:hover, #volver-a-habitos-btn:hover {
+  background-color: #6464f8;
+}
+
+#volver-a-habitos-btn {
+  background-color: #ff4e4e; /* Color rojo para el botón "Volver" */
+}
+
+#volver-a-habitos-btn:hover {
+  background-color: #ff6a6a;
+}
+
+form input {
+  width: 80%;
+  margin: 10px auto;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: transparent;
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+}
+
+form input:focus {
+  border-color: #4a4aee;
+}
+
+form input[type="submit"] {
+  width: 100%;
+  background-color: #4a4aee;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 2rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+  background-color: #6464f8;
+}

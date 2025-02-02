@@ -133,36 +133,45 @@ function eliminarMeta(idMeta, idUsuario) {
 			console.error('Error:', error);
 		});
 }
-
 function setUpPerfil() {
+    const editarUsuarioBtns = document.querySelectorAll('.editar-usuario');
+    const screenOverlayPerfil = document.getElementById('screenOverlayPerfil');
+    const cerrarBtn = document.getElementById('cerrar-btn');
 
-	const editarUsuarioBtns = document.querySelectorAll('.editar-usuario');
-	const screenOverlayPerfil = document.getElementById('screenOverlayPerfil');
-	const cerrarBtn = document.getElementById('cerrar-btn');
-	
-	const eliminarUsuarioBtns = document.querySelectorAll('.eliminarUsuario');
+    editarUsuarioBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const usuarioId = btn.getAttribute('data-id');
 
-	editarUsuarioBtns.forEach(function(btn) {
-		btn.addEventListener('click', function() {
-			window.location.href = `UsuarioController?ruta=solicitarModificarUsuario`;
-			// Mostrar el formulario de edición
-			screenOverlayPerfil.style.display = 'flex';
-		});
-	});
-	
-	eliminarUsuarioBtns.forEach(function(btn) {
-			btn.addEventListener('click', function() {
-				const usuarioId = btn.getAttribute('data-id');
-				window.location.href = `UsuarioController?ruta=eliminarUsuario&id=${usuarioId}`;
-			
-			});
-		});
+            // Hacer una solicitud fetch para obtener los datos del usuario
+            fetch(`UsuarioController?ruta=obtenerUsuario&idUsuario=${usuarioId}`)
+                .then(response => {
+                    const idUsuario = response.headers.get('idUsuario');
+                    const nombre = response.headers.get('nombre');
+                    const apellido = response.headers.get('apellido');
+                    const nombreUsuario = response.headers.get('nombreUsuario');
+                    const email = response.headers.get('email');
+                    const clave = response.headers.get('clave');
 
-	// Cerrar el formulario
-	cerrarBtn.addEventListener('click', function() {
-		screenOverlayPerfil.style.display = 'none';
-	});
+                    // Llenar el formulario con los datos del usuario
+                    document.getElementById('idUsuario').value = idUsuario || '';
+                    document.getElementById('nombreM').value = nombre || '';
+                    document.getElementById('apellidoM').value = apellido || '';
+                    document.getElementById('nombreUsuarioM').value = nombreUsuario || '';
+                    document.getElementById('emailM').value = email || '';
+                    document.getElementById('claveM').value = clave || '';
+
+                    // Mostrar el formulario
+                    screenOverlayPerfil.style.display = 'flex';
+                });
+        });
+    });
+
+    // Cerrar el formulario
+    cerrarBtn.addEventListener('click', function() {
+        screenOverlayPerfil.style.display = 'none';
+    });
 }
+
 
 function setupMetaScreen() {
 
@@ -195,25 +204,35 @@ function setupMetaScreen() {
 
 
 	editarMetaBtns.forEach(function(btn) {
-		btn.addEventListener('click', function() {
-			const metaId = btn.getAttribute('data-id');
-			const metaNombre = btn.getAttribute('data-nombre');
-			const metaDescripcion = btn.getAttribute('data-descripcion');
-			const metaFechaInicio = btn.getAttribute('data-fecha-inicio');
-			const metaFechaFin = btn.getAttribute('data-fecha-fin');
+	    btn.addEventListener('click', function() {
+	        const metaId = btn.getAttribute('data-id');
+	        
+	        // Realizar la solicitud al servidor para obtener los datos de la meta
+	        fetch('MetaController?ruta=obtenerMeta&idmeta=' + metaId)
+	            .then(response => {
+	                // Obtener los encabezados de la respuesta
+	                const idMeta = response.headers.get('idmeta');
+	                const nombreMeta = response.headers.get('nombre');
+	                const descripcionMeta = response.headers.get('descripcion');
+	                const fechaInicioMeta = response.headers.get('fechaInicio');
+	                const fechaFinMeta = response.headers.get('fechaFin');
+	                
+	                // Llenar el formulario con los datos de la meta
+	                document.getElementById('idMeta').value = idMeta || '';
+	                document.getElementById('nombre-meta').value = nombreMeta || '';
+	                document.getElementById('descripcion-meta').value = descripcionMeta || '';
+	                document.getElementById('fecha-inicio').value = fechaInicioMeta || '';
+	                document.getElementById('fecha-fin').value = fechaFinMeta || '';
 
-			// Llenar el formulario con los datos de la meta seleccionada
-			document.getElementById('idMeta').value = metaId || '';
-			document.getElementById('nombre-meta').value = metaNombre || '';
-			document.getElementById('descripcion-meta').value = metaDescripcion || '';
-			document.getElementById('fecha-inicio').value = metaFechaInicio || '';
-			document.getElementById('fecha-fin').value = metaFechaFin || '';
-
-			selectedMetaId = metaId; // Guardar el ID de la meta seleccionada
-
-			screenOverlayModificarMeta.style.display = 'flex';
-		});
+	                // Mostrar el formulario de edición de meta
+	                screenOverlayModificarMeta.style.display = 'flex';
+	            })
+	            .catch(error => {
+	                console.error('Error al obtener los datos de la meta:', error);
+	            });
+	    });
 	});
+
 
 
 

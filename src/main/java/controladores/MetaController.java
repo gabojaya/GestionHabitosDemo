@@ -57,10 +57,34 @@ public class MetaController extends HttpServlet {
 			System.out.println("Llamando a modificarMeta");
 			this.modificarMeta(req, resp);
 			break;
+		case "obtenerMeta":
+			System.out.println("Llamando a modificarMeta");
+			this.obtenerMeta(req, resp);
+			break;
 		
 		}
 	}
 	
+
+	private void obtenerMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
+		System.out.println("Entro a obtener meta");
+	    int id = Integer.parseInt(req.getParameter("idmeta"));
+	    System.out.println(id);
+	    MetaDAO metaDAO = new MetaDAO();
+	    
+	    Meta meta = metaDAO.obtenerMetaPorId(id);  // Obtener la meta desde la base de datos
+
+		// Agregar los datos de la meta como encabezados en la respuesta
+		resp.addIntHeader("idmeta", meta.getIdMeta());
+		resp.addHeader("nombre", meta.getNombre());
+		resp.addHeader("descripcion", meta.getDescripcion());
+		resp.addHeader("fechaInicio", meta.getFechaInicio().toString());
+		resp.addHeader("fechaFin", meta.getFechaFin().toString());
+		
+		// Redirigir o devolver la respuesta
+		getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
+		
+	}
 
 	private void modificarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    System.out.println("Entro a editar meta");

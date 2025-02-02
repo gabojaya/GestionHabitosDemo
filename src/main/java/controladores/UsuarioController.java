@@ -46,8 +46,35 @@ public class UsuarioController extends HttpServlet {
 		case "eliminarUsuario":
 			this.eliminarUsuario(req, resp);
 			break;
+		case "obtenerUsuario":
+			this.obtenerUsuario(req, resp);
+			break;
 		}
 
+	}
+
+	private void obtenerUsuario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		int id = Integer.parseInt(req.getParameter("idUsuario"));
+	    UsuarioDAO usuarioDAO = new UsuarioDAO();
+	    
+	    try {
+	        // Obtener el usuario por ID
+	        Usuario usuario = usuarioDAO.obtenerUsuarioPorId(id);
+	        
+	        // Enviar los datos al frontend mediante cabeceras
+	        resp.addIntHeader("idUsuario", usuario.getIdUsuario());
+	        resp.addHeader("nombre", usuario.getNombre());
+	        resp.addHeader("apellido", usuario.getApellido());
+	        resp.addHeader("nombreUsuario", usuario.getNombreUsuario());
+	        resp.addHeader("email", usuario.getEmail());
+	        resp.addHeader("clave", usuario.getClave());
+	        
+	        // Redirigir al formulario de edición
+	        getServletContext().getRequestDispatcher("/jsp/editarUsuario.jsp").forward(req, resp);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
 	}
 
 	private void eliminarUsuario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{

@@ -418,3 +418,27 @@ h2.create-account {
   background-color: #6464f8;
 }
 
+/* Ajuste del input "Cantidad Realizada" */
+#cantidadSection {
+  display: flex;
+  flex-direction: column; /* Poner los elementos en columna */
+  align-items: center;
+  gap: 10px;
+}
+
+#cantidadSection p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#cantidadActual {
+  width: 80%; /* Hacer el input más ancho */
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+

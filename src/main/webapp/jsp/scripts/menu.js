@@ -723,6 +723,25 @@ function setUpEjecuciones() {
 	});
 
 
+	document.getElementById("formRegistrarEjecucion").addEventListener("submit", function(event) {
+	        event.preventDefault(); // Evita el envío automático del formulario
+
+	        Swal.fire({
+	            title: "¿Registrar Ejecución?",
+	            text: "¿Estás seguro de que deseas registrar esta ejecución del hábito?",
+	            icon: "warning",
+	            showCancelButton: true,
+	            confirmButtonColor: "#3085d6",
+	            cancelButtonColor: "#d33",
+	            confirmButtonText: "Sí, registrar",
+	            cancelButtonText: "Cancelar"
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+	                // Enviar el formulario manualmente si el usuario confirma
+	                event.target.submit();
+	            }
+	        });
+	    });
 
 
 

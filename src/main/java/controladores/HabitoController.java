@@ -58,8 +58,33 @@ public class HabitoController extends HttpServlet {
 		case "listarHabitosUsuario":
 			this.listarHabitosUsuario(req, resp);
 			break;
+		case "obtenerHabito":
+			this.obtenerHabito(req, resp);
+			break;
 		}
 
+	}
+	
+	private void obtenerHabito(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		System.out.println("Entro a obtener habito");
+		int id = Integer.parseInt(req.getParameter("idhabito"));
+		System.out.println(id);
+		HabitoDAO hdao = new HabitoDAO();
+		try {
+			Habito habito = hdao.obtenerHabitoPorId(id);
+			resp.addIntHeader("idhabito", habito.getIdHabito());
+			resp.addHeader("nombre", habito.getNombre());
+			resp.addHeader("categoria", habito.getCategoria());
+			resp.addIntHeader("frecuencia", habito.getFrecuencia());
+			resp.addHeader("tipoMedicion", habito.getTipoMedicion());
+			resp.addIntHeader("cantidadTotal", habito.getCantidadTotal());
+			if(habito.getCantidadTotal()== 0) {
+				resp.addHeader("tiempoTotal", habito.getTiempoTotal().toString());
+			}
+			getServletContext().getRequestDispatcher("/jsp/menuPrincipal.jsp").forward(req, resp);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void listarHabitosUsuario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{

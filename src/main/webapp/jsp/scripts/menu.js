@@ -293,6 +293,7 @@ function setupMetaScreen() {
 
 	editarHabitoBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
+			/*
 			const hid = btn.getAttribute('hab-id');
 			const hnom = btn.getAttribute('hab-nom');
 			const hcat = btn.getAttribute('hab-cat');
@@ -309,17 +310,44 @@ function setupMetaScreen() {
 			document.getElementById('cantidad-habito').value = hcan || '';
 			document.getElementById('tiempo-habito').value = htime || '';
 			//document.getElementById('horario-habito').value = hho || '';
+			*/
+			const hid = btn.getAttribute('hab-id');
+			fetch('HabitoController?ruta=obtenerHabito&idhabito='+hid)
+			  .then(response => {
+				const hid = response.headers.get('idhabito');
+				const hnom = response.headers.get('nombre');
+				const hcat = response.headers.get('categoria');
+				const hf = response.headers.get('frecuencia');
+				const hmed = response.headers.get('tipoMedicion');
+				const hcan = response.headers.get('cantidadTotal');
+				const htime = response.headers.get('tiempoTotal');
+				document.getElementById('idhab').value = hid;
+				document.getElementById('nombre-habito').value = hnom || '';
+				document.getElementById('categoria-habito').value = hcat || '';
+				document.getElementById('tipo-medicion').value = hmed || '';
+				document.getElementById('frecuencia-habito').value = hf || '';
+				document.getElementById('cantidad-habito').value = hcan || '';
+				document.getElementById('tiempo-habito').value = htime || '';
+				if(hmed=="cantidad"){
+					console.log(hmed);
+					document.getElementById("divcan").style.display = 'flex';
+					document.getElementById("divtime").style.display = 'none';
+				}else{
+					document.getElementById("divtime").style.display = 'flex';
+					document.getElementById("divcan").style.display = 'none';
+				}
+			  });
+			  //.catch(error => console.error('Error:', error));
 			editar = true;
-			screenOverlayRegistroHabitos.style.display = 'flex';
-			if (document.getElementById("tipo-medicion").value == "cantidad") {
+			console.log(document.getElementById("tipo-medicion").value);
+			if ( document.getElementById("tipo-medicion").value == "cantidad") {
 				document.getElementById("divcan").style.display = 'flex';
 				document.getElementById("divtime").style.display = 'none';
-			}
-			if (document.getElementById("tipo-medicion").value == "tiempo") {
+			}else if (document.getElementById("tipo-medicion").value == "tiempo"){
 				document.getElementById("divtime").style.display = 'flex';
 				document.getElementById("divcan").style.display = 'none';
 			}
-
+			screenOverlayRegistroHabitos.style.display = 'flex';
 		});
 	});
 	eliminarHabitoBtn.forEach(function(btn) {

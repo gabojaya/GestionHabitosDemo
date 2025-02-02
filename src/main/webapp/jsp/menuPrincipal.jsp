@@ -72,7 +72,7 @@
 						data-apellido="${usuario.apellido}" data-nombreUsuario="${usuario.nombreUsuario}"
 						data-email="${usuario.email}" data-clave="${usuario.clave}">Editar
 						perfil</button>
-					<button class="button-user eliminarUsuario">Eliminar
+					<button class="button-user eliminarUsuario" data-id="${usuario.idUsuario}" >Eliminar
 						perfil</button>
 				</div>
 			</div>

@@ -25,15 +25,15 @@ public class Ejecucion implements Serializable {
 	@Column(name = "idEjecucion")
 	private int idEjecucion;
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = {CascadeType.REMOVE})
 	@JoinColumn(name = "idUsuario", nullable = false)
 	private Usuario usuario;
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = {CascadeType.REMOVE})
 	@JoinColumn(name = "idHabito", nullable = false)
 	private Habito habito;
 
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = {CascadeType.REMOVE})
 	@JoinColumn(name = "idRecordatorio", nullable = false)
 	private Recordatorio recordatorio;
 

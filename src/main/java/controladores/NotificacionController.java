@@ -144,9 +144,12 @@ public class NotificacionController extends HttpServlet {
 				recordatorio.setFechaFin(fechaFinStr);
 				recordatorio.setRepetir(true);
 				recordatorio.setHabitoAsociado(habito);
+				
+				habito.getRecordatorios().add(recordatorio);
 
 				notificacionDAO.crearRecordatorio(recordatorio);
 			}
+			habitoDAO.actualizarListaHabito(habito);
 
 			req.getRequestDispatcher("EjecucionController?ruta=crearEjecuciones&idHabito=" + idHabito).forward(req,
 					resp);

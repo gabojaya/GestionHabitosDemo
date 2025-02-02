@@ -1,6 +1,7 @@
 package controladores;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.List;
@@ -127,7 +128,7 @@ public class LoginController extends HttpServlet {
 		String email = req.getParameter("email");
 		String clave = req.getParameter("clave");
 
-		Usuario usuario = new Usuario(nombre, apellido, nombreUsuario, email, clave);
+		Usuario usuario = new Usuario(0, nombre, apellido, nombreUsuario, email, clave, new Date(System.currentTimeMillis()), null, null);
 
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		boolean registrado;

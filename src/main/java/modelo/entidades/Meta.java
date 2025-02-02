@@ -28,7 +28,7 @@ public class Meta implements Serializable {
 	@Column(name="idMeta")
 	private int idMeta;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = {CascadeType.REFRESH})
 	@JoinColumn(name = "idUsuario", nullable = false)
 	//@Column(name="idUsuario")
 	private Usuario usuario;
@@ -42,7 +42,7 @@ public class Meta implements Serializable {
 	@Column(name="fechaFin")
 	private Date fechaFin;
 	
-	@OneToMany(mappedBy = "metaAsociada", cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "metaAsociada", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<Habito> habitos;
 

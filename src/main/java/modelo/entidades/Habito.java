@@ -2,6 +2,7 @@ package modelo.entidades;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -29,7 +31,7 @@ public class Habito implements Serializable {
 	@Column(name="categoria")
 	private String categoria;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "idMeta", nullable = false)
 	private Meta metaAsociada;
 	
@@ -43,21 +45,37 @@ public class Habito implements Serializable {
 	private int cantidadTotal;
 	@Column(name="tiempoTotal")
 	private Time tiempoTotal;
+	
+	@OneToMany(mappedBy = "habito", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Ejecucion> ejecuciones;
+
+    @OneToMany(mappedBy = "habito", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Estadistica> estadisticas;
+
+    @OneToMany(mappedBy = "habitoAsociado", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Recordatorio> recordatorios;
+	
+	
 
 	public Habito() {
 	}
 
-	public Habito(int idHabito, String nombre, String categoria, Meta meta, boolean estado, String tipoMedicion,
-			int frecuencia, int cantidadTotal, Time tiempoTotal) {
+	public Habito(int idHabito, String nombre, String categoria, Meta metaAsociada, boolean estado, String tipoMedicion,
+			int frecuencia, int cantidadTotal, Time tiempoTotal, List<Ejecucion> ejecuciones,
+			List<Estadistica> estadisticas, List<Recordatorio> recordatorios) {
+		super();
 		this.idHabito = idHabito;
 		this.nombre = nombre;
 		this.categoria = categoria;
-		this.metaAsociada = meta;
+		this.metaAsociada = metaAsociada;
 		this.estado = estado;
 		this.tipoMedicion = tipoMedicion;
 		this.frecuencia = frecuencia;
 		this.cantidadTotal = cantidadTotal;
 		this.tiempoTotal = tiempoTotal;
+		this.ejecuciones = ejecuciones;
+		this.estadisticas = estadisticas;
+		this.recordatorios = recordatorios;
 	}
 
 	public int getIdHabito() {
@@ -133,5 +151,30 @@ public class Habito implements Serializable {
 	public void setTiempoTotal(Time tiempoTotal) {
 		this.tiempoTotal = tiempoTotal;
 	}
+
+	public List<Ejecucion> getEjecuciones() {
+		return ejecuciones;
+	}
+
+	public void setEjecuciones(List<Ejecucion> ejecuciones) {
+		this.ejecuciones = ejecuciones;
+	}
+
+	public List<Estadistica> getEstadisticas() {
+		return estadisticas;
+	}
+
+	public void setEstadisticas(List<Estadistica> estadisticas) {
+		this.estadisticas = estadisticas;
+	}
+
+	public List<Recordatorio> getRecordatorios() {
+		return recordatorios;
+	}
+
+	public void setRecordatorios(List<Recordatorio> recordatorios) {
+		this.recordatorios = recordatorios;
+	}
+	
 
 }

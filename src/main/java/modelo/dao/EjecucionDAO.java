@@ -25,6 +25,8 @@ public class EjecucionDAO {
     }
 
 	public void crearEjecucion(Ejecucion ejecucion) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionHabitosWeb");
+	    EntityManager em = emf.createEntityManager();
 		try {
 	        em.getTransaction().begin();
 	        em.persist(ejecucion);

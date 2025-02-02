@@ -171,7 +171,8 @@ public class HabitoController extends HttpServlet {
 		HabitoDAO hdao = new HabitoDAO();
 		try {
 			hdao.modificarHabito(h);
-			resp.sendRedirect("HabitoController?ruta=listar&idmeta=" + idm);
+			resp.sendRedirect("EstadisticaController?ruta=actualizarEstadisticas&idmeta=" + idm + "&idhab=" + idh);
+
 
 		} catch (SQLException e) {
 			e.printStackTrace();

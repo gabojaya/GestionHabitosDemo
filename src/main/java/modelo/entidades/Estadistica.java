@@ -24,7 +24,7 @@ public class Estadistica implements Serializable {
 	@Column(name="idEstadistica")
 	private int idEstadistica;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "idHabito", nullable = false)
 	private Habito habito;
 	

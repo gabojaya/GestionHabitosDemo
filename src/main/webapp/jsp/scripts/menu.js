@@ -139,6 +139,8 @@ function setUpPerfil() {
 	const editarUsuarioBtns = document.querySelectorAll('.editar-usuario');
 	const screenOverlayPerfil = document.getElementById('screenOverlayPerfil');
 	const cerrarBtn = document.getElementById('cerrar-btn');
+	
+	const eliminarUsuarioBtns = document.querySelectorAll('.eliminarUsuario');
 
 	editarUsuarioBtns.forEach(function(btn) {
 		btn.addEventListener('click', function() {
@@ -147,6 +149,14 @@ function setUpPerfil() {
 			screenOverlayPerfil.style.display = 'flex';
 		});
 	});
+	
+	eliminarUsuarioBtns.forEach(function(btn) {
+			btn.addEventListener('click', function() {
+				const usuarioId = btn.getAttribute('data-id');
+				window.location.href = `UsuarioController?ruta=eliminarUsuario&id=${usuarioId}`;
+			
+			});
+		});
 
 	// Cerrar el formulario
 	cerrarBtn.addEventListener('click', function() {

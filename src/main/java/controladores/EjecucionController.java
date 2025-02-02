@@ -1,8 +1,10 @@
 package controladores;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -15,6 +17,7 @@ import modelo.dao.EjecucionDAO;
 import modelo.dao.EstadisticaDAO;
 import modelo.dao.HabitoDAO;
 import modelo.dao.RecordatorioDAO;
+import modelo.dao.UsuarioDAO;
 import modelo.entidades.Ejecucion;
 import modelo.entidades.Estadistica;
 import modelo.entidades.Habito;
@@ -235,12 +238,21 @@ public class EjecucionController extends HttpServlet {
 		System.out.println("Se creo ejecuciones para el usuario: " + idUsuario);
 
 		RecordatorioDAO notificacionDAO = new RecordatorioDAO();
+		HabitoDAO habitoDao = new HabitoDAO();
+		Habito habito = null;
+		try {
+			habito = habitoDao.obtenerHabitoPorId(idHabito);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		List<Recordatorio> recordatorios = notificacionDAO.obtenerRecordatoriosPorHabito(idHabito);
 		java.util.Date fechaActual = new java.util.Date(); // Fecha actual del sistema
 		java.sql.Date fechaSQL = new java.sql.Date(fechaActual.getTime());
 
 		if (recordatorios != null && !recordatorios.isEmpty()) {
-
+			List<Ejecucion> ejecuciones = new ArrayList<>();
+            EjecucionDAO ejecucionDAO = new EjecucionDAO();
 			for (Recordatorio recordatorio : recordatorios) {
 				Ejecucion ejecucion = new Ejecucion();
 				ejecucion.setHabito(recordatorio.getHabitoAsociado());
@@ -250,10 +262,21 @@ public class EjecucionController extends HttpServlet {
 				ejecucion.setHora(recordatorio.getHora());
 				ejecucion.setRecordatorio(recordatorio);
 
-				EjecucionDAO ejecucionDAO = new EjecucionDAO();
-
+				// Agregar la ejecución a la lista del usuario y del recordatorio
+	            ejecuciones.add(ejecucion);
+	            usuario.getEjecuciones().add(ejecucion);
+	            recordatorio.getEjecuciones().add(ejecucion);
+	            habito.getEjecuciones().add(ejecucion);
+	            
 				ejecucionDAO.crearEjecucion(ejecucion);
+				
 			}
+			
+			UsuarioDAO usuarioDAO = new UsuarioDAO();
+			usuarioDAO.actualizarListasUsuario(usuario);
+			
+			
+			
 
 			req.getRequestDispatcher("HabitoController?ruta=listar&idmeta=" + meta.getIdMeta()).forward(req, resp);
 		} else {

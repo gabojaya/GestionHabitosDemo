@@ -2,58 +2,73 @@ package modelo.entidades;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="usuario")
+@Table(name = "usuario")
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name="idUsuario")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "idUsuario")
 	private int idUsuario;
-	
-	@Column(name="nombre")
+
+	@Column(name = "nombre")
 	private String nombre;
-	
-	@Column(name="apellido")
+
+	@Column(name = "apellido")
 	private String apellido;
-	
-	@Column(name="nombreUsuario")
+
+	@Column(name = "nombreUsuario")
 	private String nombreUsuario;
-	
-	@Column(name="email")
+
+	@Column(name = "email")
 	private String email;
-	
-	@Column(name="clave")
+
+	@Column(name = "clave")
 	private String clave;
-	
-	@Column(name="fechaInicio")
+
+	@Column(name = "fechaInicio")
 	private Date fechaInicio;
+
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<Meta> metas;
 	
-	@Column(name="notificacionesActivas")
-	private boolean notificacionesActivas;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<Ejecucion> ejecuciones;
+	
 
 	public Usuario() {
 	}
+	
+	
+	
 
-	public Usuario( String nombre, String apellido, String nombreUsuario, String email, String clave) {
+	public Usuario(int idUsuario, String nombre, String apellido, String nombreUsuario, String email, String clave,
+			Date fechaInicio, List<Meta> metas, List<Ejecucion> ejecuciones) {
+		super();
+		this.idUsuario = idUsuario;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.nombreUsuario = nombreUsuario;
 		this.email = email;
 		this.clave = clave;
 		this.fechaInicio = new Date(System.currentTimeMillis());
-		this.notificacionesActivas = true;
+		this.metas = metas;
+		this.ejecuciones = ejecuciones;
 	}
+
 
 	public int getIdUsuario() {
 		return idUsuario;
@@ -111,13 +126,34 @@ public class Usuario implements Serializable {
 		this.fechaInicio = fechaInicio;
 	}
 
-	public boolean isNotificacionesActivas() {
-		return notificacionesActivas;
+
+
+
+	public List<Meta> getMetas() {
+		return metas;
 	}
 
-	public void setNotificacionesActivas(boolean notificacionesActivas) {
-		this.notificacionesActivas = notificacionesActivas;
+
+
+
+	public void setMetas(List<Meta> metas) {
+		this.metas = metas;
 	}
+
+
+
+
+	public List<Ejecucion> getEjecuciones() {
+		return ejecuciones;
+	}
+
+
+
+
+	public void setEjecuciones(List<Ejecucion> ejecuciones) {
+		this.ejecuciones = ejecuciones;
+	}
+	
 	
 
 }

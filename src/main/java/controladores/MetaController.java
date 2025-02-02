@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import modelo.dao.MetaDAO;
+import modelo.dao.UsuarioDAO;
 import modelo.entidades.Meta;
 import modelo.entidades.Usuario;
 
@@ -182,6 +183,13 @@ public class MetaController extends HttpServlet {
 	        meta.setProgreso(0.0); // Progreso inicial
 	        meta.setEstado(true); // Activa por defecto
 	        meta.setDiasObjetivo((int) diasObjetivo); // Convertimos a int
+	        
+	        // **Agregar la meta a la lista del usuario**
+	        //usuario.getMetas().add(meta);
+
+	        // Llamar al DAO para actualizar usuario y meta
+	        UsuarioDAO usuarioDAO = new UsuarioDAO();        
+	        usuarioDAO.actualizarListasUsuario(usuario); 
 
 	        // Llamar al DAO para agregar la meta
 	        MetaDAO metaDAO = new MetaDAO();

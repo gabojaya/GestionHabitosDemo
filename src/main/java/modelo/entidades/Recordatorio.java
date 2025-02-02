@@ -3,6 +3,7 @@ package modelo.entidades;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,7 +36,7 @@ public class Recordatorio implements Serializable {
 	@Column(name="estado")
 	private boolean estado;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "idHabito", nullable = false)
 	private Habito habitoAsociado;
 	
@@ -46,20 +48,26 @@ public class Recordatorio implements Serializable {
 	
 	@Column(name="fechaFin")
 	private Date fechaFin;
+	
+	@OneToMany(mappedBy = "recordatorio", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Ejecucion> ejecuciones;
 
 	public Recordatorio() {
 	}
+	
 
-	public Recordatorio(int idRecordatorio, String mensaje, Time Hora, boolean estado, Habito habitoAsociado,
-			boolean repetir, Date fechaInicio, Date fechaFin) {
+	public Recordatorio(int idRecordatorio, String mensaje, Time hora, boolean estado, Habito habitoAsociado,
+			boolean repetir, Date fechaInicio, Date fechaFin, List<Ejecucion> ejecuciones) {
+		super();
 		this.idRecordatorio = idRecordatorio;
 		this.mensaje = mensaje;
-		this.hora = Hora;
+		this.hora = hora;
 		this.estado = estado;
 		this.habitoAsociado = habitoAsociado;
 		this.repetir = repetir;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
+		this.ejecuciones = ejecuciones;
 	}
 
 	public int getIdRecordatorio() {
@@ -125,4 +133,15 @@ public class Recordatorio implements Serializable {
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
+
+
+	public List<Ejecucion> getEjecuciones() {
+		return ejecuciones;
+	}
+
+
+	public void setEjecuciones(List<Ejecucion> ejecuciones) {
+		this.ejecuciones = ejecuciones;
+	}
+	
 }

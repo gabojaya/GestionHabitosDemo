@@ -43,8 +43,41 @@ public class UsuarioController extends HttpServlet {
 		case "solicitarUsuario":
 			this.solicitarUsuario(req, resp);
 			break;
+		case "eliminarUsuario":
+			this.eliminarUsuario(req, resp);
+			break;
 		}
 
+	}
+
+	private void eliminarUsuario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		
+		// Obtener el id del usuario desde la URL
+	    String idUsuario = req.getParameter("id");
+	    
+	    if (idUsuario != null) {
+	        try {
+	            // Convertir el id en un número entero
+	            int usuarioId = Integer.parseInt(idUsuario);
+	            
+	            // Llamar al DAO para eliminar el usuario
+	            UsuarioDAO usuarioDAO = new UsuarioDAO();
+	            boolean eliminado = usuarioDAO.eliminarUsuario(usuarioId);
+	            
+	            // Redirigir a una página de éxito o a la lista de usuarios
+	            if (eliminado) {
+	            	resp.sendRedirect("LoginController?ruta=solicitarIniciar");
+	            } else {
+	                resp.sendRedirect("error.jsp"); // Redirige a una página de error si no se eliminó correctamente
+	            }
+	        } catch (NumberFormatException e) {
+	            // Manejo de errores si el id no es válido
+	            resp.sendRedirect("error.jsp");
+	        }
+	    } else {
+	        resp.sendRedirect("error.jsp"); // Si no se pasa un id, redirigir a una página de error
+	    }
+		
 	}
 
 	private void solicitarUsuario(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{

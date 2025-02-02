@@ -125,6 +125,24 @@ public class HabitoDAO {
 	    return habitos;
 	}
 
+	public boolean actualizarListaHabito(Habito habito) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionHabitosWeb");
+	    EntityManager em = emf.createEntityManager();
+	    try {
+	        em.getTransaction().begin();
+	        em.merge(habito); // Actualizar hábito con nueva estadística
+	        em.getTransaction().commit();
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        return false;
+	    }
+	}
+
+
 
 	
 

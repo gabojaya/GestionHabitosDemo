@@ -406,10 +406,37 @@ function setupMetaScreen() {
 			// Si es válido, se asigna la acción del formulario y se envía
 			if (editar) {
 				document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
-				document.getElementById('habito-form').submit();
+				Swal.fire({
+					title:"Modificar habito",
+					text:"Se modificara el habito con los datos proporcionados.",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "Sí, guardar",
+					cancelButtonText: "Cancelar"
+					}).then((result)=>{
+						if(result.isConfirmed){
+							document.getElementById('habito-form').submit();
+					}
+				});
+				
 			} else {
 				document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosHabito&idmeta=${metaid}`;
-				document.getElementById('habito-form').submit();
+				Swal.fire({
+					title:"Crear habito",
+					text:"Se creara un nuevo habito con los datos proporcionados.",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "Sí, crear",
+					cancelButtonText: "Cancelar"
+					}).then((result)=>{
+						if(result.isConfirmed){
+						document.getElementById('habito-form').submit();
+						}
+				});
 			}
 			// Oculta la pantalla de overlay después de enviar el formulario
 			screenOverlayRegistroHabitos.style.display = 'none';
@@ -474,6 +501,7 @@ function setupMetaScreen() {
 			screenOverlayRegistroHabitos.style.display = 'flex';
 		});
 	});
+	
 
 	eliminarHabitoBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {

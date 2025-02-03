@@ -56,15 +56,15 @@ public class MetaController extends HttpServlet {
 
 			this.modificarMeta(req, resp);
 			break;
-		case "obtenerMeta":
+		case "mostrarModificarMeta":
 
-			this.obtenerMeta(req, resp);
+			this.mostrarModificarMeta(req, resp);
 			break;
 
 		}
 	}
 
-	private void obtenerMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void mostrarModificarMeta(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		int id = Integer.parseInt(req.getParameter("idmeta"));
 

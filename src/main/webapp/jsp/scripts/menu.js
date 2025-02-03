@@ -281,12 +281,12 @@ function setupMetaScreen() {
 			const metaId = btn.getAttribute('data-id');
 
 			
-			fetch('MetaController?ruta=obtenerMeta&idmeta=' + metaId)
+			fetch('MetaController?ruta=mostrarModificarMeta&idmeta=' + metaId)
 				.then(response => {
 					
 					const idMeta = response.headers.get('idmeta');
 					const nombreMeta = response.headers.get('nombre');
-					const descripcionMeta = response.headers.get('descripcion');
+					const descripcionMeta = response.headers.get('descripcion');	
 					const fechaInicioMeta = response.headers.get('fechaInicio');
 					const fechaFinMeta = response.headers.get('fechaFin');
 

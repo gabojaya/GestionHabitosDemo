@@ -47,7 +47,7 @@ public class EstadisticaController extends HttpServlet {
 			this.actualizarEstadisticas(req, resp);
 			break;
 		case "verEstadistica":
-			this.obtenerEstadisticaPorHabito(req, resp);
+			this.verEstadistica(req, resp);
 			break;
 		}
 	}
@@ -215,7 +215,7 @@ public class EstadisticaController extends HttpServlet {
 		return String.format("%02d:%02d:%02d", horas, minutos, (int) segundos);
 	}
 
-	private void obtenerEstadisticaPorHabito(HttpServletRequest req, HttpServletResponse resp)
+	private void verEstadistica(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
 		

@@ -19,6 +19,8 @@ public class HabitoDAO {
 	public HabitoDAO() {
 
 	}
+	EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionHabitosWeb");
+	EntityManager em = emf.createEntityManager();
 
 	public List<Habito> obtenerHabitos(int idMeta) throws SQLException {
 

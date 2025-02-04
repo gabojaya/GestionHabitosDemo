@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const par = new URLSearchParams(window.location.search);
 	const ruta = par.get('ruta');
 	if (ruta === 'iniciarSesion' || ruta === 'registrarUsuario' || ruta === 'modificarUsuario') {
-		showPage(1); 
+		showPage(1);
 		setUpPerfil();
 		setupTabs();
 
@@ -31,6 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		setupTabs();
 		setUpPerfil();
 		setupMetaScreen();
+
+	} else if (ruta === 'eliminarMeta') {
+		showPage(2);
+		setupTabs();
+		setUpPerfil();
+		setupMetaScreen();
+
 
 	} else if (ruta === 'modificarMeta') {
 		showPage(2);
@@ -114,8 +121,8 @@ function fetchEjecuciones() {
 function fetchMetas() {
 	window.location.href = `MetaController?ruta=solicitarMetas`;
 }
-function eliminarMeta(idMeta, idUsuario) {
-	
+function eliminarMeta(idMeta) {
+
 	Swal.fire({
 		title: "¿Eliminar Meta?",
 		text: "¿Estás seguro de que deseas eliminar esta meta? Esta acción no se puede deshacer.",
@@ -126,38 +133,9 @@ function eliminarMeta(idMeta, idUsuario) {
 		confirmButtonText: "Sí, eliminar",
 		cancelButtonText: "Cancelar"
 	}).then((result) => {
-		
 		if (result.isConfirmed) {
-			
-			fetch(`MetaController?ruta=eliminarMeta&idMeta=${idMeta}&idUsuario=${idUsuario}`, {
-				method: 'POST'
-			})
-				.then(response => response.json())
-				.then(data => {
-					if (data.status === "success") {
-						
-						const row = document.querySelector(`button[data-id="${idMeta}"]`).closest('tr');
-						row.remove();
-						
-						Swal.fire({
-							icon: 'success',
-							title: 'Meta eliminada',
-							text: 'La meta ha sido eliminada correctamente',
-							confirmButtonColor: '#3085d6',
-							confirmButtonText: 'OK'
-						});
-					} else {
-						Swal.fire({
-							icon: 'error',
-							title: 'Error',
-							text: 'No se pudo eliminar la meta',
-							confirmButtonColor: '#d33'
-						});
-					}
-				})
-				.catch(error => {
-					console.error('Error:', error);
-				});
+
+			window.location.href = `MetaController?ruta=eliminarMeta&idMeta=${idMeta}`;
 		}
 	});
 }
@@ -172,7 +150,7 @@ function setUpPerfil() {
 		btn.addEventListener('click', function() {
 			const usuarioId = btn.getAttribute('data-id');
 
-			
+
 			fetch(`UsuarioController?ruta=obtenerUsuario&idUsuario=${usuarioId}`)
 				.then(response => {
 					const idUsuario = response.headers.get('idUsuario');
@@ -182,7 +160,7 @@ function setUpPerfil() {
 					const email = response.headers.get('email');
 					const clave = response.headers.get('clave');
 
-					
+
 					document.getElementById('idUsuario').value = idUsuario || '';
 					document.getElementById('nombreM').value = nombre || '';
 					document.getElementById('apellidoM').value = apellido || '';
@@ -190,7 +168,7 @@ function setUpPerfil() {
 					document.getElementById('emailM').value = email || '';
 					document.getElementById('claveM').value = clave || '';
 
-					
+
 					screenOverlayPerfil.style.display = 'flex';
 				});
 		});
@@ -215,7 +193,7 @@ function setUpPerfil() {
 				cancelButtonText: "Cancelar"
 			}).then((result) => {
 				if (result.isConfirmed) {
-					
+
 					window.location.href = `UsuarioController?ruta=eliminarUsuario&idUsuario=${usuarioId}`;
 				}
 			});
@@ -224,7 +202,7 @@ function setUpPerfil() {
 
 
 	document.getElementById("formEditarUsuario").addEventListener("submit", function(event) {
-		event.preventDefault(); 
+		event.preventDefault();
 
 		Swal.fire({
 			title: "¿Guardar cambios?",
@@ -237,7 +215,7 @@ function setUpPerfil() {
 			cancelButtonText: "Cancelar"
 		}).then((result) => {
 			if (result.isConfirmed) {
-				
+
 				event.target.submit();
 			}
 		});
@@ -253,9 +231,8 @@ function setupMetaScreen() {
 	const screenOverlayModificarMeta = document.getElementById('screenOverlayModificarMeta');
 	const screenOverlayAgregarMeta = document.getElementById('screenOverlayAgregarMeta');
 	const cerrarModificarBtn = document.getElementById('cerrar-btn-modificar');
-	const continuaModificarrBtn = document.getElementById('continuar-btn-modificar');
 	const cerrarBtnAgregar = document.getElementById('cerrar-btn-agregar');
-	
+
 	const screenOverlayHabitos = document.getElementById('screenOverlayHabitos');
 
 
@@ -280,24 +257,24 @@ function setupMetaScreen() {
 		btn.addEventListener('click', function() {
 			const metaId = btn.getAttribute('data-id');
 
-			
+
 			fetch('MetaController?ruta=mostrarModificarMeta&idmeta=' + metaId)
 				.then(response => {
-					
+
 					const idMeta = response.headers.get('idmeta');
 					const nombreMeta = response.headers.get('nombre');
-					const descripcionMeta = response.headers.get('descripcion');	
+					const descripcionMeta = response.headers.get('descripcion');
 					const fechaInicioMeta = response.headers.get('fechaInicio');
 					const fechaFinMeta = response.headers.get('fechaFin');
 
-					
+
 					document.getElementById('idMeta').value = idMeta || '';
 					document.getElementById('nombre-meta').value = nombreMeta || '';
 					document.getElementById('descripcion-meta').value = descripcionMeta || '';
 					document.getElementById('fecha-inicio').value = fechaInicioMeta || '';
 					document.getElementById('fecha-fin').value = fechaFinMeta || '';
 
-					
+
 					screenOverlayModificarMeta.style.display = 'flex';
 				})
 				.catch(error => {
@@ -308,7 +285,7 @@ function setupMetaScreen() {
 
 
 	document.getElementById("formModificarMeta").addEventListener("submit", function(event) {
-		event.preventDefault(); 
+		event.preventDefault();
 
 		Swal.fire({
 			title: "¿Guardar cambios?",
@@ -321,14 +298,14 @@ function setupMetaScreen() {
 			cancelButtonText: "Cancelar"
 		}).then((result) => {
 			if (result.isConfirmed) {
-				
+
 				event.target.submit();
 			}
 		});
 	});
 
 	document.getElementById("formAgregarMeta").addEventListener("submit", function(event) {
-		event.preventDefault(); 
+		event.preventDefault();
 
 		Swal.fire({
 			title: "¿Agregar esta meta?",
@@ -341,7 +318,7 @@ function setupMetaScreen() {
 			cancelButtonText: "Cancelar"
 		}).then((result) => {
 			if (result.isConfirmed) {
-				
+
 				event.target.submit();
 			}
 		});
@@ -368,8 +345,8 @@ function setupMetaScreen() {
 	addHabitoBtn.addEventListener('click', function() {
 
 		const urlParams = new URLSearchParams(window.location.search);
-		const metaid = urlParams.get("idmeta"); 
-		document.getElementById('idmeta').value = metaid; 
+		const metaid = urlParams.get("idmeta");
+		document.getElementById('idmeta').value = metaid;
 
 
 		document.getElementById('nombre-habito').value = '';
@@ -386,50 +363,50 @@ function setupMetaScreen() {
 		var id = new URLSearchParams(window.location.search);
 		let metaid = id.get("idmeta");
 
-	
+
 		const form = document.getElementById('habito-form');
 
 
 		if (form.checkValidity()) {
-			
+
 			if (editar) {
 				document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosModificacionHabito&idmeta=${metaid}`;
 				Swal.fire({
-					title:"Modificar habito",
-					text:"Se modificara el habito con los datos proporcionados.",
+					title: "Modificar habito",
+					text: "Se modificara el habito con los datos proporcionados.",
 					icon: "question",
 					showCancelButton: true,
 					confirmButtonColor: "#3085d6",
 					cancelButtonColor: "#d33",
 					confirmButtonText: "Sí, guardar",
 					cancelButtonText: "Cancelar"
-					}).then((result)=>{
-						if(result.isConfirmed){
-							document.getElementById('habito-form').submit();
+				}).then((result) => {
+					if (result.isConfirmed) {
+						document.getElementById('habito-form').submit();
 					}
 				});
-				
+
 			} else {
 				document.getElementById('habito-form').action = `HabitoController?ruta=ingresarDatosHabito&idmeta=${metaid}`;
 				Swal.fire({
-					title:"Crear habito",
-					text:"Se creara un nuevo habito con los datos proporcionados.",
+					title: "Crear habito",
+					text: "Se creara un nuevo habito con los datos proporcionados.",
 					icon: "question",
 					showCancelButton: true,
 					confirmButtonColor: "#3085d6",
 					cancelButtonColor: "#d33",
 					confirmButtonText: "Sí, crear",
 					cancelButtonText: "Cancelar"
-					}).then((result)=>{
-						if(result.isConfirmed){
+				}).then((result) => {
+					if (result.isConfirmed) {
 						document.getElementById('habito-form').submit();
-						}
+					}
 				});
 			}
-			
+
 			screenOverlayRegistroHabitos.style.display = 'none';
 		} else {
-			
+
 			alert("Por favor, completa todos los campos requeridos.");
 		}
 	});
@@ -489,14 +466,14 @@ function setupMetaScreen() {
 			screenOverlayRegistroHabitos.style.display = 'flex';
 		});
 	});
-	
+
 
 	eliminarHabitoBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
 			const hid = btn.getAttribute('hab-id');
 			const mid = btn.getAttribute('meta-id');
 
-		
+
 			Swal.fire({
 				title: "¿Eliminar Hábito?",
 				text: "¿Estás seguro de que deseas eliminar este hábito? Esta acción no se puede deshacer.",
@@ -507,9 +484,9 @@ function setupMetaScreen() {
 				confirmButtonText: "Sí, eliminar",
 				cancelButtonText: "Cancelar"
 			}).then((result) => {
-				
+
 				if (result.isConfirmed) {
-					
+
 					window.location.href = `HabitoController?ruta=eliminarHabito&idmeta=${mid}&idhab=${hid}`;
 				}
 			});
@@ -519,7 +496,7 @@ function setupMetaScreen() {
 
 	asginarHorariosBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
-			
+
 			screenOverlayAsignarHorarios.style.display = 'flex';
 
 			const idHabito = this.getAttribute("hab-id");
@@ -529,7 +506,7 @@ function setupMetaScreen() {
 
 
 			const horariosContainer = document.getElementById("horariosContainer");
-			horariosContainer.innerHTML = ""; 
+			horariosContainer.innerHTML = "";
 			for (let i = 1; i <= frecuencia; i++) {
 				const horarioDiv = document.createElement("div");
 				horarioDiv.className = "horario-item";
@@ -584,7 +561,7 @@ function setUpEjecuciones() {
 
 
 			document.getElementById('nombreHabitoTexto').textContent = dataEjecHabtioName;
-			document.getElementById('fechaActualTexto').textContent = new Date().toLocaleDateString(); 
+			document.getElementById('fechaActualTexto').textContent = new Date().toLocaleDateString();
 
 
 			if (dataEjecHabtioTipo === "cantidad") {
@@ -603,7 +580,7 @@ function setUpEjecuciones() {
 				cantidadInput.addEventListener('input', function() {
 					const cantidadIngresada = parseInt(cantidadInput.value);
 					if (cantidadIngresada > cantidadTotal) {
-						cantidadInput.value = cantidadTotal; 
+						cantidadInput.value = cantidadTotal;
 					}
 				});
 
@@ -667,7 +644,7 @@ function setUpEjecuciones() {
 
 					document.getElementById('tiempoTranscurridoInput').value = `${horas}:${minutos}:${segundos}`;
 				} else {
-					
+
 					clearInterval(intervalo);
 					intervalo = null;
 					iniciarBtn.disabled = true;
@@ -727,24 +704,24 @@ function setUpEjecuciones() {
 
 
 	document.getElementById("formRegistrarEjecucion").addEventListener("submit", function(event) {
-	        event.preventDefault(); 
+		event.preventDefault();
 
-	        Swal.fire({
-	            title: "¿Registrar Ejecución?",
-	            text: "¿Estás seguro de que deseas registrar esta ejecución del hábito?",
-	            icon: "warning",
-	            showCancelButton: true,
-	            confirmButtonColor: "#3085d6",
-	            cancelButtonColor: "#d33",
-	            confirmButtonText: "Sí, registrar",
-	            cancelButtonText: "Cancelar"
-	        }).then((result) => {
-	            if (result.isConfirmed) {
-	                
-	                event.target.submit();
-	            }
-	        });
-	    });
+		Swal.fire({
+			title: "¿Registrar Ejecución?",
+			text: "¿Estás seguro de que deseas registrar esta ejecución del hábito?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Sí, registrar",
+			cancelButtonText: "Cancelar"
+		}).then((result) => {
+			if (result.isConfirmed) {
+
+				event.target.submit();
+			}
+		});
+	});
 
 
 
@@ -845,13 +822,13 @@ function notifi() {
 	var records = document.querySelectorAll('.noti');
 	var time = new Date().toLocaleTimeString('es-ES');
 	console.log("Se entro en la funcionnde notificaciones");
-	
+
 	if (!("Notification" in window)) {
 
 		alert("Tu navegador no soporta notificaciones");
 
 	} else if (Notification.permission === "granted") {
-		
+
 		records.forEach((item) => {
 			;
 			if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
@@ -863,7 +840,7 @@ function notifi() {
 		Notification.requestPermission(function(permission) {
 
 			if (Notification.permission === "granted") {
-				
+
 				records.forEach((item) => {
 					if (time.substring(0, 5) == item.dataset.hor.substring(0, 5)) {
 						var notification = new Notification(item.dataset.mes);

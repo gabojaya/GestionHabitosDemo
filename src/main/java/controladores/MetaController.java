@@ -98,18 +98,14 @@ public class MetaController extends HttpServlet {
 
 		try {
 
-			// Definir un SimpleDateFormat para el formato yyyy-MM-dd
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-			// Convertir las fechas a formato java.util.Date
 			Date fechaInicioUtil = dateFormat.parse(fechaInicioStr);
 			Date fechaFinUtil = dateFormat.parse(fechaFinStr);
 
-			// Convertir java.util.Date a java.sql.Date
 			java.sql.Date fechaInicio = new java.sql.Date(fechaInicioUtil.getTime());
 			java.sql.Date fechaFin = new java.sql.Date(fechaFinUtil.getTime());
 
-			// Calcular días objetivo
 			long diasObjetivo = java.time.temporal.ChronoUnit.DAYS.between(fechaInicio.toLocalDate(),
 					fechaFin.toLocalDate());
 
@@ -119,7 +115,6 @@ public class MetaController extends HttpServlet {
 				return;
 			}
 
-			// Crear objeto Meta
 			Meta meta = new Meta();
 			meta.setIdMeta(idMeta);
 			meta.setNombre(nombre);
@@ -210,18 +205,12 @@ public class MetaController extends HttpServlet {
 
 		int idMeta = Integer.parseInt(req.getParameter("idMeta"));
 
-		int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
-
-		// Instanciar el DAO y ejecutar el método de eliminación
 		MetaDAO metaDAO = new MetaDAO();
 
 		try {
 			metaDAO.eliminarMeta(idMeta);
-
-			// Responder con un mensaje de éxito
-			resp.setContentType("application/json");
-			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().write("{\"status\":\"success\"}");
+			req.getRequestDispatcher("MetaController?ruta=solicitarMetas").forward(req,
+					resp);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
